@@ -1,7 +1,12 @@
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import React, { useContext, useState, useRef, useEffect} from 'react';
+import {StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/Entypo';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { signin } from '../firebase';
+import { Alert } from 'react-native';
+import { validateEmail, removeWhitespace } from '../utils';
+import { TouchableOpacity } from 'react-native';
 
 import {
   HeadTitle,
@@ -14,16 +19,52 @@ import {
   CheckWrapper,
   Check,
   Description,
-  TextArea,
+  TextArea, ErrorText, 
 } from './FrontStyle';
 
+
+
+
 const Front = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  // const [disabled, setDisabled] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+  const refPassword = useRef(null);
+
+  // useEffect(() => {
+  //   setDisabled(!(email && password && !errorMessage));
+  // }, [email, password, errorMessage]);
+
+  const _handleEmailChange = email => {
+    const changedEmail = removeWhitespace(email);
+    setEmail(changedEmail);
+    setErrorMessage(      
+      validateEmail(changedEmail) ? "" : '이메일을 형식을 확인하세요'
+    );
+  };
+
+  const _handlePasswordChange = password => {
+    setPassword(removeWhitespace(password));
+  };
+
+  const _handleSigninBtnPress = async () => {
+    try {
+      const user = await signin({ email, password });
+      navigation.navigate('Main', {user});
+    } catch (e) {
+      Alert.alert('Signin Error', e.message);
+    }
+  };
+
+
   return (
     <>
       <TitleWrapper>
         <HeadTitle>안암학사</HeadTitle>
         <SubTitle>고려대학교</SubTitle>
       </TitleWrapper>
+      
       <TextArea>
         <LinearGradient
           colors={['#E8EBF2', '#F2F3F7']}
@@ -33,7 +74,14 @@ const Front = ({ navigation }) => {
           end={{ x: 1, y: 0 }}
         >
           <InputWrapper>
-            <Input placeholder="user ID (학번)" />
+            <Input
+              label="Email"
+              placeholder="Email"
+              returnKeyType="next"
+              value={email}
+              onChangeText={_handleEmailChange}
+              onSubmitEditing={() => refPassword.current.focus()}    
+            />
           </InputWrapper>
         </LinearGradient>
         <LinearGradient
@@ -43,7 +91,16 @@ const Front = ({ navigation }) => {
           end={{ x: 1, y: 0 }}
         >
           <InputWrapper>
-            <Input placeholder="password" />
+            <Input
+              ref={refPassword}
+              label="Password"
+              placeholder="Password"
+              returnKeyType="done"
+              value={password}
+              onChangeText={_handlePasswordChange}
+              isPassword={true}
+              onSubmitEditing={_handleSigninBtnPress}
+            />
           </InputWrapper>
         </LinearGradient>
         <CheckWrapper>
@@ -52,7 +109,10 @@ const Front = ({ navigation }) => {
           </Check>
           <Description>Keep me logged in</Description>
         </CheckWrapper>
+        <ErrorText>{errorMessage}</ErrorText>
       </TextArea>
+      
+      
       <BottomWrapper>
         <LinearGradient
           colors={['#E8EBF2', '#F2F3F7']}
@@ -60,17 +120,18 @@ const Front = ({ navigation }) => {
           start={{ x: 0.7, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
-          <StyledButton onPress={() => navigation.navigate('Login')}>
+          <StyledButton title="Sign in" onPress={_handleSigninBtnPress}>
             Login
-          </StyledButton>
+          </StyledButton>          
         </LinearGradient>
+       
         <LinearGradient
           colors={['#E8EBF2', '#F2F3F7']}
           style={styles.ButtonWrapper}
           start={{ x: 0.7, y: 0 }}
           end={{ x: 1, y: 0 }}
         >
-          <StyledButton onPress={() => navigation.navigate('Register')}>
+          <StyledButton title="회원가입" onPress={() => navigation.navigate('Register')}>
             Register
           </StyledButton>
         </LinearGradient>
@@ -109,6 +170,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
     marginLeft: 10,
     justifyContent: 'center',
+        
   },
 });
 

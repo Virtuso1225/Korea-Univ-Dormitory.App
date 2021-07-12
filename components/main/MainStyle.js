@@ -1,6 +1,4 @@
 import styled from 'styled-components/native';
-import PropTypes from 'prop-types';
-import { TouchableOpacity } from 'react-native';
 
 export const TitleWrapper = styled.View`
   display: flex;
@@ -24,18 +22,6 @@ export const TextArea = styled.View`
   margin-top: 150px;
   width: 302px;
   align-self: center;
-`;
-
-
-export const ErrorText = styled.Text`
-  align-items: center;
-  align-self: center;
-  width: 100%;
-  height: 30px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  line-height: 20px;
-  color: rgba(133, 0, 0, 1);
 `;
 
 export const InputWrapper = styled.View`
@@ -90,49 +76,6 @@ export const ButtonWrapper = styled.View`
   margin-left: 10px;
   justify-content: center;
 `;
-
-
-const Container = styled.View`
-  background-color: ${({ theme }) => theme.btnBackground};
-  padding: 10px;
-  margin: 10px 0;
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  border-radius: 4px;
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-`;
-
-const Title = styled.Text`
-  font-size: 15px;
-  color: #850000;
-`;
-
-const Button = ({ title, onPress, containerStyle, textStyle, disabled }) => {
-  return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={{ flexDirection: 'row' }}
-      disabled={disabled}
-    >
-      <Container style={containerStyle} disabled={disabled}>
-        <Title style={textStyle}>{title}</Title>
-      </Container>
-    </TouchableOpacity>
-  );
-};
-
-Button.propTypes = {
-  title: PropTypes.string.isRequired,
-  onPress: PropTypes.func.isRequired,
-  containerStyle: PropTypes.object,
-  textStyle: PropTypes.object,
-  disabled: PropTypes.bool,
-};
-
-export default Button;
-
-
 
 export const StyledButton = styled.Text`
   font-size: 15px;

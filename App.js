@@ -7,6 +7,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 const Stack = createStackNavigator();
 import Front from './components/front/Front';
 import Register from './components/register/Register';
+import Main from './components/main/Main';
 
 const App = () => {
   return (
@@ -17,10 +18,16 @@ const App = () => {
           component={Front}
           options={{ headerShown: false }}
         />
+
         <Stack.Screen
           name="Register"
           component={Register}
           options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="Main"
+          component={Main}
         />
       </Stack.Navigator>
     </NavigationContainer>
