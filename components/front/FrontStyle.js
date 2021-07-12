@@ -1,13 +1,13 @@
 import styled from 'styled-components/native';
 
 export const TitleWrapper = styled.View`
-  display: flex;
+  flex: 2;
   border: none;
   align-items: center;
-  margin-top: 89px;
 `;
 
 export const HeadTitle = styled.Text`
+  margin-top: 89px;
   padding-bottom: 10px;
   font-size: 58px;
   color: rgba(133, 0, 0, 1);
@@ -19,13 +19,23 @@ export const SubTitle = styled.Text`
 `;
 
 export const TextArea = styled.View`
-  margin-top: 150px;
-  width: 302px;
+  flex: 1.5;
   align-self: center;
 `;
 
+export const TextWrapper = styled.View`
+  justify-content: space-around;
+  align-self: center;
+  padding: 3px 10px 3px 10px;
+  margin-top: 29px;
+  min-width: 301px;
+  height: 54px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px rgba(15, 41, 107, 0.22);
+  background-color: #ecedf2;
+`;
+
 export const InputWrapper = styled.View`
-  display: flex;
   flex-direction: row;
 `;
 
@@ -37,15 +47,15 @@ export const Input = styled.TextInput`
 `;
 
 export const CheckWrapper = styled.View`
-  display: flex;
   flex-direction: row;
   margin-top: 9px;
-  align-items: flex-start;
+  align-items: center;
 `;
 
 export const Check = styled.View`
   display: flex;
-  background-color: white;
+  background-color: #ecedf2;
+  box-shadow: 2px 2px 5px rgba(15, 41, 107, 0.22);
   width: 25px;
   height: 25px;
   border-radius: 5px;
@@ -59,22 +69,21 @@ export const Description = styled.Text`
 `;
 
 export const BottomWrapper = styled.View`
-  display: flex;
-  margin-bottom: 50px;
+  flex: 1;
   flex-direction: row;
   align-self: center;
 `;
 
 export const ButtonWrapper = styled.View`
   align-items: center;
-  margin-top: 30px;
-  background-color: lightgray;
-  border-radius: 12px;
+  background-color: #ecedf2;
+  border-radius: 10px;
   width: 140px;
   height: 39px;
   margin-right: 10px;
   margin-left: 10px;
   justify-content: center;
+  box-shadow: 5px 5px 8px rgba(15, 41, 107, 0.22);
 `;
 
 export const StyledButton = styled.Text`
