@@ -15,7 +15,12 @@ export const HeadTitle = styled.Text`
 
 export const SubTitle = styled.Text`
   font-size: 28px;
-  color: black;
+  color: rgba(133, 0, 0, 1);
+`;
+
+export const EngSub = styled.Text`
+  font-size: 10px;
+  color: rgba(133, 0, 0, 1);
 `;
 
 export const TextArea = styled.View`
@@ -33,10 +38,6 @@ export const TextWrapper = styled.View`
   border-radius: 10px;
   box-shadow: 2px 2px 5px rgba(15, 41, 107, 0.22);
   background-color: #ecedf2;
-`;
-
-export const InputWrapper = styled.View`
-  flex-direction: row;
 `;
 
 export const Input = styled.TextInput`

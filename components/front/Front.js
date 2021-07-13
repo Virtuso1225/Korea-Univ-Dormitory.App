@@ -1,5 +1,14 @@
 import React, { useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+} from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/Entypo';
 
@@ -7,7 +16,7 @@ import {
   HeadTitle,
   SubTitle,
   TitleWrapper,
-  InputWrapper,
+  // InputWrapper,
   Input,
   ButtonWrapper,
   StyledButton,
@@ -17,66 +26,60 @@ import {
   Description,
   TextArea,
   TextWrapper,
-  Check2,
+  EngSub,
 } from './FrontStyle';
 
 const Front = ({ navigation }) => {
   const [isSelected, setSelection] = useState(false);
   return (
-    <>
-      <TitleWrapper>
-        <HeadTitle>안암학사</HeadTitle>
-        <SubTitle>고려대학교</SubTitle>
-      </TitleWrapper>
-      <TextArea>
-        {/* <LinearGradient
-          colors={['#E8EBF2', '#F2F3F7']}
-          // colors={['red', 'yellow', 'green']}
-          style={styles.TextWrapper}
-          start={{ x: 0.7, y: 0 }}
-          end={{ x: 1, y: 0 }}
-        > */}
-        {/* </LinearGradient> */}
-        <TextWrapper>
-          <InputWrapper>
-            <Input placeholder="Email" />
-          </InputWrapper>
-        </TextWrapper>
-        <TextWrapper>
-          <InputWrapper>
-            <Input placeholder="password" secureTextEntry={true} />
-          </InputWrapper>
-        </TextWrapper>
-        <CheckWrapper>
-          <TouchableOpacity
-            onPress={() => {
-              isSelected ? setSelection(false) : setSelection(true);
-            }}
-          >
-            {isSelected ? (
-              <Check>
-                <Icon name="check" size={25} color="#707070" />
-              </Check>
-            ) : (
-              <Check />
-            )}
-          </TouchableOpacity>
-          <Description>Keep me logged in</Description>
-        </CheckWrapper>
-      </TextArea>
-      <BottomWrapper>
-        <ButtonWrapper>
-          <StyledButton onPress={() => navigation.navigate('Login')}>
-            Login
-          </StyledButton>
-        </ButtonWrapper>
-        <ButtonWrapper>
-          <StyledButton onPress={() => navigation.navigate('Register')}>
-            Register
-          </StyledButton>
-        </ButtonWrapper>
-      </BottomWrapper>
-    </>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'iso' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View style={{ flex: 1 }}>
+          <TitleWrapper>
+            <HeadTitle>안암학사</HeadTitle>
+            <SubTitle>고려대학교</SubTitle>
+            <EngSub>KOREA UNIVERSITY</EngSub>
+          </TitleWrapper>
+          <TextArea>
+            <TextWrapper>
+              <Input placeholder="Email" />
+            </TextWrapper>
+            <TextWrapper>
+              <Input placeholder="password" secureTextEntry={true} />
+            </TextWrapper>
+            <CheckWrapper>
+              <TouchableOpacity
+                onPress={() => {
+                  isSelected ? setSelection(false) : setSelection(true);
+                }}
+              >
+                <Check>
+                  {isSelected && (
+                    <Icon name="check" size={25} color="#707070" />
+                  )}
+                </Check>
+              </TouchableOpacity>
+              <Description>Keep me logged in</Description>
+            </CheckWrapper>
+          </TextArea>
+          <BottomWrapper>
+            <ButtonWrapper>
+              <StyledButton onPress={() => navigation.navigate('Login')}>
+                Login
+              </StyledButton>
+            </ButtonWrapper>
+            <ButtonWrapper>
+              <StyledButton onPress={() => navigation.navigate('Register')}>
+                Register
+              </StyledButton>
+            </ButtonWrapper>
+          </BottomWrapper>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -121,5 +124,16 @@ const Front = ({ navigation }) => {
 //     // elevation: 3,
 //   },
 // });
-
+{
+  /* <LinearGradient
+          colors={['#E8EBF2', '#F2F3F7']}
+          // colors={['red', 'yellow', 'green']}
+          style={styles.TextWrapper}
+          start={{ x: 0.7, y: 0 }}
+          end={{ x: 1, y: 0 }}
+        > */
+}
+{
+  /* </LinearGradient> */
+}
 export default Front;
