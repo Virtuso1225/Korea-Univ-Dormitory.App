@@ -16,7 +16,7 @@ export const Title = styled.Text`
 `;
 
 export const SubWrapper = styled.View`
-  flex: 3.5;
+  flex: 4;
   align-self: center;
 `;
 
@@ -42,6 +42,7 @@ export const Input = styled.TextInput`
 export const BottomWrapper = styled.View`
   flex: 1.7;
   align-items: center;
+  margin-top: 10px;
 `;
 
 export const ButtonWrapper = styled.View`
