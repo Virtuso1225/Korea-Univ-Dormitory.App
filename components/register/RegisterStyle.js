@@ -75,8 +75,25 @@ export const OptionDescription = styled.Text`
   color: #6a6a6a;
 `;
 
+
+export const OptionButton = styled.Text`
+  font-size: 15px;
+  color: #850000;
+`;
+
 export const Option = styled.Text`
   margin-left: 3px;
   font-size: 14px;
   color: #850000;
+`;
+
+export const ErrorText = styled.Text`
+  align-items: center;
+  align-self: center;
+  width: 100%;
+  height: 20px;
+  margin-top: 10px;
+  /* margin-bottom: 10px; */
+  /* line-height: 20px; */
+  color: rgba(133, 0, 0, 1);
 `;
