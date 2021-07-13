@@ -53,7 +53,6 @@ export const ErrorText = styled.Text`
   color: rgba(133, 0, 0, 1);
 `;
 
-
 export const TextWrapper = styled.View`
   justify-content: space-around;
   align-self: center;
@@ -106,7 +105,7 @@ export const BottomWrapper = styled.View`
   align-self: center;
 `;
 
-export const ButtonWrapper = styled.View`
+export const ButtonWrapper = styled.TouchableOpacity`
   align-items: center;
   background-color: #ecedf2;
   border-radius: 10px;
@@ -120,5 +119,6 @@ export const ButtonWrapper = styled.View`
 
 export const StyledButton = styled.Text`
   font-size: 15px;
+
   color: #850000;
 `;

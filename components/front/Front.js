@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useEffect} from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -11,8 +11,7 @@ import {
 import Icon from 'react-native-vector-icons/Entypo';
 import { signin } from '../firebase';
 import { Alert } from 'react-native';
-import { validateEmail, removeWhitespace } from '../utils';
-
+import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
 
 import {
   HeadTitle,
@@ -35,39 +34,39 @@ import {
   ErrorText,
 } from './FrontStyle';
 
-
-
-
 const Front = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSelected, setSelection] = useState(false);
   const refPassword = useRef(null);
- 
 
-
-  const _handleEmailChange = email => {
+  const _handleEmailChange = (email) => {
     const changedEmail = removeWhitespace(email);
     setEmail(changedEmail);
-    setErrorMessage(      
-      validateEmail(changedEmail) ? "" : '이메일을 형식을 확인하세요'
-    );
+    if (validateEmail(changedEmail)) {
+      setErrorMessage(
+        validateEmailDomain(changedEmail)
+          ? ''
+          : '학교 도메인 이메일을 사용해주세요'
+      );
+    } else {
+      setErrorMessage('이메일 형식을 확인하세요');
+    }
   };
 
-  const _handlePasswordChange = password => {
+  const _handlePasswordChange = (password) => {
     setPassword(removeWhitespace(password));
   };
 
   const _handleSigninBtnPress = async () => {
     try {
       const user = await signin({ email, password });
-      navigation.navigate('Main', {user});
+      navigation.navigate('Main', { user });
     } catch (e) {
       Alert.alert('Signin Error', e.message);
     }
   };
-
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -82,14 +81,12 @@ const Front = ({ navigation }) => {
             </Titles>
           </Separate>
         </TitleWrapper>
-
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 1.6 }}
         >
-      
           <TextArea>
-            <TextWrapper>    
+            <TextWrapper>
               <InputWrapper>
                 <Input
                   label="Email"
@@ -97,11 +94,11 @@ const Front = ({ navigation }) => {
                   returnKeyType="next"
                   value={email}
                   onChangeText={_handleEmailChange}
-                  onSubmitEditing={() => refPassword.current.focus()}    
-                  />  
+                  onSubmitEditing={() => refPassword.current.focus()}
+                />
               </InputWrapper>
             </TextWrapper>
-            <TextWrapper>       
+            <TextWrapper>
               <InputWrapper>
                 <Input
                   ref={refPassword}
@@ -112,6 +109,7 @@ const Front = ({ navigation }) => {
                   onChangeText={_handlePasswordChange}
                   isPassword={true}
                   onSubmitEditing={_handleSigninBtnPress}
+                  secureTextEntry={true}
                 />
               </InputWrapper>
             </TextWrapper>
@@ -132,23 +130,20 @@ const Front = ({ navigation }) => {
             <ErrorText>{errorMessage}</ErrorText>
           </TextArea>
         </KeyboardAvoidingView>
-      
         <BottomWrapper>
-          <ButtonWrapper>
-            <StyledButton title="Sign in" onPress={_handleSigninBtnPress}>
-              Login
-            </StyledButton>
+          <ButtonWrapper title="Sign in" onPress={_handleSigninBtnPress}>
+            <StyledButton>Login</StyledButton>
           </ButtonWrapper>
-          <ButtonWrapper>
-            <StyledButton title="회원가입" onPress={() => navigation.navigate('Register')}>
-              Register
-            </StyledButton>
+          <ButtonWrapper
+            title="회원가입"
+            onPress={() => navigation.navigate('Register')}
+          >
+            <StyledButton>Register</StyledButton>
           </ButtonWrapper>
         </BottomWrapper>
       </View>
     </TouchableWithoutFeedback>
   );
 };
-
 
 export default Front;

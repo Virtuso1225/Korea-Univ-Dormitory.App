@@ -1,13 +1,19 @@
 import styled from 'styled-components/native';
 
-export const Wrapper = styled.View`
-  align-items: center;
+export const Header = styled.View`
+  flex: 0.7;
+  margin-top: 25%;
+  flex-direction: row;
 `;
 
 export const TitleWrapper = styled.View`
-  flex: 0.7;
-  margin-top: 103px;
-  align-items: center;
+  /* margin-left: 100px; */
+  flex: 2;
+`;
+
+export const IconWrapper = styled.View`
+  flex: 1;
+  margin-left: 30px;
 `;
 
 export const Title = styled.Text`
@@ -45,14 +51,14 @@ export const BottomWrapper = styled.View`
   margin-top: 10px;
 `;
 
-export const ButtonWrapper = styled.View`
+export const ButtonWrapper = styled.TouchableOpacity`
   align-items: center;
   background-color: rgba(133, 0, 0, 0.84);
   border-radius: 10px;
   width: 302px;
   height: 50px;
   justify-content: center;
-  box-shadow: 10px 10px 30px rgba(15, 41, 107, 0.12);
+  box-shadow: 20px 20px 30px rgba(15, 41, 107, 0.12);
 `;
 
 export const StyledButton = styled.Text`
@@ -74,7 +80,6 @@ export const OptionDescription = styled.Text`
   font-size: 14px;
   color: #6a6a6a;
 `;
-
 
 export const OptionButton = styled.Text`
   font-size: 15px;
