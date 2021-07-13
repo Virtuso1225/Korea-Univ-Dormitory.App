@@ -8,9 +8,19 @@ export const TitleWrapper = styled.View`
 
 export const HeadTitle = styled.Text`
   margin-top: 89px;
-  padding-bottom: 10px;
   font-size: 58px;
   color: rgba(133, 0, 0, 1);
+`;
+
+export const Separate = styled.View`
+  flex-direction: row;
+  align-items: center;
+  margin-top: 10px;
+`;
+
+export const Titles = styled.View`
+  margin-left: 5px;
+  align-items: center;
 `;
 
 export const SubTitle = styled.Text`
@@ -23,8 +33,12 @@ export const EngSub = styled.Text`
   color: rgba(133, 0, 0, 1);
 `;
 
+export const Logo = styled.Image`
+  width: 27px;
+  height: 35px;
+`;
+
 export const TextArea = styled.View`
-  flex: 1.5;
   align-self: center;
 `;
 
@@ -44,7 +58,8 @@ export const Input = styled.TextInput`
   font-size: 19px;
   margin-left: 15px;
   padding-left: 4px;
-  min-width: 80px;
+  width: 300px;
+  height: 50px;
 `;
 
 export const CheckWrapper = styled.View`

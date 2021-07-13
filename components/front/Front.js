@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Text,
   View,
   StyleSheet,
   TouchableOpacity,
@@ -9,14 +8,13 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import Icon from 'react-native-vector-icons/Entypo';
 
 import {
   HeadTitle,
   SubTitle,
   TitleWrapper,
-  // InputWrapper,
+  Logo,
   Input,
   ButtonWrapper,
   StyledButton,
@@ -27,22 +25,29 @@ import {
   TextArea,
   TextWrapper,
   EngSub,
+  Separate,
+  Titles,
 } from './FrontStyle';
 
 const Front = ({ navigation }) => {
   const [isSelected, setSelection] = useState(false);
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'iso' ? 'padding' : 'height'}
-      style={{ flex: 1 }}
-    >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={{ flex: 1 }}>
-          <TitleWrapper>
-            <HeadTitle>안암학사</HeadTitle>
-            <SubTitle>고려대학교</SubTitle>
-            <EngSub>KOREA UNIVERSITY</EngSub>
-          </TitleWrapper>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={{ flex: 1 }}>
+        <TitleWrapper>
+          <HeadTitle>안암학사</HeadTitle>
+          <Separate>
+            <Logo source={require('../../assets/crimson2positive.png')} />
+            <Titles>
+              <SubTitle>고려대학교</SubTitle>
+              <EngSub>KOREA UNIVERSITY</EngSub>
+            </Titles>
+          </Separate>
+        </TitleWrapper>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{ flex: 1.6 }}
+        >
           <TextArea>
             <TextWrapper>
               <Input placeholder="Email" />
@@ -65,21 +70,21 @@ const Front = ({ navigation }) => {
               <Description>Keep me logged in</Description>
             </CheckWrapper>
           </TextArea>
-          <BottomWrapper>
-            <ButtonWrapper>
-              <StyledButton onPress={() => navigation.navigate('Login')}>
-                Login
-              </StyledButton>
-            </ButtonWrapper>
-            <ButtonWrapper>
-              <StyledButton onPress={() => navigation.navigate('Register')}>
-                Register
-              </StyledButton>
-            </ButtonWrapper>
-          </BottomWrapper>
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+        </KeyboardAvoidingView>
+        <BottomWrapper>
+          <ButtonWrapper>
+            <StyledButton onPress={() => navigation.navigate('Login')}>
+              Login
+            </StyledButton>
+          </ButtonWrapper>
+          <ButtonWrapper>
+            <StyledButton onPress={() => navigation.navigate('Register')}>
+              Register
+            </StyledButton>
+          </ButtonWrapper>
+        </BottomWrapper>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
