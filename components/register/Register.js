@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import {
   Input,
-  InputContent,
   InputWrapper,
   SubWrapper,
-  Wrapper,
+  BottomWrapper,
   ButtonWrapper,
   StyledButton,
+  TitleWrapper,
+  Title,
+  OptionWrapper,
+  OptionDescription,
+  Option,
 } from './RegisterStyle';
 
 export class Register extends Component {
@@ -17,36 +21,58 @@ export class Register extends Component {
       password: '',
       username: '',
       dorm: '',
+      room: '',
     };
   }
   render() {
     return (
-      <Wrapper>
+      <>
+        <TitleWrapper>
+          <Title>회원가입</Title>
+        </TitleWrapper>
         <SubWrapper>
           <InputWrapper>
-            <InputContent>user ID(학번)</InputContent>
-            <Input onChnageText={(userId) => this.setState({ userId })} />
+            <Input
+              placeholder="Email"
+              onChnageText={(userId) => this.setState({ userId })}
+            />
           </InputWrapper>
           <InputWrapper>
-            <InputContent>password</InputContent>
             <Input
+              placeholder="Password"
               secureTextEntry={true}
               onChnageText={(password) => this.setState({ password })}
             />
           </InputWrapper>
           <InputWrapper>
-            <InputContent>이름</InputContent>
-            <Input onChnageText={(username) => this.setState({ username })} />
+            <Input
+              placeholder="이름"
+              onChnageText={(username) => this.setState({ username })}
+            />
           </InputWrapper>
           <InputWrapper>
-            <InputContent>호실</InputContent>
-            <Input onChnageText={(dorm) => this.setState({ dorm })} />
+            <Input
+              placeholder="소속 동"
+              onChnageText={(dorm) => this.setState({ dorm })}
+            />
+          </InputWrapper>
+          <InputWrapper>
+            <Input
+              placeholder="호실"
+              onChnageText={(room) => this.setState({ room })}
+            />
           </InputWrapper>
         </SubWrapper>
-        <ButtonWrapper>
-          <StyledButton>Sign up</StyledButton>
-        </ButtonWrapper>
-      </Wrapper>
+        <BottomWrapper>
+          <ButtonWrapper>
+            <StyledButton>Sign up</StyledButton>
+          </ButtonWrapper>
+          <OptionWrapper>
+            <OptionDescription>Already have an account?</OptionDescription>
+            <Option>Login</Option>
+          </OptionWrapper>
+        </BottomWrapper>
+      </>
     );
   }
 }
