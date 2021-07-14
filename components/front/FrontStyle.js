@@ -58,10 +58,10 @@ export const TextWrapper = styled.View`
   align-self: center;
   padding: 3px 10px 3px 10px;
   margin-top: 29px;
-  min-width: 301px;
+  max-width: 301px;
   height: 54px;
   border-radius: 10px;
-  box-shadow: 2px 2px 5px rgba(15, 41, 107, 0.22);
+  box-shadow: 2px 2px 5px rgba(15, 41, 107, 0.15);
   background-color: #ecedf2;
 `;
 
@@ -114,7 +114,7 @@ export const ButtonWrapper = styled.TouchableOpacity`
   margin-right: 10px;
   margin-left: 10px;
   justify-content: center;
-  box-shadow: 5px 5px 8px rgba(15, 41, 107, 0.22);
+  box-shadow: 5px 5px 8px rgba(15, 41, 107, 0.15);
 `;
 
 export const StyledButton = styled.Text`

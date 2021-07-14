@@ -70,7 +70,7 @@ const Front = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: '#ecedf2' }}>
         <TitleWrapper>
           <HeadTitle>안암학사</HeadTitle>
           <Separate>
