@@ -15,6 +15,7 @@ import { signup } from '../firebase';
 import { Alert } from 'react-native';
 import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { UserContext, ProgressContext} from '../contexts';
 
 import {
   Input,
@@ -35,6 +36,9 @@ import {
 } from './RegisterStyle';
 
 const Register = ({ navigation }) => {
+  const { setUser } = useContext(UserContext);
+  const { spinner } = useContext(ProgressContext);
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -83,8 +87,9 @@ const Register = ({ navigation }) => {
 
   const _handleSignupBtnPress = async () => {
     try {
+      spinner.start();
       const user = await signup({ name, email, password, dorm, room });
-      navigation.navigate('Main', { user });
+      setUser(user);
     } catch (e) {
       Alert.alert('Signup Error', e.message);
     } finally {
