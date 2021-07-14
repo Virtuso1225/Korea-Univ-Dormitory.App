@@ -94,7 +94,7 @@ const Register = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: '#ecedf2' }}>
         <Header>
           <IconWrapper>
             <Icon
