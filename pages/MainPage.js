@@ -1,25 +1,25 @@
 import React, { useContext } from 'react';
 import { ThemeContext } from 'styled-components/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import Main from '../main/Main';
+import Main from '../components/main/Main';
 
 const Stack = createStackNavigator();
 
-const Main = () => {
+const MainPage = () => {
   const theme = useContext(ThemeContext);
 
   return (
-    <Stack.Navigator      
+    <Stack.Navigator
       screenOptions={{
-      headerTitleAlign: 'center',
-      headerTintColor: theme.text,
-      headerBackTitleVisible: false,
-      cardStyle: { backgroundColor: theme.background },
-    }}
+        headerTitleAlign: 'center',
+        headerTintColor: theme.text,
+        headerBackTitleVisible: false,
+        cardStyle: { backgroundColor: theme.background },
+      }}
     >
       <Stack.Screen name="Main" component={Main} />
     </Stack.Navigator>
   );
 };
 
-export default Main;
+export default MainPage;

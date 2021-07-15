@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator} from "react-native";
+import { ActivityIndicator } from 'react-native';
 import styled from 'styled-components/native';
 
 const Container = styled.View`
@@ -11,7 +11,6 @@ const Container = styled.View`
   justify-content: center;
   background-color: wheat;
 `;
-
 
 const Indicator = styled.ActivityIndicator.attrs(() => ({
   size: 'large',

@@ -1,10 +1,10 @@
 import React from 'react';
 import { StatusBar } from 'react-native';
-import Navigation from './navigation';
-import { UserProvider, ProgressProvider} from './contexts';
+import Navigation from '../pages';
+import { UserProvider, ProgressProvider } from './contexts';
 
 const App = () => {
-  return (    
+  return (
     <ProgressProvider>
       <UserProvider>
         {/* <StatusBar

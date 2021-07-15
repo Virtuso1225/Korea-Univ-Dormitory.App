@@ -12,7 +12,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import { signin } from '../firebase';
 import { Alert } from 'react-native';
 import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
-import { UserContext, ProgressContext} from '../contexts';
+import { UserContext, ProgressContext } from '../contexts';
 
 import {
   HeadTitle,
