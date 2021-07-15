@@ -12,6 +12,7 @@ import Icon from 'react-native-vector-icons/Entypo';
 import { signin } from '../firebase';
 import { Alert } from 'react-native';
 import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
+import { UserContext, ProgressContext} from '../contexts';
 
 import {
   HeadTitle,
@@ -39,6 +40,8 @@ const Front = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSelected, setSelection] = useState(false);
+  const { setUser } = useContext(UserContext);
+  const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);
 
   const _handleEmailChange = (email) => {
@@ -61,10 +64,13 @@ const Front = ({ navigation }) => {
 
   const _handleSigninBtnPress = async () => {
     try {
+      spinner.start();
       const user = await signin({ email, password });
-      navigation.navigate('Main', { user });
+      setUser(user);
     } catch (e) {
       Alert.alert('Signin Error', e.message);
+    } finally {
+      spinner.stop();
     }
   };
 

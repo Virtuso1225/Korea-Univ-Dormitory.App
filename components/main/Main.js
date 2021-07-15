@@ -1,8 +1,7 @@
 // 로그인 기능 구현 test용
-import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
-import Icon from 'react-native-vector-icons/Entypo';
+import React, {useContext} from 'react';
+import {UserContext} from '../contexts'
+import styled from 'styled-components/native';
 
 import {
   HeadTitle,
@@ -18,11 +17,22 @@ import {
   TextArea,
 } from './MainStyle';
 
+const Container = styled.View`
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  background-color: wheat;
+`;
+
 const Main = ({ navigation, route}) => {
+  const {setUser} = useContext(UserContext);
   return (
-    <StyledButton onPress={() => navigation.navigate('Login')}>
-      Sign out
-    </StyledButton>
+    <Container>
+      <StyledButton onPress={() => setUser({})}>
+        Sign out
+      </StyledButton>
+    </Container>
   );
 };    
   export default Main;
