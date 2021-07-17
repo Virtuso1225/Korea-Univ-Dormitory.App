@@ -12,7 +12,7 @@ export const signin = async ({ email, password }) => {
 };
 
 // studentID 추가하기
-export const signup = async ({ email, password, name, dorm, room }) => {
+export const signup = async ({ name, email, password, dorm, room }) => {
   const { user } = await Auth.createUserWithEmailAndPassword(email, password);
   return user;
 };
