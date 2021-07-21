@@ -17,7 +17,11 @@ const MainPage = () => {
     //   cardStyle: { backgroundColor: theme.background },
     // }}
     >
-      <Stack.Screen name="Main" component={Main} />
+      <Stack.Screen
+        name="Main"
+        component={Main}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 };

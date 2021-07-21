@@ -1,83 +1,106 @@
 import styled from 'styled-components/native';
+import { Dimensions } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
+
+export const Container = styled.View`
+  flex: 1;
+  background-color: #f9f7f4;
+  align-items: center;
+`;
 
 export const TitleWrapper = styled.View`
-  display: flex;
-  border: none;
+  align-items: flex-start;
+  margin-top: 30%;
+  /* border: 1px solid black; */
+`;
+
+export const RowWrapper = styled.View`
+  flex-direction: row;
   align-items: center;
-  margin-top: 89px;
+`;
+
+export const ButtonRowWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 30px;
+  padding-right: 20px;
+`;
+
+export const Separation = styled.View`
+  flex-direction: row;
+`;
+
+export const Logo = styled.Image`
+  width: 19px;
+  height: 25px;
 `;
 
 export const HeadTitle = styled.Text`
-  padding-bottom: 10px;
-  font-size: 58px;
-  color: rgba(133, 0, 0, 1);
+  margin-left: 5px;
+  font-size: 30px;
+  color: #850000;
 `;
 
-export const SubTitle = styled.Text`
+export const SubTitle1 = styled.Text`
   font-size: 28px;
-  color: black;
+  color: #850000;
+  font-family: NanumGothicCoding_700Bold;
+  font-weight: bold;
 `;
 
-export const TextArea = styled.View`
-  margin-top: 150px;
-  width: 302px;
-  align-self: center;
+export const SubTitle2 = styled.Text`
+  font-size: 28px;
+  color: #850000;
 `;
 
-export const InputWrapper = styled.View`
-  display: flex;
-  flex-direction: row;
-`;
-
-export const Input = styled.TextInput`
-  font-size: 19px;
-  margin-left: 15px;
-  padding-left: 4px;
-  min-width: 80px;
-`;
-
-export const CheckWrapper = styled.View`
-  display: flex;
-  flex-direction: row;
-  margin-top: 9px;
-  align-items: flex-start;
-`;
-
-export const Check = styled.View`
-  display: flex;
-  background-color: white;
-  width: 25px;
-  height: 25px;
-  border-radius: 5px;
-  margin-right: 11px;
-  align-content: center;
-  justify-content: center;
-`;
-
-export const Description = styled.Text`
-  font-size: 14px;
-`;
-
-export const BottomWrapper = styled.View`
-  display: flex;
-  margin-bottom: 50px;
-  flex-direction: row;
-  align-self: center;
-`;
-
-export const ButtonWrapper = styled.View`
+export const ButtonsContainer = styled.View`
+  width: 324px;
+  margin-top: 25%;
+  /* border: 1px solid black; */
   align-items: center;
-  margin-top: 30px;
-  background-color: lightgray;
-  border-radius: 12px;
-  width: 140px;
-  height: 39px;
-  margin-right: 10px;
-  margin-left: 10px;
+`;
+
+export const DateContainer = styled.View`
+  position: absolute;
+  top: -15px;
+  right: 30px;
+`;
+
+export const DateStyle = styled.Text`
+  font-size: 11px;
+  font-family: NotoSansKR_400Regular;
+  font-weight: 400;
+  color: #484848;
+`;
+
+export const Temperature = styled.Text`
+  color: #484848;
+  font-size: 14px;
+  font-weight: bold;
+  font-family: NotoSansKR_700Bold;
+`;
+export const ButtonWrapper = styled.TouchableOpacity`
+  margin-top: 14%;
+  background-color: #f9f7f4;
+  border-radius: 10px;
+  width: 310px;
+  height: 55px;
   justify-content: center;
 `;
 
 export const StyledButton = styled.Text`
-  font-size: 15px;
+  font-size: 16px;
   color: #850000;
+  font-family: NotoSansKR_700Bold;
+  font-weight: bold;
+  margin-left: 18px;
+`;
+
+export const CharacterContainer = styled.View`
+  position: absolute;
+  top: -43px;
+  left: 0px;
+  z-index: 1;
 `;
