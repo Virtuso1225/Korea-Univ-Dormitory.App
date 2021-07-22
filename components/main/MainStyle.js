@@ -1,7 +1,9 @@
 import styled from 'styled-components/native';
-import { Dimensions } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
+import {
+  responsiveHeight,
+  responsiveWidth,
+  responsiveFontSize,
+} from 'react-native-responsive-dimensions';
 
 export const Container = styled.View`
   flex: 1;
@@ -10,8 +12,9 @@ export const Container = styled.View`
 `;
 
 export const TitleWrapper = styled.View`
+  flex: 1;
   align-items: flex-start;
-  margin-top: 30%;
+  margin-top: ${responsiveHeight(13)}px;
   /* border: 1px solid black; */
 `;
 
@@ -30,6 +33,7 @@ export const ButtonRowWrapper = styled.View`
 
 export const Separation = styled.View`
   flex-direction: row;
+  align-items: center;
 `;
 
 export const Logo = styled.Image`
@@ -39,25 +43,27 @@ export const Logo = styled.Image`
 
 export const HeadTitle = styled.Text`
   margin-left: 5px;
-  font-size: 30px;
+  font-size: 23px;
   color: #850000;
+  font-family: ExtraLight;
 `;
 
 export const SubTitle1 = styled.Text`
-  font-size: 28px;
+  font-size: 23px;
   color: #850000;
-  font-family: NanumGothicCoding_700Bold;
-  font-weight: bold;
+  font-family: Medium;
 `;
 
 export const SubTitle2 = styled.Text`
-  font-size: 28px;
+  font-size: 23px;
   color: #850000;
+  font-family: ExtraLight;
 `;
 
 export const ButtonsContainer = styled.View`
+  flex: 3;
   width: 324px;
-  margin-top: 25%;
+  /* margin-top: 25%; */
   /* border: 1px solid black; */
   align-items: center;
 `;
@@ -65,13 +71,12 @@ export const ButtonsContainer = styled.View`
 export const DateContainer = styled.View`
   position: absolute;
   top: -15px;
-  right: 30px;
+  right: 15px;
 `;
 
 export const DateStyle = styled.Text`
   font-size: 11px;
-  font-family: NotoSansKR_400Regular;
-  font-weight: 400;
+  font-family: ExtraLight;
   color: #484848;
 `;
 
@@ -79,28 +84,29 @@ export const Temperature = styled.Text`
   color: #484848;
   font-size: 14px;
   font-weight: bold;
-  font-family: NotoSansKR_700Bold;
+  font-family: Bold6;
+  margin-top: ${responsiveHeight(0.5)}px;
 `;
 export const ButtonWrapper = styled.TouchableOpacity`
-  margin-top: 14%;
+  margin-top: ${responsiveHeight(5)}px;
   background-color: #f9f7f4;
   border-radius: 10px;
-  width: 310px;
-  height: 55px;
+  width: ${responsiveWidth(83)}px;
+  height: ${responsiveHeight(8)}px;
   justify-content: center;
 `;
 
 export const StyledButton = styled.Text`
   font-size: 16px;
   color: #850000;
-  font-family: NotoSansKR_700Bold;
+  font-family: Bold6;
   font-weight: bold;
   margin-left: 18px;
 `;
 
 export const CharacterContainer = styled.View`
   position: absolute;
-  top: -43px;
+  top: -46px;
   left: 0px;
   z-index: 1;
 `;

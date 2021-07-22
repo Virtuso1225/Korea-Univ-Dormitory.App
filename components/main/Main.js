@@ -21,12 +21,7 @@ import {
   Temperature,
 } from './MainStyle';
 import Icon from 'react-native-vector-icons/AntDesign';
-import {
-  useFonts,
-  NotoSansKR_700Bold,
-  NotoSansKR_400Regular,
-} from '@expo-google-fonts/noto-sans-kr';
-import { NanumGothicCoding_700Bold } from '@expo-google-fonts/nanum-gothic-coding';
+import { useFonts } from '@expo-google-fonts/noto-sans-kr';
 import {
   Megaphone,
   Facility,
@@ -39,9 +34,9 @@ import Apploading from 'expo-app-loading';
 const Main = ({ navigation, route }) => {
   const { setUser } = useContext(UserContext);
   let [fontsLoaded] = useFonts({
-    NotoSansKR_700Bold,
-    NanumGothicCoding_700Bold,
-    NotoSansKR_400Regular,
+    ExtraLight: require('../../fonts/SCDream2.otf'),
+    Medium: require('../../fonts/SCDream5.otf'),
+    Bold6: require('../../fonts/SCDream6.otf'),
   });
   const date = new Date();
   const [month, day, index] = [
@@ -70,7 +65,7 @@ const Main = ({ navigation, route }) => {
           </RowWrapper>
           <RowWrapper>
             <SubTitle1>안암학사</SubTitle1>
-            <SubTitle2>에 환영합니다</SubTitle2>
+            <SubTitle2>에 오신 것을 환영합니다.</SubTitle2>
           </RowWrapper>
         </TitleWrapper>
         <ButtonsContainer>
@@ -91,7 +86,7 @@ const Main = ({ navigation, route }) => {
                     <Megaphone />
                     <StyledButton>공지사항</StyledButton>
                   </Separation>
-                  <Icon name="right" size={10} color="#484848" />
+                  <Icon name="right" size={15} color="#484848" />
                 </ButtonRowWrapper>
               </ButtonWrapper>
             </View>
@@ -104,7 +99,7 @@ const Main = ({ navigation, route }) => {
                     <Facility />
                     <StyledButton>시설이용</StyledButton>
                   </Separation>
-                  <Icon name="right" size={10} color="#484848" />
+                  <Icon name="right" size={15} color="#484848" />
                 </ButtonRowWrapper>
               </ButtonWrapper>
             </View>
@@ -117,7 +112,7 @@ const Main = ({ navigation, route }) => {
                     <Board />
                     <StyledButton>게시판</StyledButton>
                   </Separation>
-                  <Icon name="right" size={10} color="#484848" />
+                  <Icon name="right" size={15} color="#484848" />
                 </ButtonRowWrapper>
               </ButtonWrapper>
             </View>
@@ -130,7 +125,7 @@ const Main = ({ navigation, route }) => {
                     <Mypage />
                     <StyledButton>마이페이지</StyledButton>
                   </Separation>
-                  <Icon name="right" size={10} color="#484848" />
+                  <Icon name="right" size={15} color="#484848" />
                 </ButtonRowWrapper>
               </ButtonWrapper>
             </View>
