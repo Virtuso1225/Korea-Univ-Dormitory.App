@@ -1,5 +1,8 @@
 import styled from 'styled-components/native';
-import { responsiveHeight } from 'react-native-responsive-dimensions';
+import {
+  responsiveHeight,
+  responsiveScreenFontSize,
+} from 'react-native-responsive-dimensions';
 
 export const TitleWrapper = styled.View`
   flex: 2;
@@ -8,7 +11,7 @@ export const TitleWrapper = styled.View`
 `;
 
 export const HeadTitle = styled.Text`
-  font-size: 46px;
+  font-size: ${responsiveScreenFontSize(4.95)}px;
   color: rgba(133, 0, 0, 1);
   font-family: Light;
 `;
@@ -25,7 +28,7 @@ export const Titles = styled.View`
 `;
 
 export const SubTitle = styled.Text`
-  font-size: 46px;
+  font-size: ${responsiveScreenFontSize(4.95)}px;
   color: rgba(133, 0, 0, 1);
   font-family: ExtraBold;
 `;
@@ -112,15 +115,9 @@ export const BottomWrapper = styled.View`
   flex: 1;
   flex-direction: row;
   align-self: center;
+  margin-top: ${responsiveHeight(5.8)}px;
 `;
 
-export const TopShadow = styled.View`
-  box-shadow: -11px -11px 22px #ffffff; ;
-`;
-
-export const BottomShadow = styled.View`
-  box-shadow: 6px 6px 12px #d4d2cf;
-`;
 export const ButtonWrapper = styled.TouchableOpacity`
   align-items: center;
   background-color: #f9f7f4;

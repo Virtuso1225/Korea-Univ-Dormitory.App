@@ -8,7 +8,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-
+import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { signup } from '../firebase';
@@ -243,7 +243,7 @@ const Register = ({ navigation }) => {
                 ref={refName}
                 label="Name"
                 placeholder="이름"
-                placeholderTextColor="#515151"
+                placeholderTextColor="#8E8E8E"
                 returnKeyType="next"
                 value={name}
                 onChangeText={setName}
@@ -251,14 +251,14 @@ const Register = ({ navigation }) => {
                 onBlur={() => setName(name.trim())}
                 maxLength={12}
               />
-              <ErrorText>{nameError}</ErrorText>
+              {/* <ErrorText>{nameError}</ErrorText> */}
             </InputWrapper>
             <RowWrapper>
               <Input
                 ref={refId}
                 label="Id"
                 placeholder="아이디 (KUPID 계정과 동일)"
-                placeholderTextColor="#515151"
+                placeholderTextColor="#8E8E8E"
                 returnKeyType="next"
                 value={id}
                 onChangeText={setId}
@@ -273,7 +273,7 @@ const Register = ({ navigation }) => {
                 ref={refPassword}
                 label="Password"
                 placeholder="비밀번호"
-                placeholderTextColor="#515151"
+                placeholderTextColor="#8E8E8E"
                 returnKeyType="next"
                 value={password}
                 onChangeText={setPassword}
@@ -282,14 +282,14 @@ const Register = ({ navigation }) => {
                 onBlur={() => setPassword(removeWhitespace(password))}
                 secureTextEntry
               />
-              <ErrorText>{passwordError}</ErrorText>
+              {/* <ErrorText>{passwordError}</ErrorText> */}
             </InputWrapper>
             <InputWrapper>
               <Input
                 ref={refCheck}
                 label="PasswordCheck"
                 placeholder="비밀번호 확인"
-                placeholderTextColor="#515151"
+                placeholderTextColor="#8E8E8E"
                 returnKeyType="next"
                 value={check}
                 onChangeText={setCheck}
@@ -297,7 +297,7 @@ const Register = ({ navigation }) => {
                 onBlur={() => setCheck(removeWhitespace(check))}
                 secureTextEntry
               />
-              <ErrorText>{checkError}</ErrorText>
+              {/* <ErrorText>{checkError}</ErrorText> */}
             </InputWrapper>
             <RowWrapper>
               <SelectDropdown
@@ -327,27 +327,27 @@ const Register = ({ navigation }) => {
                 ref={refRoom}
                 label="Room"
                 placeholder="소속 호실 ex) 245 - 1"
-                placeholderTextColor="#515151"
+                placeholderTextColor="#8E8E8E"
                 returnKeyType="next"
                 value={room}
                 onChangeText={setRoom}
                 onSubmitEditing={() => refNickname.current.focus()}
               />
             </RowWrapper>
-            <ErrorText>{roomError}</ErrorText>
+            {/* <ErrorText>{roomError}</ErrorText> */}
             <InputWrapper>
               <Input
                 ref={refNickname}
                 label="Nickname"
                 placeholder="닉네임"
-                placeholderTextColor="#515151"
+                placeholderTextColor="#8E8E8E"
                 returnKeyType="done"
                 value={nickname}
                 onChangeText={setNickname}
                 onBlur={() => setNickname(removeWhitespace(nickname))}
                 onSubmitEditing={_handleSignupBtnPress}
               />
-              <ErrorText>{nicknameError}</ErrorText>
+              {/* <ErrorText>{nicknameError}</ErrorText> */}
             </InputWrapper>
           </SubWrapper>
         </KeyboardAvoidingView>
@@ -401,10 +401,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f7f4',
   },
   buttonTextStyle: {
-    fontSize: 12,
+    fontSize: responsiveScreenFontSize(1.5),
     width: 143,
     textAlign: 'left',
-    color: '#515151',
+    color: '#8E8E8E',
+    fontFamily: 'Medium',
   },
   dropdownStyle: {
     backgroundColor: '#f9f7f4',
@@ -416,7 +417,7 @@ const styles = StyleSheet.create({
   },
   rowTextStyle: {
     fontSize: 12,
-    color: '#515151',
+    color: '#8E8E8E',
   },
 });
 
