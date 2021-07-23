@@ -1,21 +1,22 @@
 import styled from 'styled-components/native';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 export const TitleWrapper = styled.View`
   flex: 2;
   border: none;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 export const HeadTitle = styled.Text`
-  margin-top: 89px;
-  font-size: 58px;
+  font-size: 46px;
   color: rgba(133, 0, 0, 1);
+  font-family: Light;
 `;
 
 export const Separate = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-top: 10px;
+  margin-top: ${responsiveHeight(17)}px;
 `;
 
 export const Titles = styled.View`
@@ -24,13 +25,16 @@ export const Titles = styled.View`
 `;
 
 export const SubTitle = styled.Text`
-  font-size: 28px;
+  font-size: 46px;
   color: rgba(133, 0, 0, 1);
+  font-family: ExtraBold;
 `;
 
-export const EngSub = styled.Text`
-  font-size: 10px;
+export const Greeting = styled.Text`
+  font-size: 15px;
   color: rgba(133, 0, 0, 1);
+  font-family: Regular;
+  margin-top: 8px;
 `;
 
 export const Logo = styled.Image`
@@ -60,9 +64,6 @@ export const TextWrapper = styled.View`
   margin-top: 29px;
   max-width: 301px;
   height: 54px;
-  /* border-radius: 10px; */
-  /* box-shadow: 2px 2px 5px #d4d2cf; */
-  /* background-color: #f9f7f4; */
   border-bottom-width: 1.5px;
   border-bottom-color: rgba(133, 0, 0, 0.15);
 `;
@@ -74,11 +75,11 @@ export const InputWrapper = styled.View`
 `;
 
 export const Input = styled.TextInput`
-  font-size: 19px;
-  /* margin-left: 10px; */
+  font-size: 14px;
   padding-left: 10px;
   width: 300px;
   height: 50px;
+  font-family: Regular;
 `;
 
 export const EyeIconWrapper = styled.View``;
@@ -96,14 +97,15 @@ export const Check = styled.View`
   width: 29px;
   height: 29px;
   border: 1.5px solid rgba(133, 0, 0, 0.15);
-  border-radius: 5px;
+  border-radius: 8px;
   margin-right: 11px;
   align-content: center;
   justify-content: center;
 `;
 
 export const Description = styled.Text`
-  font-size: 14px;
+  font-size: 13px;
+  font-family: Medium;
 `;
 
 export const BottomWrapper = styled.View`
@@ -134,4 +136,5 @@ export const ButtonWrapper = styled.TouchableOpacity`
 export const StyledButton = styled.Text`
   font-size: 15px;
   color: #850000;
+  font-family: Bold6;
 `;

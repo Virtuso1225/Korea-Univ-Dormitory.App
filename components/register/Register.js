@@ -1,22 +1,17 @@
-import React, {
-  Component,
-  useContext,
-  useState,
-  useRef,
-  useEffect,
-} from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import {
-  Text,
   Keyboard,
-  TouchableOpacity,
   StyleSheet,
   View,
   TouchableWithoutFeedback,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from 'react-native';
-import { signup, signout } from '../firebase';
-import { Alert } from 'react-native';
+
+import SelectDropdown from 'react-native-select-dropdown';
+import Icon from 'react-native-vector-icons/AntDesign';
+import { signup } from '../firebase';
 import {
   validateEmail,
   removeWhitespace,
@@ -24,8 +19,6 @@ import {
   validatePassword,
   validateRoom,
 } from '../utils';
-import SelectDropdown from 'react-native-select-dropdown';
-import Icon from 'react-native-vector-icons/AntDesign';
 import { UserContext, ProgressContext } from '../contexts';
 
 import {
@@ -35,13 +28,11 @@ import {
   BottomWrapper,
   ButtonWrapper,
   StyledButton,
-  TitleWrapper,
   Title,
   OptionWrapper,
   OptionDescription,
   OptionButton,
   ErrorText,
-  IconWrapper,
   Header,
   RowWrapper,
   Input2,
@@ -56,7 +47,7 @@ const Register = ({ navigation }) => {
     '프런티어관(신관-여자동)',
   ];
 
-  const { setUser } = useContext(UserContext);
+  // const { setUser } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
 
   const [name, setName] = useState('');
@@ -69,13 +60,13 @@ const Register = ({ navigation }) => {
   const [nickname, setNickname] = useState('');
 
   const [nameError, setNameError] = useState('');
-  const [idError, setIdError] = useState('');
+  // const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [checkError, setCheckError] = useState('');
-  const [dormError, setDormError] = useState('');
+  // const [dormError, setDormError] = useState('');
   const [roomError, setRoomError] = useState('');
   const [nicknameError, setNicknameError] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  // const [errorMessage, setErrorMessage] = useState('');
 
   const [disabled, setDisabled] = useState(true);
   const refName = useRef(null);
@@ -143,7 +134,7 @@ const Register = ({ navigation }) => {
         setPasswordError('');
       }
 
-      if (check && password != check) {
+      if (check && password !== check) {
         setCheckError('* 입력 값이 일치하지 않습니다.');
         // setNameError('');
         // setPasswordError('');
@@ -180,7 +171,7 @@ const Register = ({ navigation }) => {
   }, [name, password, check, room, nickname]);
 
   useEffect(() => {
-    setEmail(id + '@korea.ac.kr');
+    setEmail(`${id}@korea.ac.kr`);
   }, [id]);
 
   const _handleSignupBtnPress = async () => {
@@ -229,24 +220,22 @@ const Register = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={{ flex: 1, backgroundColor: '#f9f7f4' }}>
+      <View
+        style={{ flex: 1, backgroundColor: '#f9f7f4', alignItems: 'center' }}
+      >
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{ flex: 4 }}
         >
           <Header>
-            <IconWrapper>
-              <Icon
-                name="left"
-                size={25}
-                color="#000000"
-                title="Login"
-                onPress={() => navigation.navigate('Login')}
-              />
-            </IconWrapper>
-            <TitleWrapper>
-              <Title>회원가입</Title>
-            </TitleWrapper>
+            <Icon
+              name="left"
+              size={25}
+              color="#707070"
+              title="Login"
+              onPress={() => navigation.navigate('Login')}
+            />
+            <Title>회원가입</Title>
           </Header>
           <SubWrapper>
             <InputWrapper>
@@ -288,10 +277,10 @@ const Register = ({ navigation }) => {
                 returnKeyType="next"
                 value={password}
                 onChangeText={setPassword}
-                isPassword={true}
+                isPassword
                 onSubmitEditing={() => refCheck.current.focus()}
                 onBlur={() => setPassword(removeWhitespace(password))}
-                secureTextEntry={true}
+                secureTextEntry
               />
               <ErrorText>{passwordError}</ErrorText>
             </InputWrapper>
@@ -304,9 +293,9 @@ const Register = ({ navigation }) => {
                 returnKeyType="next"
                 value={check}
                 onChangeText={setCheck}
-                isPassword={true}
+                isPassword
                 onBlur={() => setCheck(removeWhitespace(check))}
-                secureTextEntry={true}
+                secureTextEntry
               />
               <ErrorText>{checkError}</ErrorText>
             </InputWrapper>
@@ -320,23 +309,19 @@ const Register = ({ navigation }) => {
                   console.log(selectedItem, index);
                   console.log(dorm);
                 }}
-                defaultButtonText={'소속 동'}
+                defaultButtonText="소속 동"
                 dropdownStyle={styles.dropdownStyle}
-                rowTextStyle={styles.rowStyle}
+                rowStyle={styles.rowStyle}
                 rowTextStyle={styles.rowTextStyle}
-                renderDropdownIcon={() => {
-                  return <Icon name="down" size={10} color="#9F9F9F" />;
-                }}
-                dropDownIconPosition={'right'}
-                buttonTextAfterSelection={(selectedItem, index) => {
-                  () => {
-                    setDorm(selectedItem);
-                  };
+                renderDropdownIcon={() => (
+                  <Icon name="down" size={10} color="#9F9F9F" />
+                )}
+                dropDownIconPosition="right"
+                buttonTextAfterSelection={(selectedItem) => {
+                  setDorm(selectedItem);
                   return selectedItem;
                 }}
-                rowTextForSelection={(item, index) => {
-                  return item;
-                }}
+                rowTextForSelection={(item) => item}
               />
               <Input2
                 ref={refRoom}

@@ -1,7 +1,7 @@
+import { Alert } from 'react-native';
 import firebase from 'firebase';
 import config from '../firebase.json';
 import 'firebase/firestore';
-import { Alert } from 'react-native';
 
 const app = !firebase.apps.length
   ? firebase.initializeApp(config)
@@ -30,18 +30,16 @@ export const signup = async ({
   room,
   nickname,
 }) => {
-  const { user } = await Auth.createUserWithEmailAndPassword(email, password);
-
   console.log('dorm: ', dorm);
 
   const currentUser = {
     id: Auth.currentUser.uid,
-    email: email,
-    name: name,
-    dorm: dorm,
-    room: room,
-    password: password,
-    nickname: nickname,
+    email,
+    name,
+    dorm,
+    room,
+    password,
+    nickname,
     emailVerified: Auth.currentUser.emailVerified,
   };
 
@@ -56,19 +54,19 @@ export const signup = async ({
       room: currentUser.room,
       password: currentUser.password,
     })
-    .then(function () {
+    .then(() => {
       console.log('firestore()DB 유저 추가 성공');
     })
-    .catch(() => {
+    .catch((error) => {
       console.error('firestore()DB 유저 추가 실패', error);
     });
 
-  //이메일 인증
-  let curUser = Auth.currentUser;
+  // 이메일 인증
+  const curUser = Auth.currentUser;
 
   curUser
     .sendEmailVerification()
-    .then(function () {
+    .then(() => {
       console.log('이메일 전송');
     })
     .catch('Email not sent!');
@@ -79,7 +77,7 @@ export const signup = async ({
 export const getCurrentUser = () => {
   const { uid } = Auth.currentUser;
   console.log('uid: ', uid);
-  var docRef = fs.collection('users').doc(uid);
+  const docRef = fs.collection('users').doc(uid);
 
   docRef
     .get()
@@ -87,20 +85,19 @@ export const getCurrentUser = () => {
       if (doc.exists) {
         console.log('Document data:', doc.data());
 
-        const name = doc.data()['name'];
-        const email = doc.data()['email'];
-        const dorm = doc.data()['dorm'];
-        const room = doc.data()['room'];
-        const password = doc.data()['password'];
+        const { name } = doc.data();
+        // const { email } = doc.data();
+        // const { dorm } = doc.data();
+        // const { room } = doc.data();
+        // const { password } = doc.data();
 
         // console.log(dorm);
         console.log(name);
         // return { name, email, dorm, room, password};
         return doc.data();
-      } else {
-        // doc.data() will be undefined in this case
-        console.log('No such document!');
       }
+      // doc.data() will be undefined in this case
+      return console.log('No such document!');
     })
     .catch((error) => {
       console.log('Error getting document:', error);

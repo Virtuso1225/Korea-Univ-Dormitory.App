@@ -1,8 +1,8 @@
 // 로그인 기능 구현 test용
 import React, { useContext } from 'react';
-import { UserContext } from '../contexts';
 import { StyleSheet, View } from 'react-native';
-import { signout } from '../firebase';
+import Icon from 'react-native-vector-icons/AntDesign';
+import { UserContext } from '../contexts';
 import {
   Container,
   HeadTitle,
@@ -21,8 +21,6 @@ import {
   DateStyle,
   Temperature,
 } from './MainStyle';
-import Icon from 'react-native-vector-icons/AntDesign';
-import { useFonts } from '@expo-google-fonts/noto-sans-kr';
 import {
   Megaphone,
   Facility,
@@ -30,15 +28,9 @@ import {
   Mypage,
   Character,
 } from '../../assets/Svgs';
-import Apploading from 'expo-app-loading';
 
 const Main = ({ navigation, route }) => {
   const { setUser } = useContext(UserContext);
-  let [fontsLoaded] = useFonts({
-    ExtraLight: require('../../fonts/SCDream2.otf'),
-    Medium: require('../../fonts/SCDream5.otf'),
-    Bold6: require('../../fonts/SCDream6.otf'),
-  });
   const date = new Date();
   const [month, day, index] = [
     date.getMonth() + 1,
@@ -54,87 +46,83 @@ const Main = ({ navigation, route }) => {
     '토요일',
     '일요일',
   ];
-  if (!fontsLoaded) {
-    return <Apploading />;
-  } else {
-    return (
-      <Container>
-        <TitleWrapper>
-          <RowWrapper>
-            <Logo source={require('../../assets/crimson2positive.png')} />
-            <HeadTitle>고려대학교</HeadTitle>
-          </RowWrapper>
-          <RowWrapper>
-            <SubTitle1>안암학사</SubTitle1>
-            <SubTitle2>에 오신 것을 환영합니다.</SubTitle2>
-          </RowWrapper>
-        </TitleWrapper>
-        <ButtonsContainer>
-          <CharacterContainer>
-            <Character />
-          </CharacterContainer>
-          <DateContainer>
-            <DateStyle>
-              {month}월 {day}일 {week[index]}
-            </DateStyle>
-            <Temperature>발열체크 하셨나요?</Temperature>
-          </DateContainer>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper>
-                <ButtonRowWrapper>
-                  <Separation>
-                    <Megaphone />
-                    <StyledButton>공지사항</StyledButton>
-                  </Separation>
-                  <Icon name="right" size={15} color="#484848" />
-                </ButtonRowWrapper>
-              </ButtonWrapper>
-            </View>
+  return (
+    <Container>
+      <TitleWrapper>
+        <RowWrapper>
+          <Logo source={require('../../assets/crimson2positive.png')} />
+          <HeadTitle>고려대학교</HeadTitle>
+        </RowWrapper>
+        <RowWrapper>
+          <SubTitle1>안암학사</SubTitle1>
+          <SubTitle2>에 오신 것을 환영합니다.</SubTitle2>
+        </RowWrapper>
+      </TitleWrapper>
+      <ButtonsContainer>
+        <CharacterContainer>
+          <Character />
+        </CharacterContainer>
+        <DateContainer>
+          <DateStyle>
+            {month}월{day}일{week[index]}
+          </DateStyle>
+          <Temperature>발열체크 하셨나요?</Temperature>
+        </DateContainer>
+        <View style={styles.topShadow}>
+          <View style={styles.bottomShadow}>
+            <ButtonWrapper>
+              <ButtonRowWrapper>
+                <Separation>
+                  <Megaphone />
+                  <StyledButton>공지사항</StyledButton>
+                </Separation>
+                <Icon name="right" size={15} color="#484848" />
+              </ButtonRowWrapper>
+            </ButtonWrapper>
           </View>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper>
-                <ButtonRowWrapper>
-                  <Separation>
-                    <Facility />
-                    <StyledButton>시설이용</StyledButton>
-                  </Separation>
-                  <Icon name="right" size={15} color="#484848" />
-                </ButtonRowWrapper>
-              </ButtonWrapper>
-            </View>
+        </View>
+        <View style={styles.topShadow}>
+          <View style={styles.bottomShadow}>
+            <ButtonWrapper>
+              <ButtonRowWrapper>
+                <Separation>
+                  <Facility />
+                  <StyledButton>시설이용</StyledButton>
+                </Separation>
+                <Icon name="right" size={15} color="#484848" />
+              </ButtonRowWrapper>
+            </ButtonWrapper>
           </View>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper>
-                <ButtonRowWrapper>
-                  <Separation>
-                    <Board />
-                    <StyledButton>게시판</StyledButton>
-                  </Separation>
-                  <Icon name="right" size={15} color="#484848" />
-                </ButtonRowWrapper>
-              </ButtonWrapper>
-            </View>
+        </View>
+        <View style={styles.topShadow}>
+          <View style={styles.bottomShadow}>
+            <ButtonWrapper>
+              <ButtonRowWrapper>
+                <Separation>
+                  <Board />
+                  <StyledButton>게시판</StyledButton>
+                </Separation>
+                <Icon name="right" size={15} color="#484848" />
+              </ButtonRowWrapper>
+            </ButtonWrapper>
           </View>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper>
-                <ButtonRowWrapper>
-                  <Separation>
-                    <Mypage />
-                    <StyledButton>마이페이지</StyledButton>
-                  </Separation>
-                  <Icon name="right" size={15} color="#484848" />
-                </ButtonRowWrapper>
-              </ButtonWrapper>
-            </View>
+        </View>
+        <View style={styles.topShadow}>
+          <View style={styles.bottomShadow}>
+            <ButtonWrapper>
+              <ButtonRowWrapper>
+                <Separation>
+                  <Mypage />
+                  <StyledButton>마이페이지</StyledButton>
+                </Separation>
+                <Icon name="right" size={15} color="#484848" />
+              </ButtonRowWrapper>
+            </ButtonWrapper>
           </View>
-        </ButtonsContainer>
-      </Container>
-    );
-  }
+        </View>
+      </ButtonsContainer>
+    </Container>
+  );
 };
 
 const styles = StyleSheet.create({

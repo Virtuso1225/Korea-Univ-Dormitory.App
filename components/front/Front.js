@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef, useEffect } from 'react';
+import React, { useContext, useState, useRef } from 'react';
 import {
   View,
   StyleSheet,
@@ -7,10 +7,11 @@ import {
   Platform,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import { signin } from '../firebase';
-import { Alert } from 'react-native';
+
 import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
 import { UserContext, ProgressContext } from '../contexts';
 
@@ -18,7 +19,6 @@ import {
   HeadTitle,
   SubTitle,
   TitleWrapper,
-  Logo,
   Input,
   ButtonWrapper,
   StyledButton,
@@ -28,15 +28,13 @@ import {
   Description,
   TextArea,
   TextWrapper,
-  EngSub,
+  Greeting,
   Separate,
   Titles,
   InputWrapper,
   ErrorText,
-  TopShadow,
-  BottomShadow,
-  EyeIconWrapper,
 } from './FrontStyle';
+import { CrimsonLogo, UnderLine } from '../../assets/Svgs';
 
 const Front = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -78,16 +76,19 @@ const Front = ({ navigation }) => {
   };
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={{ flex: 1, backgroundColor: '#F9F7F4' }}>
+      <View
+        style={{ flex: 1, backgroundColor: '#F9F7F4', alignItems: 'center' }}
+      >
         <TitleWrapper>
-          <HeadTitle>안암학사</HeadTitle>
           <Separate>
-            <Logo source={require('../../assets/crimson2positive.png')} />
+            <CrimsonLogo />
             <Titles>
-              <SubTitle>고려대학교</SubTitle>
-              <EngSub>KOREA UNIVERSITY</EngSub>
+              <HeadTitle>고려대학교</HeadTitle>
             </Titles>
           </Separate>
+          <SubTitle>안암학사</SubTitle>
+          <UnderLine />
+          <Greeting>고려대학교 안암학사에 오신 것을 환영합니다.</Greeting>
         </TitleWrapper>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -99,6 +100,7 @@ const Front = ({ navigation }) => {
                 <Input
                   label="Email"
                   placeholder="user ID(KUPID 계정)"
+                  placeholderTextColor="#707070"
                   returnKeyType="next"
                   value={email}
                   onChangeText={_handleEmailChange}
@@ -112,19 +114,24 @@ const Front = ({ navigation }) => {
                   ref={refPassword}
                   label="Password"
                   placeholder="Password"
+                  placeholderTextColor="#707070"
                   returnKeyType="done"
                   value={password}
                   onChangeText={_handlePasswordChange}
-                  isPassword={true}
+                  isPassword
                   onSubmitEditing={_handleSigninBtnPress}
-                  secureTextEntry={true}
+                  secureTextEntry
                 />
               </InputWrapper>
             </TextWrapper>
             <CheckWrapper>
               <TouchableOpacity
                 onPress={() => {
-                  isSelected ? setSelection(false) : setSelection(true);
+                  if (isSelected) {
+                    setSelection(false);
+                  } else {
+                    setSelection(true);
+                  }
                 }}
               >
                 <Check>

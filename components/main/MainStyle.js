@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 import {
   responsiveHeight,
   responsiveWidth,
-  responsiveFontSize,
 } from 'react-native-responsive-dimensions';
 
 export const Container = styled.View`

@@ -1,34 +1,29 @@
 import styled from 'styled-components/native';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 export const Header = styled.View`
   flex: 0.7;
   margin-top: 25%;
-  flex-direction: row;
 `;
 
-export const TitleWrapper = styled.View`
-  /* margin-left: 100px; */
-  flex: 2;
-`;
-
-export const IconWrapper = styled.View`
-  flex: 1;
-  margin-left: 30px;
-`;
+export const IconWrapper = styled.View``;
 
 export const Title = styled.Text`
-  font-size: 29px;
+  font-size: 28px;
   color: #850000;
+  font-family: ExtraBold;
+  margin-top: ${responsiveHeight(3)}px;
 `;
 
 export const SubWrapper = styled.View`
-  flex: 4;
+  flex: 3;
   align-self: center;
+  margin-top: ${responsiveHeight(5)}px;
 `;
 
 export const InputWrapper = styled.View`
   align-self: center;
-  margin-top: 20px;
+  margin-top: ${responsiveHeight(1)}px;
   width: 301px;
   height: 39px;
   justify-content: center;
@@ -38,7 +33,7 @@ export const InputWrapper = styled.View`
 
 export const RowWrapper = styled.View`
   align-self: center;
-  margin-top: 20px;
+  margin-top: ${responsiveHeight(1)}px;
   width: 301px;
   height: 39px;
   flex-direction: row;
@@ -70,9 +65,9 @@ export const Input2 = styled.TextInput`
 `;
 
 export const BottomWrapper = styled.View`
-  flex: 1.7;
+  flex: 1.5;
   align-items: center;
-  margin-top: 10px;
+  margin-top: ${responsiveHeight(6)}px;
 `;
 
 export const ButtonWrapper = styled.TouchableOpacity`
