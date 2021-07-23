@@ -10,12 +10,12 @@ const MainPage = () => {
 
   return (
     <Stack.Navigator
-      screenOptions={{
-        headerTitleAlign: 'center',
-        headerTintColor: theme.text,
-        headerBackTitleVisible: false,
-        cardStyle: { backgroundColor: theme.background },
-      }}
+    // screenOptions={{
+    //   headerTitleAlign: 'center',
+    //   headerTintColor: theme.text,
+    //   headerBackTitleVisible: false,
+    //   cardStyle: { backgroundColor: theme.background },
+    // }}
     >
       <Stack.Screen name="Main" component={Main} />
     </Stack.Navigator>

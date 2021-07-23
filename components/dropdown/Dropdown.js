@@ -18,7 +18,6 @@ const Dropdown = ({ dormSelection, setDorm }) => {
       buttonTextStyle={styles.buttonTextStyle}
       onSelect={(selectedItem, index) => {
         console.log(selectedItem, index);
-        setDorm(selectedItem);
       }}
       defaultButtonText={'소속 동'}
       dropdownStyle={styles.dropdownStyle}
