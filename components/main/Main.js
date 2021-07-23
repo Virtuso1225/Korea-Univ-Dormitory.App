@@ -1,7 +1,8 @@
 // 로그인 기능 구현 test용
-import React, {useContext} from 'react';
-import {UserContext} from '../contexts'
+import React, { useContext } from 'react';
+import { UserContext } from '../contexts';
 import styled from 'styled-components/native';
+import { signout } from '../firebase';
 
 import {
   HeadTitle,
@@ -25,15 +26,12 @@ const Container = styled.View`
   background-color: wheat;
 `;
 
-const Main = ({ navigation, route}) => {
-  const {setUser} = useContext(UserContext);
+const Main = ({ navigation, route }) => {
+  const { setUser } = useContext(UserContext);
   return (
     <Container>
-      <StyledButton onPress={() => setUser({})}>
-        Sign out
-      </StyledButton>
+      <StyledButton onPress={() => setUser({})}>Sign out</StyledButton>
     </Container>
   );
-};    
-  export default Main;
-    
+};
+export default Main;
