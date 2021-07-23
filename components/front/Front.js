@@ -76,7 +76,6 @@ const Front = ({ navigation }) => {
       spinner.stop();
     }
   };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View style={{ flex: 1, backgroundColor: '#F9F7F4' }}>

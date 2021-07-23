@@ -133,6 +133,5 @@ export const ButtonWrapper = styled.TouchableOpacity`
 
 export const StyledButton = styled.Text`
   font-size: 15px;
-
   color: #850000;
 `;
