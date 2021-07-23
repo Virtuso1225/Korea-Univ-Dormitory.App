@@ -2,6 +2,7 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../contexts';
 import { StyleSheet, View } from 'react-native';
+import { signout } from '../firebase';
 import {
   Container,
   HeadTitle,
@@ -161,4 +162,5 @@ const styles = StyleSheet.create({
     fontFamily: 'NotoSans_700Bold',
   },
 });
+
 export default Main;
