@@ -1,54 +1,73 @@
 import styled from 'styled-components/native';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 export const Header = styled.View`
   flex: 0.7;
   margin-top: 25%;
-  flex-direction: row;
 `;
 
-export const TitleWrapper = styled.View`
-  /* margin-left: 100px; */
-  flex: 2;
-`;
-
-export const IconWrapper = styled.View`
-  flex: 1;
-  margin-left: 30px;
-`;
+export const IconWrapper = styled.View``;
 
 export const Title = styled.Text`
-  font-size: 29px;
+  font-size: 28px;
   color: #850000;
+  font-family: ExtraBold;
+  margin-top: ${responsiveHeight(3)}px;
 `;
 
 export const SubWrapper = styled.View`
-  flex: 4;
+  flex: 3;
   align-self: center;
+  margin-top: ${responsiveHeight(5)}px;
 `;
 
 export const InputWrapper = styled.View`
   align-self: center;
-  margin-top: 15px;
+  margin-top: ${responsiveHeight(1)}px;
   width: 301px;
-  height: 54px;
-  border-radius: 10px;
-  box-shadow: 2px 2px 5px rgba(15, 41, 107, 0.22);
-  background-color: #ecedf2;
+  height: 39px;
   justify-content: center;
+  /* border-bottom-width: 1px;
+  border-bottom-color: rgba(133, 0, 0, 0.15); */
 `;
 
+export const RowWrapper = styled.View`
+  align-self: center;
+  margin-top: ${responsiveHeight(1)}px;
+  width: 301px;
+  height: 39px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const EmailDescription = styled.Text`
+  margin-left: 6.5px;
+  font-size: 12px;
+`;
 export const Input = styled.TextInput`
-  font-size: 16px;
-  margin-left: 20px;
+  font-size: 12px;
   padding-left: 10px;
-  min-width: 150px;
-  min-height: 25px;
+  min-width: 204px;
+  /* min-width: 150px;
+  min-height: 25px; */
+  height: 20px;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(133, 0, 0, 0.15);
+`;
+
+export const Input2 = styled.TextInput`
+  font-size: 12px;
+  padding-left: 10px;
+  width: 143px;
+  margin-left: 5px;
+  border-bottom-width: 1px;
+  border-bottom-color: rgba(133, 0, 0, 0.15);
 `;
 
 export const BottomWrapper = styled.View`
-  flex: 1.7;
+  flex: 1.5;
   align-items: center;
-  margin-top: 10px;
+  margin-top: ${responsiveHeight(6)}px;
 `;
 
 export const ButtonWrapper = styled.TouchableOpacity`
@@ -58,7 +77,7 @@ export const ButtonWrapper = styled.TouchableOpacity`
   width: 302px;
   height: 50px;
   justify-content: center;
-  box-shadow: 20px 20px 30px rgba(15, 41, 107, 0.12);
+  box-shadow: 1.5px 1.5px 3px #7e0000;
 `;
 
 export const StyledButton = styled.Text`
@@ -96,9 +115,7 @@ export const ErrorText = styled.Text`
   align-items: center;
   align-self: center;
   width: 100%;
-  height: 20px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  line-height: 20px;
+  margin-top: 3.5px;
   color: rgba(133, 0, 0, 1);
+  font-size: 10px;
 `;

@@ -17,12 +17,10 @@ const Indicator = styled.ActivityIndicator.attrs(() => ({
   color: '#fffff',
 }))``;
 
-const Spinner = () => {
-  return (
-    <Container>
-      <Indicator />
-    </Container>
-  );
-};
+const Spinner = () => (
+  <Container>
+    <Indicator />
+  </Container>
+);
 
 export default Spinner;

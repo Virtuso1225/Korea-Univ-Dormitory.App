@@ -1,21 +1,22 @@
 import styled from 'styled-components/native';
+import { responsiveHeight } from 'react-native-responsive-dimensions';
 
 export const TitleWrapper = styled.View`
   flex: 2;
   border: none;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 export const HeadTitle = styled.Text`
-  margin-top: 89px;
-  font-size: 58px;
+  font-size: 46px;
   color: rgba(133, 0, 0, 1);
+  font-family: Light;
 `;
 
 export const Separate = styled.View`
   flex-direction: row;
   align-items: center;
-  margin-top: 10px;
+  margin-top: ${responsiveHeight(17)}px;
 `;
 
 export const Titles = styled.View`
@@ -24,13 +25,16 @@ export const Titles = styled.View`
 `;
 
 export const SubTitle = styled.Text`
-  font-size: 28px;
+  font-size: 46px;
   color: rgba(133, 0, 0, 1);
+  font-family: ExtraBold;
 `;
 
-export const EngSub = styled.Text`
-  font-size: 10px;
+export const Greeting = styled.Text`
+  font-size: 15px;
   color: rgba(133, 0, 0, 1);
+  font-family: Regular;
+  margin-top: 8px;
 `;
 
 export const Logo = styled.Image`
@@ -60,43 +64,48 @@ export const TextWrapper = styled.View`
   margin-top: 29px;
   max-width: 301px;
   height: 54px;
-  border-radius: 10px;
-  box-shadow: 2px 2px 5px rgba(15, 41, 107, 0.15);
-  background-color: #ecedf2;
+  border-bottom-width: 1.5px;
+  border-bottom-color: rgba(133, 0, 0, 0.15);
 `;
 
 export const InputWrapper = styled.View`
   flex-direction: row;
+  border: none;
+  border-radius: 10px;
 `;
 
 export const Input = styled.TextInput`
-  font-size: 19px;
-  margin-left: 15px;
-  padding-left: 4px;
+  font-size: 14px;
+  padding-left: 10px;
   width: 300px;
   height: 50px;
+  font-family: Regular;
 `;
+
+export const EyeIconWrapper = styled.View``;
 
 export const CheckWrapper = styled.View`
   flex-direction: row;
-  margin-top: 9px;
+  margin-top: 20px;
   align-items: center;
 `;
 
 export const Check = styled.View`
   display: flex;
-  background-color: #ecedf2;
-  box-shadow: 2px 2px 5px rgba(15, 41, 107, 0.22);
-  width: 25px;
-  height: 25px;
-  border-radius: 5px;
+  /* background-color: #f9f7f4; */
+  /* box-shadow: 2px 2px 5px #d4d2cf; */
+  width: 29px;
+  height: 29px;
+  border: 1.5px solid rgba(133, 0, 0, 0.15);
+  border-radius: 8px;
   margin-right: 11px;
   align-content: center;
   justify-content: center;
 `;
 
 export const Description = styled.Text`
-  font-size: 14px;
+  font-size: 13px;
+  font-family: Medium;
 `;
 
 export const BottomWrapper = styled.View`
@@ -105,20 +114,27 @@ export const BottomWrapper = styled.View`
   align-self: center;
 `;
 
+export const TopShadow = styled.View`
+  box-shadow: -11px -11px 22px #ffffff; ;
+`;
+
+export const BottomShadow = styled.View`
+  box-shadow: 6px 6px 12px #d4d2cf;
+`;
 export const ButtonWrapper = styled.TouchableOpacity`
   align-items: center;
-  background-color: #ecedf2;
+  background-color: #f9f7f4;
   border-radius: 10px;
   width: 140px;
   height: 39px;
   margin-right: 10px;
   margin-left: 10px;
   justify-content: center;
-  box-shadow: 5px 5px 8px rgba(15, 41, 107, 0.15);
+  /* box-shadow: 5px 5px 8px rgba(15, 41, 107, 0.15); */
 `;
 
 export const StyledButton = styled.Text`
   font-size: 15px;
-
   color: #850000;
+  font-family: Bold6;
 `;
