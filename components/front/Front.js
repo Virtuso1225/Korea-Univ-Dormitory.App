@@ -33,6 +33,9 @@ import {
   Titles,
   InputWrapper,
   ErrorText,
+  TopShadow,
+  BottomShadow,
+  EyeIconWrapper,
 } from './FrontStyle';
 
 const Front = ({ navigation }) => {
@@ -76,7 +79,7 @@ const Front = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View style={{ flex: 1, backgroundColor: '#ecedf2' }}>
+      <View style={{ flex: 1, backgroundColor: '#F9F7F4' }}>
         <TitleWrapper>
           <HeadTitle>안암학사</HeadTitle>
           <Separate>
@@ -96,7 +99,7 @@ const Front = ({ navigation }) => {
               <InputWrapper>
                 <Input
                   label="Email"
-                  placeholder="Email"
+                  placeholder="user ID(KUPID 계정)"
                   returnKeyType="next"
                   value={email}
                   onChangeText={_handleEmailChange}
@@ -127,7 +130,7 @@ const Front = ({ navigation }) => {
               >
                 <Check>
                   {isSelected && (
-                    <Icon name="check" size={25} color="#707070" />
+                    <Icon name="check" size={25} color="#850000" />
                   )}
                 </Check>
               </TouchableOpacity>
@@ -137,19 +140,47 @@ const Front = ({ navigation }) => {
           </TextArea>
         </KeyboardAvoidingView>
         <BottomWrapper>
-          <ButtonWrapper title="Sign in" onPress={_handleSigninBtnPress}>
-            <StyledButton>Login</StyledButton>
-          </ButtonWrapper>
-          <ButtonWrapper
-            title="회원가입"
-            onPress={() => navigation.navigate('Register')}
-          >
-            <StyledButton>Register</StyledButton>
-          </ButtonWrapper>
+          <View style={styles.topShadow}>
+            <View style={styles.bottomShadow}>
+              <ButtonWrapper title="Sign in" onPress={_handleSigninBtnPress}>
+                <StyledButton>Login</StyledButton>
+              </ButtonWrapper>
+            </View>
+          </View>
+          <View style={styles.topShadow}>
+            <View style={styles.bottomShadow}>
+              <ButtonWrapper
+                title="회원가입"
+                onPress={() => navigation.navigate('Register')}
+              >
+                <StyledButton>Register</StyledButton>
+              </ButtonWrapper>
+            </View>
+          </View>
         </BottomWrapper>
       </View>
     </TouchableWithoutFeedback>
   );
 };
 
+const styles = StyleSheet.create({
+  topShadow: {
+    shadowOffset: {
+      width: -6,
+      height: -6,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 6,
+    shadowColor: '#ffffff',
+  },
+  bottomShadow: {
+    shadowOffset: {
+      width: 5,
+      height: 5,
+    },
+    shadowOpacity: 1,
+    shadowRadius: 6,
+    shadowColor: '#d4d2cf',
+  },
+});
 export default Front;
