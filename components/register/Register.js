@@ -67,7 +67,7 @@ const Register = ({ navigation }) => {
   const [roomError, setRoomError] = useState('');
   const [nicknameError, setNicknameError] = useState('');
   // const [errorMessage, setErrorMessage] = useState('');
-
+  // const selectedItem = useState('');
   const [disabled, setDisabled] = useState(true);
   const refName = useRef(null);
   const refPassword = useRef(null);
@@ -175,7 +175,7 @@ const Register = ({ navigation }) => {
   }, [id]);
 
   const _handleSignupBtnPress = async () => {
-    console.log('dorm: ', dorm);
+    console.log('dorm:1 ', dorm);
     if (disabled) {
       if (!name) {
         Alert.alert('Signup Error', '이름은 필수 항목입니다.');
@@ -304,11 +304,7 @@ const Register = ({ navigation }) => {
                 data={dorms}
                 buttonStyle={styles.buttonStyle}
                 buttonTextStyle={styles.buttonTextStyle}
-                onSelect={(selectedItem, index) => {
-                  setDorm(selectedItem);
-                  console.log(selectedItem, index);
-                  console.log(dorm);
-                }}
+                onSelect={setDorm}
                 defaultButtonText="소속 동"
                 dropdownStyle={styles.dropdownStyle}
                 rowStyle={styles.rowStyle}
@@ -318,7 +314,6 @@ const Register = ({ navigation }) => {
                 )}
                 dropDownIconPosition="right"
                 buttonTextAfterSelection={(selectedItem) => {
-                  setDorm(selectedItem);
                   return selectedItem;
                 }}
                 rowTextForSelection={(item) => item}
