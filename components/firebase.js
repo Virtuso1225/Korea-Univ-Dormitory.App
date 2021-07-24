@@ -30,8 +30,7 @@ export const signup = async ({
   room,
   nickname,
 }) => {
-  console.log('dorm: ', dorm);
-
+  await Auth.createUserWithEmailAndPassword(email, password);
   const currentUser = {
     id: Auth.currentUser.uid,
     email,
@@ -42,8 +41,6 @@ export const signup = async ({
     nickname,
     emailVerified: Auth.currentUser.emailVerified,
   };
-
-  console.log(currentUser);
 
   fs.collection('users')
     .doc(currentUser.id)
@@ -61,7 +58,6 @@ export const signup = async ({
       console.error('firestore()DB 유저 추가 실패', error);
     });
 
-  // 이메일 인증
   const curUser = Auth.currentUser;
 
   curUser

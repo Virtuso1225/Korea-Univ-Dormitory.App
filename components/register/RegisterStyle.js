@@ -1,9 +1,12 @@
 import styled from 'styled-components/native';
-import { responsiveHeight } from 'react-native-responsive-dimensions';
+import {
+  responsiveHeight,
+  responsiveScreenFontSize,
+} from 'react-native-responsive-dimensions';
 
 export const Header = styled.View`
   flex: 0.7;
-  margin-top: 25%;
+  margin-top: ${responsiveHeight(10)}px;
 `;
 
 export const IconWrapper = styled.View``;
@@ -19,6 +22,7 @@ export const SubWrapper = styled.View`
   flex: 3;
   align-self: center;
   margin-top: ${responsiveHeight(5)}px;
+  justify-content: space-around;
 `;
 
 export const InputWrapper = styled.View`
@@ -27,8 +31,6 @@ export const InputWrapper = styled.View`
   width: 301px;
   height: 39px;
   justify-content: center;
-  /* border-bottom-width: 1px;
-  border-bottom-color: rgba(133, 0, 0, 0.15); */
 `;
 
 export const RowWrapper = styled.View`
@@ -42,26 +44,28 @@ export const RowWrapper = styled.View`
 
 export const EmailDescription = styled.Text`
   margin-left: 6.5px;
-  font-size: 12px;
+  font-size: ${responsiveScreenFontSize(1.5)}px;
+  font-family: Medium;
 `;
 export const Input = styled.TextInput`
-  font-size: 12px;
+  font-size: ${responsiveScreenFontSize(1.5)}px;
   padding-left: 10px;
   min-width: 204px;
-  /* min-width: 150px;
-  min-height: 25px; */
   height: 20px;
   border-bottom-width: 1px;
   border-bottom-color: rgba(133, 0, 0, 0.15);
+  font-family: Medium;
 `;
 
 export const Input2 = styled.TextInput`
-  font-size: 12px;
+  font-size: ${responsiveScreenFontSize(1.5)}px;
   padding-left: 10px;
   width: 143px;
   margin-left: 5px;
   border-bottom-width: 1px;
   border-bottom-color: rgba(133, 0, 0, 0.15);
+  font-family: Medium;
+  color: #8e8e8e;
 `;
 
 export const BottomWrapper = styled.View`
@@ -77,7 +81,7 @@ export const ButtonWrapper = styled.TouchableOpacity`
   width: 302px;
   height: 50px;
   justify-content: center;
-  box-shadow: 1.5px 1.5px 3px #7e0000;
+  box-shadow: 20px 20px 30px rgba(15, 41, 107, 0.12);
 `;
 
 export const StyledButton = styled.Text`
@@ -85,9 +89,9 @@ export const StyledButton = styled.Text`
   padding-right: 2.5px;
   margin-left: 2.5px;
   margin-right: 2.5px;
-  font-size: 15px;
+  font-size: ${responsiveScreenFontSize(2)}px;
   color: white;
-  font-size: 20px;
+  font-family: Bold6;
 `;
 
 export const OptionWrapper = styled.View`
@@ -96,12 +100,14 @@ export const OptionWrapper = styled.View`
 `;
 
 export const OptionDescription = styled.Text`
-  font-size: 14px;
-  color: #6a6a6a;
+  font-size: 13px;
+  font-family: Bold6;
+  color: #515151;
 `;
 
 export const OptionButton = styled.Text`
-  font-size: 15px;
+  font-size: 13px;
+  font-family: Bold6;
   color: #850000;
 `;
 
