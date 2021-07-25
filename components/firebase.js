@@ -24,6 +24,7 @@ export const signin = async ({ email, password }) => {
 
 export const signup = async ({
   name,
+  sid,
   email,
   password,
   dorm,
@@ -33,6 +34,7 @@ export const signup = async ({
   await Auth.createUserWithEmailAndPassword(email, password);
   const currentUser = {
     id: Auth.currentUser.uid,
+    sid,
     email,
     name,
     dorm,
@@ -46,6 +48,7 @@ export const signup = async ({
     .doc(currentUser.id)
     .set({
       name: currentUser.name,
+      sid: currentUser.sid,
       email: currentUser.email,
       dorm: currentUser.dorm,
       room: currentUser.room,

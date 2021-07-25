@@ -13,9 +13,8 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { signup } from '../firebase';
 import {
-  validateEmail,
   removeWhitespace,
-  validateEmailDomain,
+  validateSid,
   validatePassword,
   validateRoom,
 } from '../utils';
@@ -52,6 +51,7 @@ const Register = ({ navigation }) => {
 
   const [name, setName] = useState('');
   const [id, setId] = useState('');
+  const [sid, setSid] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [check, setCheck] = useState('');
@@ -60,7 +60,7 @@ const Register = ({ navigation }) => {
   const [nickname, setNickname] = useState('');
 
   const [nameError, setNameError] = useState('');
-  // const [idError, setIdError] = useState('');
+  const [sidError, setSidError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [checkError, setCheckError] = useState('');
   // const [dormError, setDormError] = useState('');
@@ -70,6 +70,7 @@ const Register = ({ navigation }) => {
   // const selectedItem = useState('');
   const [disabled, setDisabled] = useState(true);
   const refName = useRef(null);
+  const refSid = useRef(null);
   const refPassword = useRef(null);
   const refCheck = useRef(null);
   const refId = useRef(null);
@@ -83,11 +84,13 @@ const Register = ({ navigation }) => {
       !(
         name &&
         id &&
+        sid &&
         password &&
         dorm &&
         room &&
         nickname &&
         !nameError &&
+        !sidError &&
         !passwordError &&
         !checkError &&
         !roomError &&
@@ -97,11 +100,13 @@ const Register = ({ navigation }) => {
   }, [
     name,
     id,
+    sid,
     password,
     dorm,
     room,
     nickname,
     nameError,
+    sidError,
     passwordError,
     checkError,
     roomError,
@@ -118,6 +123,14 @@ const Register = ({ navigation }) => {
         // setNicknameError('');
       } else {
         setNameError('');
+      }
+
+      if (!sid) {
+        setSidError('*필수 항목입니다.');
+      } else if (sid && !validateSid(sid)) {
+        setSidError('*학번 10자리를 확인해주세요.');
+      } else {
+        setSidError('');
       }
 
       if (!password) {
@@ -168,17 +181,18 @@ const Register = ({ navigation }) => {
     } else {
       refDidMount.current = true;
     }
-  }, [name, password, check, room, nickname]);
+  }, [name, sid, password, check, room, nickname]);
 
   useEffect(() => {
     setEmail(`${id}@korea.ac.kr`);
   }, [id]);
 
   const _handleSignupBtnPress = async () => {
-    console.log('dorm:1 ', dorm);
     if (disabled) {
       if (!name) {
         Alert.alert('Signup Error', '이름은 필수 항목입니다.');
+      } else if (!sid) {
+        Alert.alert('Signup Error', '학번은 필수 항목입니다.');
       } else if (!id) {
         Alert.alert('Signup Error', '아이디는 필수 항목입니다.');
       } else if (!password) {
@@ -195,6 +209,7 @@ const Register = ({ navigation }) => {
         spinner.start();
         await signup({
           name,
+          sid,
           email,
           password,
           dorm,
@@ -247,11 +262,25 @@ const Register = ({ navigation }) => {
                 returnKeyType="next"
                 value={name}
                 onChangeText={setName}
-                onSubmitEditing={() => refId.current.focus()}
+                onSubmitEditing={() => refSid.current.focus()}
                 onBlur={() => setName(name.trim())}
                 maxLength={12}
               />
               {/* <ErrorText>{nameError}</ErrorText> */}
+            </InputWrapper>
+            <InputWrapper>
+              <Input
+                ref={refSid}
+                label="Sid"
+                placeholder="학번"
+                placeholderTextColor="#8E8E8E"
+                returnKeyType="next"
+                value={sid}
+                onChangeText={setSid}
+                onSubmitEditing={() => refId.current.focus()}
+                maxLength={10}
+              />
+              {/* <ErrorText>{sidError}</ErrorText> */}
             </InputWrapper>
             <RowWrapper>
               <Input
