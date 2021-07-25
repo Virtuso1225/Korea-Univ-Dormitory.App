@@ -333,7 +333,9 @@ const Register = ({ navigation }) => {
                 data={dorms}
                 buttonStyle={styles.buttonStyle}
                 buttonTextStyle={styles.buttonTextStyle}
-                onSelect={setDorm}
+                onSelect={(selectedItem, index) => {
+                  setDorm(index);
+                }}
                 defaultButtonText="소속 동"
                 dropdownStyle={styles.dropdownStyle}
                 rowStyle={styles.rowStyle}

@@ -106,7 +106,16 @@ export const getCurrentUser = () => {
   return {};
 };
 
-export const signout = async () => {
-  await Auth.signOut();
-  return {};
+export const signout = () => {
+  Auth.signOut();
+  return console.log('로그아웃');
+};
+
+export const deactivate = async () => {
+  const user = Auth.currentUser;
+  const { uid } = Auth.currentUser;
+  const docRef = fs.collection('users').doc(uid);
+
+  await docRef.delete();
+  user.delete();
 };
