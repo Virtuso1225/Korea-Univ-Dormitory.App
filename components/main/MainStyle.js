@@ -14,12 +14,14 @@ export const TitleWrapper = styled.View`
   flex: 1;
   align-items: flex-start;
   margin-top: ${responsiveHeight(13)}px;
+  width: ${responsiveWidth(77)}px;
   /* border: 1px solid black; */
 `;
 
 export const RowWrapper = styled.View`
   flex-direction: row;
   align-items: center;
+  margin-top: 5px;
 `;
 
 export const ButtonRowWrapper = styled.View`
@@ -42,21 +44,15 @@ export const Logo = styled.Image`
 
 export const HeadTitle = styled.Text`
   margin-left: 5px;
-  font-size: 23px;
+  font-size: 28px;
   color: #850000;
-  font-family: ExtraLight;
+  font-family: ${(props) => props.font};
 `;
 
 export const SubTitle1 = styled.Text`
-  font-size: 23px;
+  font-size: 15px;
   color: #850000;
-  font-family: Medium;
-`;
-
-export const SubTitle2 = styled.Text`
-  font-size: 23px;
-  color: #850000;
-  font-family: ExtraLight;
+  font-family: ${(props) => props.font};
 `;
 
 export const ButtonsContainer = styled.View`

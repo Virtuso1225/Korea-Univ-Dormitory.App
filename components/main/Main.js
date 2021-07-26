@@ -7,27 +7,19 @@ import {
   Container,
   HeadTitle,
   SubTitle1,
-  SubTitle2,
   TitleWrapper,
   Logo,
   ButtonsContainer,
   ButtonWrapper,
   RowWrapper,
   StyledButton,
-  CharacterContainer,
   ButtonRowWrapper,
   Separation,
   DateContainer,
   DateStyle,
   Temperature,
 } from './MainStyle';
-import {
-  Megaphone,
-  Facility,
-  Board,
-  Mypage,
-  Character,
-} from '../../assets/Svgs';
+import { Megaphone, Facility, Board, Mypage } from '../../assets/Svgs';
 
 const Main = ({ navigation, route }) => {
   const { setUser } = useContext(UserContext);
@@ -51,17 +43,15 @@ const Main = ({ navigation, route }) => {
       <TitleWrapper>
         <RowWrapper>
           <Logo source={require('../../assets/crimson2positive.png')} />
-          <HeadTitle>고려대학교</HeadTitle>
+          <HeadTitle font="Light">고려대학교</HeadTitle>
+          <HeadTitle font="ExtraBold">안암학사</HeadTitle>
         </RowWrapper>
         <RowWrapper>
-          <SubTitle1>안암학사</SubTitle1>
-          <SubTitle2>에 오신 것을 환영합니다.</SubTitle2>
+          <SubTitle1 font="ExtraBold">안암학사</SubTitle1>
+          <SubTitle1 font="Light">에 오신 것을 환영합니다.</SubTitle1>
         </RowWrapper>
       </TitleWrapper>
       <ButtonsContainer>
-        <CharacterContainer>
-          <Character />
-        </CharacterContainer>
         <DateContainer>
           <DateStyle>
             {month}월{day}일{week[index]}
