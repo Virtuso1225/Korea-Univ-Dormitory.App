@@ -82,6 +82,7 @@ export const Temperature = styled.Text`
   font-family: Bold6;
   margin-top: ${responsiveHeight(0.5)}px;
 `;
+
 export const ButtonWrapper = styled.TouchableOpacity`
   margin-top: ${responsiveHeight(5)}px;
   background-color: #f9f7f4;
