@@ -4,6 +4,11 @@ export const validateEmail = (email) => {
   return regex.test(email);
 };
 
+export const validateSid = (sid) => {
+  const regex = /^20\d{8}$/;
+  return regex.test(sid);
+};
+
 export const validateEmailDomain = (email) => {
   const regex = /^[0-9?A-z0-9?]+(\.)?[0-9?A-z0-9?]+@korea.ac.kr$/;
   return regex.test(email);
@@ -11,8 +16,7 @@ export const validateEmailDomain = (email) => {
 
 export const validatePassword = (password) => {
   const regex =
-    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!%*#?^&])[A-Za-z\d$@$!%*#?&^]{6,}$/;
-
+    /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~])[A-Za-z\d$@!"#$%&'()*+,-./:;<=>?@[\\\]^_`{|}~]{6,}$/;
   return regex.test(password);
 };
 
