@@ -332,3 +332,222 @@ export const TemperatureIcon = () => (
     </G>
   </Svg>
 );
+
+export const PenaltyIcon = () => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={19.151}
+    height={19.029}
+    viewBox="0 0 19.151 19.029"
+  >
+    <G
+      data-name="\uADF8\uB8F9 200"
+      fill="none"
+      stroke="#404040"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <Path
+        data-name="\uD328\uC2A4 134"
+        d="M8.699 13.739l9.952-9.809L15.27.5l-9.952 9.809-.272 3.658z"
+      />
+      <Path
+        data-name="\uD328\uC2A4 135"
+        d="M16.072 10.368v6.734a1.43 1.43 0 01-1.426 1.427H1.926A1.43 1.43 0 01.5 17.102V4.382a1.43 1.43 0 011.426-1.426h7.109"
+      />
+    </G>
+  </Svg>
+);
+
+export const FacilityIcon = () => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={17.884}
+    height={19.084}
+    viewBox="0 0 17.884 19.084"
+  >
+    <G data-name="\uADF8\uB8F9 189">
+      <G
+        data-name="\uADF8\uB8F9 105"
+        transform="translate(.5 .5)"
+        stroke="#404040"
+      >
+        <Rect
+          data-name="\uC0AC\uAC01\uD615 304"
+          width={16.884}
+          height={18.084}
+          rx={2.168}
+          fill="#f9f7f4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <Circle
+          data-name="\uD0C0\uC6D0 42"
+          cx={0.787}
+          cy={0.787}
+          transform="translate(9.976 1.224)"
+          fill="#f9f7f4"
+          strokeMiterlimit={10}
+          r={0.787}
+        />
+        <Circle
+          data-name="\uD0C0\uC6D0 43"
+          cx={0.787}
+          cy={0.787}
+          transform="translate(13.021 1.224)"
+          fill="#f9f7f4"
+          strokeMiterlimit={10}
+          r={0.787}
+        />
+        <Circle
+          data-name="\uD0C0\uC6D0 44"
+          cx={5.071}
+          cy={5.071}
+          transform="translate(3.473 5.866)"
+          fill="#f9f7f4"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          r={5.071}
+        />
+        <Path
+          data-name="\uD328\uC2A4 113"
+          d="M13.409 12.065a4.436 4.436 0 00-4.713-.261 5.877 5.877 0 01-5.074.113"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+        <Path
+          data-name="\uC120 53"
+          fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          d="M.271 4.077H16.8"
+        />
+      </G>
+    </G>
+  </Svg>
+);
+
+export const PersonalInfoIcon = () => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={19.9}
+    height={17.48}
+    viewBox="0 0 19.9 17.48"
+  >
+    <G
+      data-name="\uADF8\uB8F9 196"
+      fill="none"
+      stroke="#404040"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <G data-name="\uADF8\uB8F9 195">
+        <G data-name="\uADF8\uB8F9 194" transform="translate(2.9 4.618)">
+          <Circle
+            data-name="\uD0C0\uC6D0 52"
+            cx={2.533}
+            cy={2.533}
+            r={2.533}
+            transform="translate(1.619)"
+          />
+          <Path
+            data-name="\uD328\uC2A4 141"
+            d="M5.73 6.502a4.341 4.341 0 00-4.8 1.149 4.289 4.289 0 00-.915 1.633.292.292 0 00.278.377h7.724a.292.292 0 00.278-.378A4.312 4.312 0 005.73 6.502z"
+          />
+        </G>
+        <Path data-name="\uC120 83" d="M12.78 8.728h4.221" />
+        <Path data-name="\uC120 84" d="M12.78 5.78h4.221" />
+      </G>
+      <Path
+        data-name="\uD328\uC2A4 142"
+        d="M11.553 3.005l.471-2.5H7.875l.471 2.5z"
+      />
+      <Path
+        data-name="\uD328\uC2A4 143"
+        d="M6.435 1.963H2.149A1.653 1.653 0 00.5 3.611v11.721a1.653 1.653 0 001.649 1.648h15.6a1.653 1.653 0 001.648-1.648V3.611a1.653 1.653 0 00-1.648-1.648h-4.281"
+      />
+    </G>
+  </Svg>
+);
+
+export const LogoutIcon = () => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={21.321}
+    height={19.089}
+    viewBox="0 0 21.321 19.089"
+  >
+    <G
+      data-name="\uADF8\uB8F9 199"
+      fill="none"
+      stroke="#404040"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <Path
+        data-name="\uD328\uC2A4 148"
+        d="M3.729 13.007L.647 9.926a.569.569 0 010-.761l3.082-3.081"
+      />
+      <Path
+        data-name="\uD328\uC2A4 149"
+        d="M20.822 16.535l-7.284 2.053V.5l7.284 2.053z"
+      />
+      <G data-name="\uADF8\uB8F9 198">
+        <Path
+          data-name="\uD328\uC2A4 150"
+          d="M13.583 2.876H8.398a1.08 1.08 0 00-.943 1.173v2.64"
+        />
+        <Path
+          data-name="\uD328\uC2A4 151"
+          d="M13.583 16.213H8.398a1.081 1.081 0 01-.943-1.173V12.4"
+        />
+      </G>
+      <Path data-name="\uC120 85" d="M13.586 8.869v1.35" />
+      <Path data-name="\uC120 86" d="M13.586 9.852v-.616" />
+      <Path data-name="\uC120 87" d="M.501 9.544h8.952" />
+    </G>
+  </Svg>
+);
+
+export const DeleteIcon = () => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={20.322}
+    height={18.168}
+    viewBox="0 0 20.322 18.168"
+  >
+    <G
+      data-name="\uADF8\uB8F9 197"
+      transform="translate(-203.448 -353.184)"
+      fill="none"
+      stroke="#404040"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <Circle
+        data-name="\uD0C0\uC6D0 53"
+        cx={3.592}
+        cy={3.592}
+        r={3.592}
+        transform="translate(208.94 355.275)"
+      />
+      <Path
+        data-name="\uD328\uC2A4 144"
+        d="M215.757 364.842a6.343 6.343 0 00-.988-.5 6.156 6.156 0 00-6.811 1.63 6.078 6.078 0 00-1.3 2.316"
+      />
+      <Path
+        data-name="\uD328\uC2A4 145"
+        d="M216.673 369.789a8.585 8.585 0 114.443-7.521 8.711 8.711 0 01-.063 1.046"
+      />
+      <Path
+        data-name="\uD328\uC2A4 146"
+        d="M223.269 366.776a3.907 3.907 0 11-1.986-3.4 3.908 3.908 0 011.986 3.4z"
+      />
+      <Path
+        data-name="\uD328\uC2A4 147"
+        d="M217.241 366.829l1.332 1.682 2.874-3.084"
+      />
+    </G>
+  </Svg>
+);

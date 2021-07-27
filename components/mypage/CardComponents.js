@@ -1,5 +1,12 @@
 import React from 'react';
-import { TemperatureIcon } from '../../assets/Svgs';
+import {
+  DeleteIcon,
+  FacilityIcon,
+  LogoutIcon,
+  PenaltyIcon,
+  PersonalInfoIcon,
+  TemperatureIcon,
+} from '../../assets/Svgs';
 import {
   ButtonText,
   ColumnWrapper,
@@ -15,23 +22,23 @@ const CardComponents = () => {
         <ButtonText>체온기록</ButtonText>
       </TopRowWrapper>
       <RowWrapper>
-        <TemperatureIcon />
+        <PenaltyIcon />
         <ButtonText>벌점 내역</ButtonText>
       </RowWrapper>
       <RowWrapper>
-        <TemperatureIcon />
+        <FacilityIcon />
         <ButtonText>최근 예약 내역</ButtonText>
       </RowWrapper>
       <RowWrapper>
-        <TemperatureIcon />
+        <PersonalInfoIcon />
         <ButtonText>개인정보 변경하기</ButtonText>
       </RowWrapper>
       <RowWrapper>
-        <TemperatureIcon />
+        <LogoutIcon />
         <ButtonText>로그아웃</ButtonText>
       </RowWrapper>
       <RowWrapper>
-        <TemperatureIcon />
+        <DeleteIcon />
         <ButtonText>탈퇴하기</ButtonText>
       </RowWrapper>
     </ColumnWrapper>
