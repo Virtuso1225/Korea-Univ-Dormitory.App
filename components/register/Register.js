@@ -11,7 +11,7 @@ import {
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { signup } from '../firebase';
+import { signup, getStudentInfo, isExistNickname } from '../firebase';
 import {
   removeWhitespace,
   validateSid,
@@ -37,6 +37,8 @@ import {
   Input2,
   EmailDescription,
 } from './RegisterStyle';
+
+let isAction = false;
 
 const Register = ({ navigation }) => {
   const dorms = [
@@ -69,6 +71,8 @@ const Register = ({ navigation }) => {
   // const [errorMessage, setErrorMessage] = useState('');
   // const selectedItem = useState('');
   const [disabled, setDisabled] = useState(true);
+  const [compareStudentInfo, setCompareStudentInfo] = useState(false);
+  const [existNickname, setExistNickname] = useState(true);
   const refName = useRef(null);
   const refSid = useRef(null);
   const refPassword = useRef(null);
@@ -78,6 +82,13 @@ const Register = ({ navigation }) => {
   const refNickname = useRef(null);
 
   const refDidMount = useRef(null);
+
+  const [studentInfo, setStudentInfo] = useState({
+    name: '',
+    dorm: '',
+    room: '',
+    sid: '',
+  });
 
   useEffect(() => {
     setDisabled(
@@ -94,7 +105,9 @@ const Register = ({ navigation }) => {
         !passwordError &&
         !checkError &&
         !roomError &&
-        !nicknameError
+        !nicknameError &&
+        compareStudentInfo &&
+        !existNickname
       )
     );
   }, [
@@ -111,6 +124,8 @@ const Register = ({ navigation }) => {
     checkError,
     roomError,
     nicknameError,
+    compareStudentInfo,
+    existNickname,
   ]);
 
   useEffect(() => {
@@ -187,6 +202,42 @@ const Register = ({ navigation }) => {
     setEmail(`${id}@korea.ac.kr`);
   }, [id]);
 
+  useEffect(() => {
+    const setStudentInfoFunc1 = async (_callback) => {
+      setStudentInfo(await getStudentInfo(sid * 1));
+      _callback();
+    };
+
+    const setStudentInfoFunc2 = () => {
+      setStudentInfoFunc1(function () {});
+    };
+
+    setStudentInfoFunc2();
+
+    if (studentInfo.name !== name) {
+      setCompareStudentInfo(false);
+    } else if (studentInfo.dorm !== dorm) {
+      setCompareStudentInfo(false);
+    } else if (studentInfo.room !== room) {
+      setCompareStudentInfo(false);
+    } else {
+      setCompareStudentInfo(true);
+    }
+  }, [name, sid, dorm, room]);
+
+  useEffect(() => {
+    const isExistNicknameFunc1 = async (_callback) => {
+      setExistNickname(await isExistNickname(nickname));
+      _callback();
+    };
+
+    const isExistNicknameFunc2 = () => {
+      isExistNicknameFunc1(function () {});
+    };
+
+    isExistNicknameFunc2();
+  }, [nickname]);
+
   const _handleSignupBtnPress = async () => {
     if (disabled) {
       if (!name) {
@@ -203,6 +254,13 @@ const Register = ({ navigation }) => {
         Alert.alert('Signup Error', '호실 정보는 필수 항목입니다.');
       } else if (!nickname) {
         Alert.alert('Signup Error', '닉네임은 필수 항목입니다.');
+      } else if (!compareStudentInfo) {
+        Alert.alert(
+          'Signup Error',
+          '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
+        );
+      } else if (existNickname) {
+        Alert.alert('Signup Error', '닉네임이 중복됐습니다.');
       }
     } else {
       try {

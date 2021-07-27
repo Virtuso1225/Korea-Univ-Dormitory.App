@@ -93,6 +93,80 @@ export const getCurrentUser = async () => {
   return currentUserInfo;
 };
 
+export const getStudentInfo = async (sid) => {
+  let studentInfo = {
+    name: '',
+    dorm: '',
+    room: '',
+    sid: '',
+  };
+  const docRef = fs.collection('studentList').where('sid', '==', sid);
+
+  await docRef
+    .get()
+    .then((querySnapshot) => {
+      if (querySnapshot.empty) {
+        console.log('No documents found.');
+      } else {
+        querySnapshot.forEach((doc) => {
+          studentInfo = doc.data();
+        });
+      }
+    })
+    .catch((error) => {
+      console.log('Error getting documents: ', error);
+    });
+
+  return studentInfo;
+};
+
+export const isExistNickname = async (nickname) => {
+  let isExist = true;
+  const docRef = fs.collection('users').where('nickname', '==', nickname);
+
+  await docRef
+    .get()
+    .then((querySnapshot) => {
+      if (querySnapshot.empty) {
+        isExist = false;
+        console.log('No same nickname found.');
+      } else {
+        isExist = true;
+      }
+    })
+    .catch((error) => {
+      console.log('Error getting documents: ', error);
+    });
+
+  return isExist;
+};
+
+// const uploadImage = async (uri) => {
+//   if (uri.startsWith('https')) {
+//     return uri;
+//   }
+
+//   const blob = await new Promise((resolve, reject) => {
+//     const xhr = new XMLHttpRequest();
+//     xhr.onload = function () {
+//       resolve(xhr.response);
+//     };
+//     xhr.onerror = function () {
+//       reject(new TypeError('Network request failed'));
+//     };
+//     xhr.responseType = 'blob';
+//     xhr.open('GET', uri, true);
+//     xhr.send(null);
+//   });
+
+//   const user = Auth.currentUser;
+//   const ref = app.storage().ref(`/profile/${user.uid}/photo.png`);
+//   const snapshot = await ref.put(blob, { contentType: 'image/png' });
+//   blob.close();
+
+//   return await snapshot.ref.getDownloadURL();
+// };
+
 export const signout = () => {
   Auth.signOut();
   return console.log('로그아웃');
