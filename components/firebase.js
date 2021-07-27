@@ -53,6 +53,7 @@ export const signup = async ({
       dorm: currentUser.dorm,
       room: currentUser.room,
       password: currentUser.password,
+      nickname: currentUser.nickname,
     })
     .then(() => {
       console.log('firestore()DB 유저 추가 성공');
@@ -73,37 +74,23 @@ export const signup = async ({
   return {};
 };
 
-export const getCurrentUser = () => {
-  const { uid } = Auth.currentUser;
-  console.log('uid: ', uid);
-  const docRef = fs.collection('users').doc(uid);
+export const getCurrentUser = async () => {
+  let currentUserInfo = {
+    name: '',
+    email: '',
+    dorm: '',
+    room: '',
+    password: '',
+    sid: '',
+    nickname: '',
+  };
+  const docRef = fs.collection('users').doc(Auth.currentUser.uid);
 
-  docRef
-    .get()
-    .then((doc) => {
-      if (doc.exists) {
-        console.log('Document data:', doc.data());
+  await docRef.get().then((doc) => {
+    currentUserInfo = doc.data();
+  });
 
-        const { name } = doc.data();
-        // const { email } = doc.data();
-        // const { dorm } = doc.data();
-        // const { room } = doc.data();
-        // const { password } = doc.data();
-
-        // console.log(dorm);
-        console.log(name);
-        // return { name, email, dorm, room, password};
-        return doc.data();
-      }
-      // doc.data() will be undefined in this case
-      return console.log('No such document!');
-    })
-    .catch((error) => {
-      console.log('Error getting document:', error);
-    });
-
-  // return { name, email, dorm, room, password};
-  return {};
+  return currentUserInfo;
 };
 
 export const signout = () => {

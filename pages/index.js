@@ -22,9 +22,14 @@ const Navigation = () => {
     return <Apploading />;
   }
   return (
+    // <NavigationContainer>
+    //   {/* {user.uid ? <MainPage /> : <AuthPage />} */}
+    //   <MainPage />
+    //   {inProgress && <Spinner />}
+    // </NavigationContainer>
     <NavigationContainer>
-      {/* {user.uid ? <MainPage /> : <AuthPage />} */}
-      <MainPage />
+      {user.uid ? <MainPage /> : <AuthPage />}
+      {/* <MainPage /> */}
       {inProgress && <Spinner />}
     </NavigationContainer>
   );

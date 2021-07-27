@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text } from 'react-native';
 import {
   responsiveScreenFontSize,
@@ -6,6 +6,8 @@ import {
   responsiveScreenHeight,
 } from 'react-native-responsive-dimensions';
 import CardComponents from './CardComponents';
+import { getCurrentUser } from '../firebase';
+import { dorms } from '../utils';
 import {
   Background,
   Card,
@@ -19,7 +21,33 @@ import {
   ButtonWrapper,
 } from './MypageStyle';
 
+let isAction = false;
+
 const Mypage = () => {
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    email: '',
+    dorm: '',
+    room: '',
+    password: '',
+    sid: '',
+    nickname: '',
+  });
+
+  const setUserInfoFunc1 = async (_callback) => {
+    setUserInfo(await getCurrentUser());
+    _callback();
+  };
+
+  const setUserInfoFunc2 = () => {
+    setUserInfoFunc1(function () {});
+  };
+
+  while (!isAction) {
+    setUserInfoFunc2();
+    isAction = true;
+  }
+
   return (
     <Background>
       <Card value={1.5}>
@@ -35,21 +63,21 @@ const Mypage = () => {
                 size={responsiveScreenFontSize(1.5)}
                 margin={0}
               >
-                2020320053
+                {userInfo.sid}
               </CustomText>
               <CustomText
                 font="Bold6"
                 size={responsiveScreenFontSize(2.26)}
                 margin={responsiveScreenHeight(0.8)}
               >
-                닉네임
+                {userInfo.nickname}
               </CustomText>
               <CustomText
                 font="Medium"
                 size={responsiveScreenFontSize(1.5)}
                 margin={responsiveScreenHeight(0.8)}
               >
-                구관 남자동 000-0호
+                {dorms(userInfo.dorm)} {userInfo.room}호
               </CustomText>
             </ProfileTextContainer>
           </ProfileContainer>
