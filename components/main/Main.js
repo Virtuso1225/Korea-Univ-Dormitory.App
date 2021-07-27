@@ -19,7 +19,7 @@ import {
   DateStyle,
   Temperature,
 } from './MainStyle';
-import { Megaphone, Facility, Board, Mypage } from '../../assets/Svgs';
+import { Megaphone, Facility, Board, MypageIcon } from '../../assets/Svgs';
 
 const Main = ({ navigation, route }) => {
   const { setUser } = useContext(UserContext);
@@ -60,10 +60,18 @@ const Main = ({ navigation, route }) => {
         </DateContainer>
         <View style={styles.topShadow}>
           <View style={styles.bottomShadow}>
-            <ButtonWrapper>
+            <ButtonWrapper
+              onPress={() =>
+                navigation.navigate('Footer', { screen: '공지사항' })
+              }
+            >
               <ButtonRowWrapper>
                 <Separation>
-                  <Megaphone />
+                  <Megaphone
+                    widthProp={27.365}
+                    heightProp={27.103}
+                    colorProp="#9B1818"
+                  />
                   <StyledButton>공지사항</StyledButton>
                 </Separation>
                 <Icon name="right" size={15} color="#484848" />
@@ -99,10 +107,19 @@ const Main = ({ navigation, route }) => {
         </View>
         <View style={styles.topShadow}>
           <View style={styles.bottomShadow}>
-            <ButtonWrapper>
+            <ButtonWrapper
+              onPress={() =>
+                navigation.navigate('Footer', { screen: '마이페이지' })
+              }
+            >
               <ButtonRowWrapper>
                 <Separation>
-                  <Mypage />
+                  <MypageIcon
+                    widthProp={24.165}
+                    heightProp={26.725}
+                    colorProp="#9B1818"
+                    fillProp="none"
+                  />
                   <StyledButton>마이페이지</StyledButton>
                 </Separation>
                 <Icon name="right" size={15} color="#484848" />

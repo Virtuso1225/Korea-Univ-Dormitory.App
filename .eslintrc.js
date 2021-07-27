@@ -34,5 +34,6 @@ module.exports = {
     'no-shadow': 0,
     'no-use-before-define': 0,
     'no-unused-vars': 1,
+    'react/display-name': 0,
   },
 };

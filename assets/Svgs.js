@@ -10,11 +10,11 @@ import Svg, {
   Pattern,
 } from 'react-native-svg';
 
-export const Megaphone = () => (
+export const Megaphone = ({ widthProp, heightProp, colorProp }) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
-    width="27.365"
-    height="27.103"
+    width={widthProp}
+    height={heightProp}
     viewBox="0 0 27.365 27.103"
   >
     <G id="그룹_30" data-name="그룹 30" transform="translate(-639.739 -64.493)">
@@ -24,20 +24,20 @@ export const Megaphone = () => (
         x2="0.043"
         transform="translate(646.65 81.122)"
         fill="none"
-        stroke="#9b1818"
+        stroke={colorProp}
         stroke-linecap="round"
         stroke-linejoin="round"
-        stroke-width="1.2"
+        stroke-width="2"
       />
       <Path
         id="패스_62"
         data-name="패스 62"
         d="M646.714,87.862c0-.073-.021-.141-.021-.215"
         fill="none"
-        stroke="#9b1818"
+        stroke={colorProp}
         stroke-linecap="round"
         stroke-linejoin="round"
-        stroke-width="1.2"
+        stroke-width="2"
       />
       <Line
         id="선_40"
@@ -45,31 +45,84 @@ export const Megaphone = () => (
         y2="6.525"
         transform="translate(646.693 81.122)"
         fill="none"
-        stroke="#9b1818"
+        stroke={colorProp}
         stroke-linecap="round"
         stroke-linejoin="round"
-        stroke-width="1.2"
+        stroke-width="2"
       />
       <Path
         id="패스_63"
         data-name="패스 63"
         d="M653.3,81.122s.016,6.343.016,6.6A3.231,3.231,0,0,1,650.041,91a3.339,3.339,0,0,1-3.327-3.134"
         fill="none"
-        stroke="#9b1818"
+        stroke={colorProp}
         stroke-linecap="round"
         stroke-linejoin="round"
-        stroke-width="1.2"
+        stroke-width="2"
       />
       <Path
         id="패스_64"
         data-name="패스 64"
         d="M657.387,68.217a1,1,0,0,1-.366.069H646.65a6.419,6.419,0,0,0,0,12.836h10.384a.994.994,0,0,1,.342.061l7.786,2.84a1,1,0,0,0,1.342-.939V66.1a1,1,0,0,0-1.365-.931Z"
         fill="none"
-        stroke="#9b1818"
+        stroke={colorProp}
         stroke-linecap="round"
         stroke-linejoin="round"
-        stroke-width="1.2"
+        stroke-width="2"
       />
+    </G>
+  </Svg>
+);
+
+export const ActivatedMegaphone = () => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={19.982}
+    height={19.794}
+    viewBox="0 0 19.982 19.794"
+  >
+    <G
+      data-name="\uADF8\uB8F9 112"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.2}
+    >
+      <G data-name="\uADF8\uB8F9 103" fill="#404040" stroke="#404040">
+        <Path data-name="\uC120 52" d="M5.13 12.107h.031" />
+        <Path
+          data-name="\uD328\uC2A4 111"
+          d="M18.401.659l-5.565 2.185a.717.717 0 01-.263.05H5.129a4.608 4.608 0 000 9.214h.031l.016 4.837a2.4 2.4 0 002.388 2.25 2.318 2.318 0 002.353-2.353l-.011-4.734h2.677a.721.721 0 01.246.043l5.588 2.039a.718.718 0 00.964-.674V1.332a.718.718 0 00-.98-.673z"
+        />
+      </G>
+      <Path
+        data-name="\uD328\uC2A4 112"
+        d="M11.416 13.336l-6.873-.069h0l-1.23-.126c.075 0-.331-.124-1.344-.75"
+        fill="none"
+        stroke="#f9f7f4"
+      />
+    </G>
+  </Svg>
+);
+
+export const HomeIcon = () => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={18.129}
+    height={18.498}
+    viewBox="0 0 18.129 18.498"
+  >
+    <G data-name="\uADF8\uB8F9 107">
+      <G data-name="\uADF8\uB8F9 98">
+        <Path
+          data-name="\uD328\uC2A4 104"
+          d="M12.9 17.897h3.911a.718.718 0 00.718-.718V8.53a.718.718 0 00-.233-.529L9.496.854a.717.717 0 00-.973 0l-7.7 7.145a.718.718 0 00-.23.526v8.654a.718.718 0 00.718.718h3.91a.718.718 0 00.718-.718v-4.211a3.035 3.035 0 013.026-3.026h0a3.22 3.22 0 013.211 3.211v4.028a.718.718 0 00.724.716z"
+          fill="none"
+          stroke="#404040"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={1.2}
+        />
+      </G>
     </G>
   </Svg>
 );
@@ -156,18 +209,18 @@ export const Facility = () => (
   </Svg>
 );
 
-export const Mypage = () => (
+export const MypageIcon = ({ widthProp, heightProp, colorProp, fillProp }) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
-    width={24.165}
-    height={26.725}
+    width={widthProp}
+    height={heightProp}
     viewBox="0 0 24.165 26.725"
   >
     <G
       data-name="\uADF8\uB8F9 29"
       transform="translate(-600.432 -64.915)"
-      fill="none"
-      stroke="#9b1818"
+      fill={fillProp}
+      stroke={colorProp}
       strokeLinecap="round"
       strokeLinejoin="round"
       strokeWidth={1.2}
@@ -247,5 +300,35 @@ export const UnderLine = () => (
       opacity={0.45}
       d="M0 .75h12"
     />
+  </Svg>
+);
+
+export const TemperatureIcon = () => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={19.046}
+    height={18.855}
+    viewBox="0 0 19.046 18.855"
+  >
+    <G
+      data-name="\uADF8\uB8F9 170"
+      fill="none"
+      stroke="#404040"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <Path
+        data-name="\uD328\uC2A4 129"
+        d="M5.117 10.06l8.8-8.8a2.6 2.6 0 113.678 3.678l-8.8 8.8a4.161 4.161 0 11-3.678-3.678z"
+      />
+      <Path
+        data-name="\uD328\uC2A4 130"
+        d="M5.457 11.894l8.268-8.268a1.05 1.05 0 011.48 0l.022.022a1.049 1.049 0 010 1.48l-8.268 8.268a2.38 2.38 0 11-1.5-1.5z"
+      />
+      <Path
+        data-name="\uD328\uC2A4 131"
+        d="M5.456 11.894l5.087-5.087 1.5 1.5-5.087 5.087a2.38 2.38 0 11-1.5-1.5z"
+      />
+    </G>
   </Svg>
 );

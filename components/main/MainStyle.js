@@ -1,6 +1,7 @@
 import styled from 'styled-components/native';
 import {
   responsiveHeight,
+  responsiveScreenWidth,
   responsiveWidth,
 } from 'react-native-responsive-dimensions';
 
@@ -66,7 +67,7 @@ export const ButtonsContainer = styled.View`
 export const DateContainer = styled.View`
   position: absolute;
   top: -15px;
-  right: 15px;
+  left: ${responsiveScreenWidth(6)}px;
 `;
 
 export const DateStyle = styled.Text`
