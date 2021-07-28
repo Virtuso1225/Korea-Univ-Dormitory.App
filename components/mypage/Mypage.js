@@ -43,7 +43,6 @@ const Mypage = () => {
 
   useEffect(() => {
     setUserInfoFunc2();
-    // console.log('hi');
   }, [UserContext, ProgressContext]);
 
   return (
