@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { Alert } from 'react-native';
+import Icon from 'react-native-vector-icons/AntDesign';
 import { UserContext, ProgressContext } from '../contexts';
 import { signout, deactivate } from '../firebase';
 import {
@@ -17,11 +18,12 @@ import {
   RowWrapper,
   ErrorText,
 } from './CardComponentsStyle';
-import Icon from 'react-native-vector-icons/AntDesign';
+import { useState } from 'react';
 
 const CardComponents = () => {
   const { spinner } = useContext(ProgressContext);
   const { setUser } = useContext(UserContext);
+  const [temperature, setTemperature] = useState(false);
   return (
     <ColumnWrapper>
       <TopRowWrapper>
