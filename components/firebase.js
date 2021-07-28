@@ -121,18 +121,19 @@ export const getStudentInfo = async (sid) => {
 };
 
 export const isExistNickname = async (nickname) => {
-  let isExist = true;
+  let isExist = false;
   const docRef = fs.collection('users').where('nickname', '==', nickname);
 
   await docRef
     .get()
     .then((querySnapshot) => {
-      if (querySnapshot.empty) {
-        isExist = false;
+      if (!querySnapshot.empty) {
+        isExist = true;
         console.log('No same nickname found.');
       } else {
-        isExist = true;
+        isExist = false;
       }
+      console.log('isnot중복', isExist);
     })
     .catch((error) => {
       console.log('Error getting documents: ', error);

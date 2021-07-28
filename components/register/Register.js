@@ -98,21 +98,23 @@ const Register = ({ navigation }) => {
   useEffect(() => {
     setDisabled(
       !(
-        name &&
-        id &&
-        sid &&
-        password &&
-        dorm &&
-        room &&
-        nickname &&
-        !nameError &&
-        !sidError &&
-        !passwordError &&
-        !checkError &&
-        !roomError &&
-        !nicknameError &&
-        compareStudentInfo &&
-        !existNickname
+        (
+          name &&
+          id &&
+          sid &&
+          password &&
+          dorm !== '' &&
+          room &&
+          nickname &&
+          !nameError &&
+          !sidError &&
+          !passwordError &&
+          !checkError &&
+          !roomError &&
+          !nicknameError &&
+          compareStudentInfo
+        )
+        // !existNickname
       )
     );
   }, [
@@ -130,7 +132,7 @@ const Register = ({ navigation }) => {
     roomError,
     nicknameError,
     compareStudentInfo,
-    existNickname,
+    // existNickname,
   ]);
 
   useEffect(() => {
@@ -202,10 +204,10 @@ const Register = ({ navigation }) => {
   // 애초에 선택하면 공란으로 못둬서 필요 없을 듯?
   useEffect(() => {
     if (refDormDidMount.current) {
-      if (!dorm) {
+      if (dorm === '') {
         setDormError('*필수 항목입니다.');
       } else {
-        setCheckError('');
+        setDormError('');
       }
     } else {
       refDormDidMount.current = true;
@@ -222,25 +224,9 @@ const Register = ({ navigation }) => {
         setRoomError('');
       }
     } else {
-      refDormDidMount.current = true;
+      refRoomDidMount.current = true;
     }
   }, [room]);
-
-  useEffect(() => {
-    if (refNicknameDidMount.current) {
-      if (!nickname) {
-        setNicknameError('*필수 항목입니다.');
-      } else if (nickname && existNickname) {
-        setNicknameError(
-          '*이미 존재하는 닉네임입니다. 다른 닉네임을 사용하세요.'
-        );
-      } else {
-        setNicknameError('');
-      }
-    } else {
-      refNicknameDidMount.current = true;
-    }
-  }, [nickname]);
 
   useEffect(() => {
     setEmail(`${id}@korea.ac.kr`);
@@ -248,8 +234,6 @@ const Register = ({ navigation }) => {
 
   useEffect(() => {
     const setStudentInfoFunc1 = async (_callback) => {
-      console.log(sid);
-      console.log(sid * 1);
       setStudentInfo(await getStudentInfo(sid * 1));
       _callback();
     };
@@ -259,7 +243,7 @@ const Register = ({ navigation }) => {
     };
 
     setStudentInfoFunc2();
-
+    console.log('studentInfo.dorm', studentInfo.dorm);
     if (studentInfo.name !== name) {
       setCompareStudentInfo(false);
     } else if (studentInfo.dorm !== dorm) {
@@ -280,14 +264,44 @@ const Register = ({ navigation }) => {
     const isExistNicknameFunc2 = () => {
       isExistNicknameFunc1(function () {});
     };
-
+    setNicknameError('');
     isExistNicknameFunc2();
+    setNicknameError('');
+    console.log('화면 isnot중복', existNickname);
+
+    if (refNicknameDidMount.current) {
+      if (!nickname) {
+        setNicknameError('*필수 항목입니다.');
+        // } else if (existNickname) {
+        //   setNicknameError(
+        //     '*이미 존재하는 닉네임입니다. 다른 닉네임을 사용하세요.'
+        //   );
+      } else {
+        setNicknameError('');
+      }
+    } else {
+      refNicknameDidMount.current = true;
+    }
   }, [nickname]);
 
   const _handleSignupBtnPress = async () => {
     console.log(disabled);
     if (disabled) {
-      if (!compareStudentInfo) {
+      if (nameError) {
+        Alert.alert('Signup Error', '이름을 확인하세요.');
+      } else if (sidError) {
+        Alert.alert('Signup Error', '학번을 확인하세요.');
+      } else if (idError) {
+        Alert.alert('Signup Error', '메일 주소를 확인하세요.');
+      } else if (passwordError) {
+        Alert.alert('Signup Error', '비밀번호를 확인하세요.');
+      } else if (checkError) {
+        Alert.alert('Signup Error', '비밀번호 확인을 확인하세요.');
+      } else if (roomError) {
+        Alert.alert('Signup Error', '호실 정보를 확인하세요.');
+        // } else if (nicknameError) {
+        //   Alert.alert('Signup Error', '닉네임을 확인하세요.');
+      } else if (!compareStudentInfo) {
         Alert.alert(
           'Signup Error',
           '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
@@ -465,7 +479,7 @@ const Register = ({ navigation }) => {
                 returnKeyType="done"
                 value={nickname}
                 onChangeText={setNickname}
-                onBlur={() => setNickname(removeWhitespace(nickname))}
+                // onBlur={() => setNickname(removeWhitespace(nickname))}
                 onSubmitEditing={_handleSignupBtnPress}
               />
               <ErrorText>{nicknameError}</ErrorText>
