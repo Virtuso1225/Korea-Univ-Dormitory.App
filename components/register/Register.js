@@ -36,11 +36,12 @@ import {
   RowWrapper,
   Input2,
   EmailDescription,
+  ColumnWrapper,
 } from './RegisterStyle';
 
 const Register = ({ navigation }) => {
   const dorms = [
-    '학생동(구관-남자동)',
+    '학생동 (구관-남자동)',
     '학생동(구관-여자동)',
     '프런티어관(신관-남자동)',
     '프런티어관(신관-여자동)',
@@ -60,13 +61,13 @@ const Register = ({ navigation }) => {
 
   const [nameError, setNameError] = useState('');
   const [sidError, setSidError] = useState('');
+  const [idError, setIdError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [checkError, setCheckError] = useState('');
-  // const [dormError, setDormError] = useState('');
+  const [dormError, setDormError] = useState('');
   const [roomError, setRoomError] = useState('');
   const [nicknameError, setNicknameError] = useState('');
-  // const [errorMessage, setErrorMessage] = useState('');
-  // const selectedItem = useState('');
+
   const [disabled, setDisabled] = useState(true);
   const [compareStudentInfo, setCompareStudentInfo] = useState(false);
   const [existNickname, setExistNickname] = useState(true);
@@ -78,7 +79,14 @@ const Register = ({ navigation }) => {
   const refRoom = useRef(null);
   const refNickname = useRef(null);
 
-  const refDidMount = useRef(null);
+  const refNameDidMount = useRef(null);
+  const refSidDidMount = useRef(null);
+  const refIdDidMount = useRef(null);
+  const refPasswordDidMount = useRef(null);
+  const refCheckDidMount = useRef(null);
+  const refDormDidMount = useRef(null);
+  const refRoomDidMount = useRef(null);
+  const refNicknameDidMount = useRef(null);
 
   const [studentInfo, setStudentInfo] = useState({
     name: '',
@@ -126,17 +134,19 @@ const Register = ({ navigation }) => {
   ]);
 
   useEffect(() => {
-    if (refDidMount.current) {
+    if (refNameDidMount.current) {
       if (!name) {
         setNameError('*필수 항목입니다.');
-        // setPasswordError('');
-        // setCheckError('');
-        // setRoomError('');
-        // setNicknameError('');
       } else {
         setNameError('');
       }
+    } else {
+      refNameDidMount.current = true;
+    }
+  }, [name]);
 
+  useEffect(() => {
+    if (refSidDidMount.current) {
       if (!sid) {
         setSidError('*필수 항목입니다.');
       } else if (sid && !validateSid(sid)) {
@@ -144,13 +154,27 @@ const Register = ({ navigation }) => {
       } else {
         setSidError('');
       }
+    } else {
+      refSidDidMount.current = true;
+    }
+  }, [sid]);
 
+  useEffect(() => {
+    if (refIdDidMount.current) {
+      if (!id) {
+        setIdError('*필수 항목입니다.');
+      } else {
+        setSidError('');
+      }
+    } else {
+      refIdDidMount.current = true;
+    }
+  }, [id]);
+
+  useEffect(() => {
+    if (refPasswordDidMount.current) {
       if (!password) {
         setPasswordError('*필수 항목입니다.');
-        // setNameError('');
-        // setCheckError('');
-        // setRoomError('');
-        // setNicknameError('');
       } else if (password && !validatePassword(password)) {
         setPasswordError(
           '* 영문, 숫자, 특수기호를 모두 포함한 6자리 이상일 것.'
@@ -158,42 +182,65 @@ const Register = ({ navigation }) => {
       } else {
         setPasswordError('');
       }
+    } else {
+      refPasswordDidMount.current = true;
+    }
+  }, [password]);
 
+  useEffect(() => {
+    if (refCheckDidMount.current) {
       if (check && password !== check) {
         setCheckError('* 입력 값이 일치하지 않습니다.');
-        // setNameError('');
-        // setPasswordError('');
-        // setRoomError('');
-        // setNicknameError('');
       } else {
         setCheckError('');
       }
+    } else {
+      refCheckDidMount.current = true;
+    }
+  }, [password, check]);
 
+  // 애초에 선택하면 공란으로 못둬서 필요 없을 듯?
+  useEffect(() => {
+    if (refDormDidMount.current) {
+      if (!dorm) {
+        setDormError('*필수 항목입니다.');
+      } else {
+        setCheckError('');
+      }
+    } else {
+      refDormDidMount.current = true;
+    }
+  }, [dorm]);
+
+  useEffect(() => {
+    if (refRoomDidMount.current) {
       if (!room) {
         setRoomError('*필수 항목입니다.');
-        // setNameError('');
-        // setPasswordError('');
-        // setCheckError('');
-        // setNicknameError('');
       } else if (room && !validateRoom(room)) {
         setRoomError('* 양식을 맞춰주세요. ex) 245-1');
       } else {
         setRoomError('');
       }
+    } else {
+      refDormDidMount.current = true;
+    }
+  }, [room]);
 
+  useEffect(() => {
+    if (refNicknameDidMount.current) {
       if (!nickname) {
         setNicknameError('*필수 항목입니다.');
-        // setNameError('');
-        // setPasswordError('');
-        // setCheckError('');
-        // setRoomError('');
+      } else if (nickname && existNickname) {
+        setNicknameError(
+          '*이미 존재하는 닉네임입니다. 다른 닉네임을 사용하세요.'
+        );
       } else {
         setNicknameError('');
       }
     } else {
-      refDidMount.current = true;
+      refNicknameDidMount.current = true;
     }
-  }, [name, sid, password, check, room, nickname]);
+  }, [nickname]);
 
   useEffect(() => {
     setEmail(`${id}@korea.ac.kr`);
@@ -201,6 +248,8 @@ const Register = ({ navigation }) => {
 
   useEffect(() => {
     const setStudentInfoFunc1 = async (_callback) => {
+      console.log(sid);
+      console.log(sid * 1);
       setStudentInfo(await getStudentInfo(sid * 1));
       _callback();
     };
@@ -236,28 +285,13 @@ const Register = ({ navigation }) => {
   }, [nickname]);
 
   const _handleSignupBtnPress = async () => {
+    console.log(disabled);
     if (disabled) {
-      if (!name) {
-        Alert.alert('Signup Error', '이름은 필수 항목입니다.');
-      } else if (!sid) {
-        Alert.alert('Signup Error', '학번은 필수 항목입니다.');
-      } else if (!id) {
-        Alert.alert('Signup Error', '아이디는 필수 항목입니다.');
-      } else if (!password) {
-        Alert.alert('Signup Error', '비밀번호는 필수 항목입니다.');
-      } else if (!check) {
-        Alert.alert('Signup Error', '비밀번호 확인은 필수 항목입니다.');
-      } else if (!room) {
-        Alert.alert('Signup Error', '호실 정보는 필수 항목입니다.');
-      } else if (!nickname) {
-        Alert.alert('Signup Error', '닉네임은 필수 항목입니다.');
-      } else if (!compareStudentInfo) {
+      if (!compareStudentInfo) {
         Alert.alert(
           'Signup Error',
           '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
         );
-      } else if (existNickname) {
-        Alert.alert('Signup Error', '닉네임이 중복됐습니다.');
       }
     } else {
       try {
@@ -271,7 +305,7 @@ const Register = ({ navigation }) => {
           room,
           nickname,
         });
-        // Alert.prompt()
+
         Alert.alert('이메일 인증 요청', '메일을 확인해주세요.', [
           {
             onPress: () => {
@@ -279,7 +313,6 @@ const Register = ({ navigation }) => {
             },
           },
         ]);
-        // navigation.navigate('Login');
       } catch (e) {
         Alert.alert('Signup Error', e.message);
       } finally {
@@ -321,7 +354,7 @@ const Register = ({ navigation }) => {
                 onBlur={() => setName(name.trim())}
                 maxLength={12}
               />
-              {/* <ErrorText>{nameError}</ErrorText> */}
+              <ErrorText>{nameError}</ErrorText>
             </InputWrapper>
             <InputWrapper>
               <Input
@@ -335,23 +368,25 @@ const Register = ({ navigation }) => {
                 onSubmitEditing={() => refId.current.focus()}
                 maxLength={10}
               />
-              {/* <ErrorText>{sidError}</ErrorText> */}
+              <ErrorText>{sidError}</ErrorText>
             </InputWrapper>
-            <RowWrapper>
-              <Input
-                ref={refId}
-                label="Id"
-                placeholder="아이디 (KUPID 계정과 동일)"
-                placeholderTextColor="#8E8E8E"
-                returnKeyType="next"
-                value={id}
-                onChangeText={setId}
-                onSubmitEditing={() => refPassword.current.focus()}
-                onBlur={() => setId(removeWhitespace(id))}
-              />
-              <EmailDescription>@korea.ac.kr</EmailDescription>
-            </RowWrapper>
-            {/* <ErrorText>{idError}</ErrorText> */}
+            <ColumnWrapper>
+              <RowWrapper>
+                <Input
+                  ref={refId}
+                  label="Id"
+                  placeholder="아이디 (KUPID 계정과 동일)"
+                  placeholderTextColor="#8E8E8E"
+                  returnKeyType="next"
+                  value={id}
+                  onChangeText={setId}
+                  onSubmitEditing={() => refPassword.current.focus()}
+                  onBlur={() => setId(removeWhitespace(id))}
+                />
+                <EmailDescription>@korea.ac.kr</EmailDescription>
+              </RowWrapper>
+              <ErrorText>{idError}</ErrorText>
+            </ColumnWrapper>
             <InputWrapper>
               <Input
                 ref={refPassword}
@@ -366,7 +401,7 @@ const Register = ({ navigation }) => {
                 onBlur={() => setPassword(removeWhitespace(password))}
                 secureTextEntry
               />
-              {/* <ErrorText>{passwordError}</ErrorText> */}
+              <ErrorText>{passwordError}</ErrorText>
             </InputWrapper>
             <InputWrapper>
               <Input
@@ -381,41 +416,46 @@ const Register = ({ navigation }) => {
                 onBlur={() => setCheck(removeWhitespace(check))}
                 secureTextEntry
               />
-              {/* <ErrorText>{checkError}</ErrorText> */}
+              <ErrorText>{checkError}</ErrorText>
             </InputWrapper>
             <RowWrapper>
-              <SelectDropdown
-                data={dorms}
-                buttonStyle={styles.buttonStyle}
-                buttonTextStyle={styles.buttonTextStyle}
-                onSelect={(selectedItem, index) => {
-                  setDorm(index);
-                }}
-                defaultButtonText="소속 동"
-                dropdownStyle={styles.dropdownStyle}
-                rowStyle={styles.rowStyle}
-                rowTextStyle={styles.rowTextStyle}
-                renderDropdownIcon={() => (
-                  <Icon name="down" size={10} color="#9F9F9F" />
-                )}
-                dropDownIconPosition="right"
-                buttonTextAfterSelection={(selectedItem) => {
-                  return selectedItem;
-                }}
-                rowTextForSelection={(item) => item}
-              />
-              <Input2
-                ref={refRoom}
-                label="Room"
-                placeholder="소속 호실 ex) 245 - 1"
-                placeholderTextColor="#8E8E8E"
-                returnKeyType="next"
-                value={room}
-                onChangeText={setRoom}
-                onSubmitEditing={() => refNickname.current.focus()}
-              />
+              <ColumnWrapper>
+                <SelectDropdown
+                  data={dorms}
+                  buttonStyle={styles.buttonStyle}
+                  buttonTextStyle={styles.buttonTextStyle}
+                  onSelect={(selectedItem, index) => {
+                    setDorm(index);
+                  }}
+                  defaultButtonText="소속 동"
+                  dropdownStyle={styles.dropdownStyle}
+                  rowStyle={styles.rowStyle}
+                  rowTextStyle={styles.rowTextStyle}
+                  renderDropdownIcon={() => (
+                    <Icon name="down" size={10} color="#9F9F9F" />
+                  )}
+                  dropDownIconPosition="right"
+                  buttonTextAfterSelection={(selectedItem) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item) => item}
+                />
+                <ErrorText>{dormError}</ErrorText>
+              </ColumnWrapper>
+              <ColumnWrapper>
+                <Input2
+                  ref={refRoom}
+                  label="Room"
+                  placeholder="소속 호실 ex) 245 - 1"
+                  placeholderTextColor="#8E8E8E"
+                  returnKeyType="next"
+                  value={room}
+                  onChangeText={setRoom}
+                  onSubmitEditing={() => refNickname.current.focus()}
+                />
+                <ErrorText>{roomError}</ErrorText>
+              </ColumnWrapper>
             </RowWrapper>
-            {/* <ErrorText>{roomError}</ErrorText> */}
             <InputWrapper>
               <Input
                 ref={refNickname}
@@ -428,16 +468,12 @@ const Register = ({ navigation }) => {
                 onBlur={() => setNickname(removeWhitespace(nickname))}
                 onSubmitEditing={_handleSignupBtnPress}
               />
-              {/* <ErrorText>{nicknameError}</ErrorText> */}
+              <ErrorText>{nicknameError}</ErrorText>
             </InputWrapper>
           </SubWrapper>
         </KeyboardAvoidingView>
         <BottomWrapper>
-          <ButtonWrapper
-            title="Sign up"
-            onPress={_handleSignupBtnPress}
-            disabled={disabled}
-          >
+          <ButtonWrapper title="Sign up" onPress={_handleSignupBtnPress}>
             <StyledButton>Sign up</StyledButton>
           </ButtonWrapper>
           <OptionWrapper>
