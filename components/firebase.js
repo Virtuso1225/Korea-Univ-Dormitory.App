@@ -53,6 +53,7 @@ export const signup = async ({
       dorm: currentUser.dorm,
       room: currentUser.room,
       password: currentUser.password,
+      nickname: currentUser.nickname,
     })
     .then(() => {
       console.log('firestore()DB 유저 추가 성공');
@@ -73,38 +74,98 @@ export const signup = async ({
   return {};
 };
 
-export const getCurrentUser = () => {
-  const { uid } = Auth.currentUser;
-  console.log('uid: ', uid);
-  const docRef = fs.collection('users').doc(uid);
+export const getCurrentUser = async () => {
+  let currentUserInfo = {
+    name: '',
+    email: '',
+    dorm: '',
+    room: '',
+    password: '',
+    sid: '',
+    nickname: '',
+  };
+  const docRef = fs.collection('users').doc(Auth.currentUser.uid);
 
-  docRef
+  await docRef.get().then((doc) => {
+    currentUserInfo = doc.data();
+  });
+
+  return currentUserInfo;
+};
+
+export const getStudentInfo = async (sid) => {
+  let studentInfo = {
+    name: '',
+    dorm: '',
+    room: '',
+    sid: '',
+  };
+  const docRef = fs.collection('studentList').where('sid', '==', sid);
+
+  await docRef
     .get()
-    .then((doc) => {
-      if (doc.exists) {
-        console.log('Document data:', doc.data());
-
-        const { name } = doc.data();
-        // const { email } = doc.data();
-        // const { dorm } = doc.data();
-        // const { room } = doc.data();
-        // const { password } = doc.data();
-
-        // console.log(dorm);
-        console.log(name);
-        // return { name, email, dorm, room, password};
-        return doc.data();
+    .then((querySnapshot) => {
+      if (querySnapshot.empty) {
+        console.log('No documents found.');
+      } else {
+        querySnapshot.forEach((doc) => {
+          studentInfo = doc.data();
+        });
       }
-      // doc.data() will be undefined in this case
-      return console.log('No such document!');
     })
     .catch((error) => {
-      console.log('Error getting document:', error);
+      console.log('Error getting documents: ', error);
     });
 
-  // return { name, email, dorm, room, password};
-  return {};
+  return studentInfo;
 };
+
+export const isExistNickname = async (nickname) => {
+  let isExist = true;
+  const docRef = fs.collection('users').where('nickname', '==', nickname);
+
+  await docRef
+    .get()
+    .then((querySnapshot) => {
+      if (querySnapshot.empty) {
+        isExist = false;
+        console.log('No same nickname found.');
+      } else {
+        isExist = true;
+      }
+    })
+    .catch((error) => {
+      console.log('Error getting documents: ', error);
+    });
+
+  return isExist;
+};
+
+// const uploadImage = async (uri) => {
+//   if (uri.startsWith('https')) {
+//     return uri;
+//   }
+
+//   const blob = await new Promise((resolve, reject) => {
+//     const xhr = new XMLHttpRequest();
+//     xhr.onload = function () {
+//       resolve(xhr.response);
+//     };
+//     xhr.onerror = function () {
+//       reject(new TypeError('Network request failed'));
+//     };
+//     xhr.responseType = 'blob';
+//     xhr.open('GET', uri, true);
+//     xhr.send(null);
+//   });
+
+//   const user = Auth.currentUser;
+//   const ref = app.storage().ref(`/profile/${user.uid}/photo.png`);
+//   const snapshot = await ref.put(blob, { contentType: 'image/png' });
+//   blob.close();
+
+//   return await snapshot.ref.getDownloadURL();
+// };
 
 export const signout = () => {
   Auth.signOut();

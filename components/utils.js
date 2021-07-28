@@ -29,3 +29,14 @@ export const removeWhitespace = (text) => {
   const regex = /\s/g;
   return text.replace(regex, '');
 };
+
+export const dorms = (index) => {
+  const dormsList = [
+    '학생동(구관-남자동)',
+    '학생동(구관-여자동)',
+    '프런티어관(신관-남자동)',
+    '프런티어관(신관-여자동)',
+  ];
+
+  return dormsList[index];
+};
