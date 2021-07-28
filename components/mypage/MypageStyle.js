@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 import {
+  responsiveScreenFontSize,
   responsiveScreenHeight,
   responsiveScreenWidth,
 } from 'react-native-responsive-dimensions';
@@ -27,7 +28,7 @@ export const Header = styled.View`
 export const PageTitle = styled.Text`
   margin-top: ${responsiveScreenHeight(6.9)}px;
   margin-left: ${responsiveScreenHeight(3)}px;
-  font-size: 20px;
+  font-size: ${responsiveScreenFontSize(2.15)}px;
   font-family: Bold6;
   color: black;
 `;

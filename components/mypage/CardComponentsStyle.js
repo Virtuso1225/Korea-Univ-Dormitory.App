@@ -29,4 +29,12 @@ export const ButtonText = styled.Text`
   font-family: Medium;
 `;
 
-export const ErrorText = styled.Text``;
+export const ErrorText = styled.Text`
+  font-size: ${responsiveScreenFontSize(1.29)}px;
+  font-family: Bold6;
+  color: #ff0000;
+  margin-left: 5px;
+  display: ${(props) => (props.visible ? 'flex' : 'none')};
+`;
+
+export const DescriptionText = styled.Text``;
