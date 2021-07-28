@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Text } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   responsiveScreenFontSize,
   responsiveScreenWidth,
   responsiveScreenHeight,
 } from 'react-native-responsive-dimensions';
 import CardComponents from './CardComponents';
+import { UserContext, ProgressContext } from '../contexts';
 import { getCurrentUser } from '../firebase';
 import { dorms } from '../utils';
 import {
@@ -20,8 +20,6 @@ import {
   CustomText,
   ButtonWrapper,
 } from './MypageStyle';
-
-let isAction = false;
 
 const Mypage = () => {
   const [userInfo, setUserInfo] = useState({
@@ -43,10 +41,10 @@ const Mypage = () => {
     setUserInfoFunc1(function () {});
   };
 
-  while (!isAction) {
+  useEffect(() => {
     setUserInfoFunc2();
-    isAction = true;
-  }
+    // console.log('hi');
+  }, [UserContext, ProgressContext]);
 
   return (
     <Background>

@@ -38,8 +38,6 @@ import {
   EmailDescription,
 } from './RegisterStyle';
 
-let isAction = false;
-
 const Register = ({ navigation }) => {
   const dorms = [
     '학생동(구관-남자동)',
@@ -48,7 +46,6 @@ const Register = ({ navigation }) => {
     '프런티어관(신관-여자동)',
   ];
 
-  // const { setUser } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
 
   const [name, setName] = useState('');
