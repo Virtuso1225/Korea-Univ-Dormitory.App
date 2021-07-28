@@ -17,12 +17,15 @@ import {
   TopRowWrapper,
   RowWrapper,
   ErrorText,
+  DescriptionText,
 } from './CardComponentsStyle';
 
 const CardComponents = () => {
   const { spinner } = useContext(ProgressContext);
   const { setUser } = useContext(UserContext);
-  const [temperature, setTemperature] = useState(false);
+  const [temperature, setTemperature] = useState('36.2');
+  const [penalty, setPenalty] = useState('1');
+
   return (
     <ColumnWrapper>
       <TopRowWrapper>
@@ -32,13 +35,31 @@ const CardComponents = () => {
           name="exclamationcircle"
           size={15}
           color="#FF0000"
-          style={{ marginLeft: 10, display: temperature ? 'flex' : 'none' }}
+          style={{
+            marginLeft: 10,
+            display: temperature === '' ? 'flex' : 'none',
+          }}
         />
         <ErrorText visible={temperature}>오늘의 체온을 기록해주세요!</ErrorText>
+        <DescriptionText font="Regular" visible={temperature}>
+          #오늘의 체온:
+        </DescriptionText>
+        <DescriptionText font="ExtraBold" visible={temperature}>
+          {temperature}℃
+        </DescriptionText>
+        <DescriptionText font="Regular" visible={temperature}>
+          #오늘의 외박여부:
+        </DescriptionText>
       </TopRowWrapper>
       <RowWrapper>
         <PenaltyIcon />
         <ButtonText>벌점 내역</ButtonText>
+        <DescriptionText font="Regular" visible={penalty}>
+          #현재 나의 벌점 내역:
+        </DescriptionText>
+        <DescriptionText font="ExtraBold" visible={penalty}>
+          {penalty}
+        </DescriptionText>
       </RowWrapper>
       <RowWrapper>
         <FacilityIcon />
