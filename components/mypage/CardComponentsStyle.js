@@ -34,7 +34,13 @@ export const ErrorText = styled.Text`
   font-family: Bold6;
   color: #ff0000;
   margin-left: 5px;
-  display: ${(props) => (props.visible ? 'flex' : 'none')};
+  display: ${(props) => (props.visible === '' ? 'flex' : 'none')};
 `;
 
-export const DescriptionText = styled.Text``;
+export const DescriptionText = styled.Text`
+  font-size: ${responsiveScreenFontSize(1.29)}px;
+  font-family: ${(props) => props.font};
+  color: #850000;
+  margin-left: 10px;
+  display: ${(props) => (props.visible === '' ? 'none' : 'flex')};
+`;
