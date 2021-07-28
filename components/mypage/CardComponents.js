@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { UserContext, ProgressContext } from '../contexts';
@@ -18,7 +18,6 @@ import {
   RowWrapper,
   ErrorText,
 } from './CardComponentsStyle';
-import { useState } from 'react';
 
 const CardComponents = () => {
   const { spinner } = useContext(ProgressContext);
