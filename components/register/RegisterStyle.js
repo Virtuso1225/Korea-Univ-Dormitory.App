@@ -34,10 +34,7 @@ export const InputWrapper = styled.View`
 `;
 
 export const RowWrapper = styled.View`
-  align-self: center;
-  margin-top: ${responsiveHeight(1)}px;
   width: 301px;
-  height: 39px;
   flex-direction: row;
   align-items: center;
 `;
@@ -124,4 +121,9 @@ export const ErrorText = styled.Text`
   margin-top: 3.5px;
   color: rgba(133, 0, 0, 1);
   font-size: 10px;
+  /* display: ${(props) => (props.current !== null ? 'flex' : 'none')}; */
+`;
+
+export const ColumnWrapper = styled.View`
+  margin-top: ${responsiveHeight(1)}px;
 `;
