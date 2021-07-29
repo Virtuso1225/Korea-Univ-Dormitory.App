@@ -6,7 +6,6 @@ import { signout, deactivate } from '../firebase';
 import {
   DeleteIcon,
   FacilityIcon,
-  LogoutIcon,
   PenaltyIcon,
   PersonalInfoIcon,
   TemperatureIcon,
@@ -19,12 +18,24 @@ import {
   ErrorText,
   DescriptionText,
 } from './CardComponentsStyle';
+import ModalComponent from './ModalComponent';
 
 const CardComponents = () => {
   const { spinner } = useContext(ProgressContext);
   const { setUser } = useContext(UserContext);
   const [temperature, setTemperature] = useState('36.2');
   const [penalty, setPenalty] = useState('1');
+  const Signout = async () => {
+    try {
+      spinner.start();
+      await signout();
+    } catch (e) {
+      Alert.alert('signout error', '에러 발생');
+    } finally {
+      setUser({});
+      spinner.stop();
+    }
+  };
 
   return (
     <ColumnWrapper>
@@ -69,40 +80,7 @@ const CardComponents = () => {
         <PersonalInfoIcon />
         <ButtonText>개인정보 변경하기</ButtonText>
       </RowWrapper>
-      <RowWrapper
-        title="Sign out"
-        onPress={async () =>
-          Alert.alert(
-            '로그아웃',
-            '정말 로그아웃하시겠습니까?',
-            [
-              {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-              },
-              {
-                text: 'OK',
-                onPress: async () => {
-                  try {
-                    spinner.start();
-                    await signout();
-                  } catch (e) {
-                    Alert.alert('signout error', '에러 발생');
-                  } finally {
-                    setUser({});
-                    spinner.stop();
-                  }
-                },
-              },
-            ],
-            { cancelable: false }
-          )
-        }
-      >
-        <LogoutIcon />
-        <ButtonText>로그아웃</ButtonText>
-      </RowWrapper>
+      <ModalComponent handlePress={Signout} />
       <RowWrapper
         title="Deactivation"
         onPress={() =>

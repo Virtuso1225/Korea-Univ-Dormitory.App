@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Main from '../components/main/Main';
 import Footer from '../components/footer/Footer';
+import DropOut from '../components/mypage/DropOut';
 
 const Stack = createStackNavigator();
 
