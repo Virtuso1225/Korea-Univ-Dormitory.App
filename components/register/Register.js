@@ -166,7 +166,7 @@ const Register = ({ navigation }) => {
       if (!id) {
         setIdError('*필수 항목입니다.');
       } else {
-        setSidError('');
+        setIdError('');
       }
     } else {
       refIdDidMount.current = true;
