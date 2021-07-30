@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Alert } from 'react-native';
 import firebase from 'firebase';
 import config from '../firebase.json';
@@ -74,18 +75,22 @@ export const signup = async ({
   return {};
 };
 
-export const comparePassword = (password) => {
-  firebase
+export const comparePassword = async (password) => {
+  let isDifferent = false;
+
+  await firebase
     .auth()
     .signInWithEmailAndPassword(Auth.currentUser.email, password)
-    .then((userCredential) => {
+    .then(() => {
+      isDifferent = false;
       console.log('password matched');
-      return true;
     })
     .catch((error) => {
-      console.log('password no matchedL: ', error.message);
-      return false;
+      isDifferent = true;
+      console.log('password no matched: ', error.message);
     });
+  console.log('firebase is differ', isDifferent);
+  return isDifferent;
 };
 
 export const getCurrentUser = async () => {
@@ -141,11 +146,11 @@ export const isExistNickname = async (nickname) => {
   await docRef
     .get()
     .then((querySnapshot) => {
-      if (!querySnapshot.empty) {
-        isExist = true;
+      if (querySnapshot.empty) {
+        isExist = false;
         console.log('No same nickname found.');
       } else {
-        isExist = false;
+        isExist = true;
       }
       console.log('isnot중복', isExist);
     })

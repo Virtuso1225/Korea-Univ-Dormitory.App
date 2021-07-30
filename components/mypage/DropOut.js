@@ -32,51 +32,49 @@ const DropOut = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
 
-  const [ischecked, setIschecked] = useState(false);
-  const [isdifferent, setIsdifferent] = useState(false);
+  const [isChecked, setIsChecked] = useState(false);
+  const [isDifferent, setIsDifferent] = useState(false);
   const [password, setPassword] = useState('');
   const [isFocused, setIsFocused] = useState(false);
 
   const refPasswordDidMount = useRef(null);
   const refPassword = useRef(null);
 
-  // // useEffect(() => {
+  const comparePasswordFunc = async () => {
+    spinner.start();
+    setIsDifferent(await comparePassword(password));
+    spinner.stop();
+  };
 
-  // //   // console.log('isFocused:', refPassword.current?.isFocused());
-  // // }, [password]);
-  // if (refPassword.current) {
-  //   if (!isFocused) {
-  //     setIsFocused(true);
-  //   }
-  // } else if (!refPassword.current) {
-  //   if (isFocused) {
-  //     setIsFocused(false);
-  //   }
-  // }
-
-  // console.log('isFocused:', refPassword.current?.isFocused());
-
-  // useEffect(() => {
-  //   if (refPasswordDidMount.current) {
-  //     if (!refPassword.current.isFocused()) {
-  //       if (!comparePassword(password)) {
-  //         setIsdifferent(true);
-  //       } else {
-  //         setIsdifferent(false);
-  //       }
-  //       console.log('isDiff:', isdifferent);
-  //     }
-  //   } else {
-  //     refPasswordDidMount.current = true;
-  //   }
-  // }, [isFocused]);
+  useEffect(() => {
+    if (refPasswordDidMount.current) {
+      if (isFocused === false) {
+        comparePasswordFunc();
+      }
+    } else {
+      refPasswordDidMount.current = true;
+    }
+  }, [isFocused]);
 
   const _handleDeactivateBtnPress = async () => {
-    if (!ischecked) {
+    spinner.start();
+    await comparePasswordFunc();
+    spinner.stop();
+
+    if (!isChecked) {
       Alert.alert('Deactivation Error', '회원 탈퇴 약관에 동의해주세요.');
-    } else if (!isdifferent) {
+    } else if (!isDifferent) {
       Alert.alert('Deactivation Error', '비밀번호를 확인하세요.');
     } else {
+      // try {
+      //   spinner.start();
+      //   await deactivate();
+      // } catch (e) {
+      //   Alert.alert('Deactivation Error', '에러 발생');
+      // } finally {
+      //   setUser({});
+      //   spinner.stop();
+      // }
       Alert.alert(
         '탈퇴 경고',
         '정말 탈퇴하시겠습니까?',
@@ -162,8 +160,8 @@ const DropOut = ({ navigation }) => {
               </CustomText>
             </Guidance>
             <CheckWrapper>
-              <Check onPress={() => setIschecked(!ischecked)}>
-                {ischecked && <Icon name="check" size={18} color="#1D1D1D" />}
+              <Check onPress={() => setIsChecked(!isChecked)}>
+                {isChecked && <Icon name="check" size={18} color="#1D1D1D" />}
               </Check>
               <CustomText
                 font="Medium"
@@ -187,14 +185,14 @@ const DropOut = ({ navigation }) => {
               label="Password"
               placeholder="기존 비밀번호를 입력해주세요."
               placeholderTextColor="#707070"
-              // onPress={setIsFocused(true)}
-              // different={isdifferent}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(false)}
               returnKeyType="done"
               value={password}
               onChangeText={setPassword}
               onSubmitEditing={_handleDeactivateBtnPress}
             />
-            <ErrorText visible={isdifferent}>
+            <ErrorText visible={isDifferent}>
               *잘못 입력된 비밀번호입니다.
             </ErrorText>
           </PasswordCheck>
