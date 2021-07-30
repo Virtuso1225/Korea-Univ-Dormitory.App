@@ -85,7 +85,7 @@ export const Input = styled.TextInput`
   font-family: Regular;
 `;
 
-export const EyeIconWrapper = styled.View``;
+// export const EyeIconWrapper = styled.View``;
 
 export const CheckWrapper = styled.View`
   flex-direction: row;
@@ -94,9 +94,6 @@ export const CheckWrapper = styled.View`
 `;
 
 export const Check = styled.View`
-  display: flex;
-  /* background-color: #f9f7f4; */
-  /* box-shadow: 2px 2px 5px #d4d2cf; */
   width: 29px;
   height: 29px;
   border: 1.5px solid rgba(133, 0, 0, 0.15);

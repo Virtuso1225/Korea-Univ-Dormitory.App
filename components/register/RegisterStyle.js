@@ -121,7 +121,7 @@ export const ErrorText = styled.Text`
   margin-top: 3.5px;
   color: rgba(133, 0, 0, 1);
   font-size: 10px;
-  /* display: ${(props) => (props.current !== null ? 'flex' : 'none')}; */
+  font-family: Regular;
 `;
 
 export const ColumnWrapper = styled.View`

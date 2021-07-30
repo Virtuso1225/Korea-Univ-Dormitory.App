@@ -125,15 +125,7 @@ const Front = ({ navigation }) => {
               </InputWrapper>
             </TextWrapper>
             <CheckWrapper>
-              <TouchableOpacity
-                onPress={() => {
-                  if (isSelected) {
-                    setSelection(false);
-                  } else {
-                    setSelection(true);
-                  }
-                }}
-              >
+              <TouchableOpacity onPress={() => setSelection(!isSelected)}>
                 <Check>
                   {isSelected && (
                     <Icon name="check" size={25} color="#850000" />

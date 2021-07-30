@@ -26,8 +26,8 @@ export const Header = styled.View`
 `;
 
 export const PageTitle = styled.Text`
-  margin-top: ${responsiveScreenHeight(6.9)}px;
-  margin-left: ${responsiveScreenHeight(3)}px;
+  margin-top: ${(props) => props.marginTop}px;
+  margin-left: ${(props) => props.marginLeft}px;
   font-size: ${responsiveScreenFontSize(2.15)}px;
   font-family: Bold6;
   color: black;

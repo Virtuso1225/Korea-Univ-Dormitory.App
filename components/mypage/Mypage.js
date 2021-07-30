@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   responsiveScreenFontSize,
-  responsiveScreenWidth,
   responsiveScreenHeight,
 } from 'react-native-responsive-dimensions';
 import CardComponents from './CardComponents';
@@ -21,7 +20,7 @@ import {
   ButtonWrapper,
 } from './MypageStyle';
 
-const Mypage = () => {
+const Mypage = ({ navigation }) => {
   const [userInfo, setUserInfo] = useState({
     name: '',
     email: '',
@@ -49,7 +48,12 @@ const Mypage = () => {
     <Background>
       <Card value={1.5}>
         <Header>
-          <PageTitle>마이페이지</PageTitle>
+          <PageTitle
+            marginTop={responsiveScreenHeight(6.9)}
+            marginLeft={responsiveScreenHeight(3)}
+          >
+            마이페이지
+          </PageTitle>
         </Header>
         <ProfileWrapper>
           <ProfileContainer>
@@ -90,7 +94,7 @@ const Mypage = () => {
         </ProfileWrapper>
       </Card>
       <Card value={2}>
-        <CardComponents />
+        <CardComponents navigation={navigation} />
       </Card>
     </Background>
   );

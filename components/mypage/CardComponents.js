@@ -20,7 +20,7 @@ import {
 } from './CardComponentsStyle';
 import ModalComponent from './ModalComponent';
 
-const CardComponents = () => {
+const CardComponents = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
   const { setUser } = useContext(UserContext);
   const [temperature, setTemperature] = useState('36.2');
@@ -36,6 +36,36 @@ const CardComponents = () => {
       spinner.stop();
     }
   };
+
+  // title="Deactivation"
+  // onPress={() =>
+  //   Alert.alert(
+  //     '탈퇴 경고',
+  //     '정말 탈퇴하시겠습니까?',
+  //     [
+  //       {
+  //         text: 'Cancel',
+  //         onPress: () => console.log('Cancel Pressed'),
+  //         style: 'cancel',
+  //       },
+  //       {
+  //         text: 'OK',
+  //         onPress: async () => {
+  //           try {
+  //             spinner.start();
+  //             await deactivate();
+  //           } catch (e) {
+  //             Alert.alert('deactivate error', '에러 발생');
+  //           } finally {
+  //             setUser({});
+  //             spinner.stop();
+  //           }
+  //         },
+  //       },
+  //     ],
+  //     { cancelable: false }
+  //   )
+  // }
 
   return (
     <ColumnWrapper>
@@ -81,37 +111,7 @@ const CardComponents = () => {
         <ButtonText>개인정보 변경하기</ButtonText>
       </RowWrapper>
       <ModalComponent handlePress={Signout} />
-      <RowWrapper
-        title="Deactivation"
-        onPress={() =>
-          Alert.alert(
-            '탈퇴 경고',
-            '정말 탈퇴하시겠습니까?',
-            [
-              {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-              },
-              {
-                text: 'OK',
-                onPress: async () => {
-                  try {
-                    spinner.start();
-                    await deactivate();
-                  } catch (e) {
-                    Alert.alert('deactivate error', '에러 발생');
-                  } finally {
-                    setUser({});
-                    spinner.stop();
-                  }
-                },
-              },
-            ],
-            { cancelable: false }
-          )
-        }
-      >
+      <RowWrapper onPress={() => navigation.navigate('Dropout')}>
         <DeleteIcon />
         <ButtonText>탈퇴하기</ButtonText>
       </RowWrapper>
