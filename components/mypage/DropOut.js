@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TouchableWithoutFeedback,
   Keyboard,
@@ -28,6 +28,13 @@ import { CustomText } from './ModalComponentStyle';
 const DropOut = ({ navigation }) => {
   const [ischecked, setIschecked] = useState(false);
   const [isdifferent, setIsdifferent] = useState(true);
+  //   React.useEffect(
+  //     () =>
+  //       navigation.addListener('blur', () =>
+  //         navigation.navigate('Footer', { screen: '공지사항' })
+  //       ),
+  //     []
+  //   );
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <BackgroundWrapper>
