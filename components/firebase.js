@@ -74,6 +74,20 @@ export const signup = async ({
   return {};
 };
 
+export const comparePassword = (password) => {
+  firebase
+    .auth()
+    .signInWithEmailAndPassword(Auth.currentUser.email, password)
+    .then((userCredential) => {
+      console.log('password matched');
+      return true;
+    })
+    .catch((error) => {
+      console.log('password no matchedL: ', error.message);
+      return false;
+    });
+};
+
 export const getCurrentUser = async () => {
   let currentUserInfo = {
     name: '',

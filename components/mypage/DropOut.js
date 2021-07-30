@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
   View,
+  Alert,
 } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/Entypo';
 import Close from 'react-native-vector-icons/EvilIcons';
+import { comparePassword, deactivate } from '../firebase';
 import { Header, PageTitle } from './MypageStyle';
+import { UserContext, ProgressContext } from '../contexts';
 import {
   CloseWrapper,
   BackgroundWrapper,
@@ -26,8 +29,83 @@ import {
 import { CustomText } from './ModalComponentStyle';
 
 const DropOut = ({ navigation }) => {
+  const { setUser } = useContext(UserContext);
+  const { spinner } = useContext(ProgressContext);
+
   const [ischecked, setIschecked] = useState(false);
-  const [isdifferent, setIsdifferent] = useState(true);
+  const [isdifferent, setIsdifferent] = useState(false);
+  const [password, setPassword] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
+
+  const refPasswordDidMount = useRef(null);
+  const refPassword = useRef(null);
+
+  // // useEffect(() => {
+
+  // //   // console.log('isFocused:', refPassword.current?.isFocused());
+  // // }, [password]);
+  // if (refPassword.current) {
+  //   if (!isFocused) {
+  //     setIsFocused(true);
+  //   }
+  // } else if (!refPassword.current) {
+  //   if (isFocused) {
+  //     setIsFocused(false);
+  //   }
+  // }
+
+  // console.log('isFocused:', refPassword.current?.isFocused());
+
+  // useEffect(() => {
+  //   if (refPasswordDidMount.current) {
+  //     if (!refPassword.current.isFocused()) {
+  //       if (!comparePassword(password)) {
+  //         setIsdifferent(true);
+  //       } else {
+  //         setIsdifferent(false);
+  //       }
+  //       console.log('isDiff:', isdifferent);
+  //     }
+  //   } else {
+  //     refPasswordDidMount.current = true;
+  //   }
+  // }, [isFocused]);
+
+  const _handleDeactivateBtnPress = async () => {
+    if (!ischecked) {
+      Alert.alert('Deactivation Error', '회원 탈퇴 약관에 동의해주세요.');
+    } else if (!isdifferent) {
+      Alert.alert('Deactivation Error', '비밀번호를 확인하세요.');
+    } else {
+      Alert.alert(
+        '탈퇴 경고',
+        '정말 탈퇴하시겠습니까?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: async () => {
+              try {
+                spinner.start();
+                await deactivate();
+              } catch (e) {
+                Alert.alert('Deactivation Error', '에러 발생');
+              } finally {
+                setUser({});
+                spinner.stop();
+              }
+            },
+          },
+        ],
+        { cancelable: false }
+      );
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <BackgroundWrapper>
@@ -105,9 +183,16 @@ const DropOut = ({ navigation }) => {
               비밀번호 확인
             </CustomText>
             <Password
+              ref={refPassword}
+              label="Password"
               placeholder="기존 비밀번호를 입력해주세요."
               placeholderTextColor="#707070"
-              different={isdifferent}
+              // onPress={setIsFocused(true)}
+              // different={isdifferent}
+              returnKeyType="done"
+              value={password}
+              onChangeText={setPassword}
+              onSubmitEditing={_handleDeactivateBtnPress}
             />
             <ErrorText visible={isdifferent}>
               *잘못 입력된 비밀번호입니다.
@@ -115,7 +200,10 @@ const DropOut = ({ navigation }) => {
           </PasswordCheck>
           <View style={styles.topShadow}>
             <View style={styles.bottomShadow}>
-              <ButtonWrapper>
+              <ButtonWrapper
+                title="Deactiviate"
+                onPress={_handleDeactivateBtnPress}
+              >
                 <CustomText
                   font="Medium"
                   size={responsiveScreenFontSize(1.8)}
