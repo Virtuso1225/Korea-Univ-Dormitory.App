@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   Alert,
+  Modal,
 } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/Entypo';
@@ -12,6 +13,12 @@ import Close from 'react-native-vector-icons/EvilIcons';
 import { comparePassword, deactivate } from '../firebase';
 import { Header, PageTitle } from './MypageStyle';
 import { UserContext, ProgressContext } from '../contexts';
+import {
+  CenterView,
+  ModalWrapper,
+  CustomText,
+  Button,
+} from './ModalComponentStyle';
 import {
   CloseWrapper,
   BackgroundWrapper,
@@ -26,7 +33,6 @@ import {
   ButtonWrapper,
   ErrorText,
 } from './DropOutStyle';
-import { CustomText } from './ModalComponentStyle';
 
 const DropOut = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
@@ -36,72 +42,69 @@ const DropOut = ({ navigation }) => {
   const [isDifferent, setIsDifferent] = useState(false);
   const [password, setPassword] = useState('');
   const [isFocused, setIsFocused] = useState(false);
+  // const isDifferent = false;
 
   const refPasswordDidMount = useRef(null);
   const refPassword = useRef(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const comparePasswordFunc = async () => {
+  const comparePasswordFunc = async (callback) => {
     spinner.start();
-    setIsDifferent(await comparePassword(password));
+    const isDiff = await comparePassword(password);
+    setIsDifferent(isDiff);
+    sleep();
     spinner.stop();
+
+    if (isDiff === isDifferent) {
+      callback();
+    } else {
+      setIsDifferent(isDiff);
+      callback();
+    }
   };
 
   useEffect(() => {
     if (refPasswordDidMount.current) {
       if (isFocused === false) {
-        comparePasswordFunc();
+        comparePasswordFunc(sleep);
       }
     } else {
       refPasswordDidMount.current = true;
     }
   }, [isFocused]);
 
-  const _handleDeactivateBtnPress = async () => {
-    spinner.start();
-    await comparePasswordFunc();
-    spinner.stop();
+  const sleep = () => {
+    const start = new Date().getTime();
+    while (new Date().getTime() < start + 200);
+  };
 
-    if (!isChecked) {
-      Alert.alert('Deactivation Error', '회원 탈퇴 약관에 동의해주세요.');
-    } else if (!isDifferent) {
+  const conditionCheck = () => {
+    if (isDifferent) {
       Alert.alert('Deactivation Error', '비밀번호를 확인하세요.');
     } else {
-      // try {
-      //   spinner.start();
-      //   await deactivate();
-      // } catch (e) {
-      //   Alert.alert('Deactivation Error', '에러 발생');
-      // } finally {
-      //   setUser({});
-      //   spinner.stop();
-      // }
-      Alert.alert(
-        '탈퇴 경고',
-        '정말 탈퇴하시겠습니까?',
-        [
-          {
-            text: 'Cancel',
-            onPress: () => console.log('Cancel Pressed'),
-            style: 'cancel',
-          },
-          {
-            text: 'OK',
-            onPress: async () => {
-              try {
-                spinner.start();
-                await deactivate();
-              } catch (e) {
-                Alert.alert('Deactivation Error', '에러 발생');
-              } finally {
-                setUser({});
-                spinner.stop();
-              }
-            },
-          },
-        ],
-        { cancelable: false }
-      );
+      setModalVisible(true);
     }
+  };
+
+  const _handleDeactivateBtnPress = () => {
+    setIsFocused(false);
+    sleep(1000);
+    if (!isChecked) {
+      Alert.alert('Deactivation Error', '회원 탈퇴 약관에 동의해주세요.');
+    } else {
+      setTimeout(() => {
+        spinner.stop();
+        console.log('isDifferent', isDifferent);
+        conditionCheck();
+      }, 1000);
+    }
+  };
+
+  const deactiveSpinner = async () => {
+    spinner.start();
+    await deactivate();
+    spinner.stop();
+    setUser({});
   };
 
   return (
@@ -187,10 +190,11 @@ const DropOut = ({ navigation }) => {
               placeholderTextColor="#707070"
               onFocus={() => setIsFocused(true)}
               onBlur={() => setIsFocused(false)}
-              returnKeyType="done"
               value={password}
               onChangeText={setPassword}
-              onSubmitEditing={_handleDeactivateBtnPress}
+              returnKeyType="done"
+              onSubmitEditing={() => setIsFocused(false)}
+              secureTextEntry
             />
             <ErrorText visible={isDifferent}>
               *잘못 입력된 비밀번호입니다.
@@ -201,23 +205,73 @@ const DropOut = ({ navigation }) => {
               <ButtonWrapper
                 title="Deactiviate"
                 onPress={_handleDeactivateBtnPress}
+                // setModalVisible(true)
               >
                 <CustomText
                   font="Medium"
                   size={responsiveScreenFontSize(1.8)}
                   color="#1D1D1D"
                 >
-                  완료
+                  탈퇴하기
                 </CustomText>
               </ButtonWrapper>
             </View>
           </View>
+          <>
+            <View>
+              <Modal
+                animationType="fade"
+                transparent
+                visible={modalVisible && !isDifferent}
+                onRequestClose={() => setModalVisible(!modalVisible)}
+              >
+                <CenterView>
+                  <ModalWrapper>
+                    <CustomText
+                      size={responsiveScreenFontSize(1.72)}
+                      font="Medium"
+                      color="#1D1D1D"
+                    >
+                      탈퇴
+                    </CustomText>
+                    <CustomText
+                      size={responsiveScreenFontSize(1.29)}
+                      font="Medium"
+                      color="#404040"
+                    >
+                      정말 탈퇴 하시겠습니까?
+                    </CustomText>
+                    <Button color="#850000" onPress={deactiveSpinner}>
+                      <CustomText
+                        size={responsiveScreenFontSize(1.5)}
+                        font="Medium"
+                        color="#FEFCF9"
+                      >
+                        탈퇴하기
+                      </CustomText>
+                    </Button>
+                    <Button
+                      color="#FFFDF9"
+                      onPress={() => setModalVisible(!modalVisible)}
+                    >
+                      <CustomText
+                        size={responsiveScreenFontSize(1.5)}
+                        font="Medium"
+                        color="#850000"
+                      >
+                        닫기
+                      </CustomText>
+                    </Button>
+                  </ModalWrapper>
+                </CenterView>
+              </Modal>
+            </View>
+          </>
         </Body>
       </BackgroundWrapper>
     </TouchableWithoutFeedback>
   );
 };
-
 const styles = StyleSheet.create({
   topShadow: {
     shadowOffset: {

@@ -36,11 +36,9 @@ export const signup = async ({
   const currentUser = {
     id: Auth.currentUser.uid,
     sid,
-    email,
     name,
     dorm,
     room,
-    password,
     nickname,
     emailVerified: Auth.currentUser.emailVerified,
   };
@@ -50,10 +48,8 @@ export const signup = async ({
     .set({
       name: currentUser.name,
       sid: currentUser.sid,
-      email: currentUser.email,
       dorm: currentUser.dorm,
       room: currentUser.room,
-      password: currentUser.password,
       nickname: currentUser.nickname,
     })
     .then(() => {
@@ -114,10 +110,10 @@ export const getCurrentUser = async () => {
 
 export const getStudentInfo = async (sid) => {
   let studentInfo = {
-    name: '',
     dorm: '',
     room: '',
     sid: '',
+    nickname: '',
   };
   const docRef = fs.collection('studentList').where('sid', '==', sid);
 
@@ -151,8 +147,8 @@ export const isExistNickname = async (nickname) => {
         console.log('No same nickname found.');
       } else {
         isExist = true;
+        console.log('isnot중복', isExist);
       }
-      console.log('isnot중복', isExist);
     })
     .catch((error) => {
       console.log('Error getting documents: ', error);
