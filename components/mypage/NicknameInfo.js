@@ -1,12 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect, useRef } from 'react';
 import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
   View,
+  Alert,
 } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Close from 'react-native-vector-icons/EvilIcons';
+import { UserContext, ProgressContext } from '../contexts';
+import {
+  getCurrentUser,
+  isExistNickname,
+  updateNicknameInfo,
+} from '../firebase';
 import {
   SubHeader,
   SelectionWrapper,
@@ -22,10 +29,126 @@ import {
 import { CustomText } from './ModalComponentStyle';
 import { Header, PageTitle } from './MypageStyle';
 import { ErrorText } from '../register/RegisterStyle';
+import { removeWhitespace } from '../utils';
 
 const NicknameInfo = ({ navigation }) => {
+  const { spinner } = useContext(ProgressContext);
+  const [userInfo, setUserInfo] = useState({
+    dorm: '',
+    room: '',
+    sid: '',
+  });
+
   const [nickname, setNickname] = useState('');
   const [nicknameError, setNicknameError] = useState('');
+  const [nicknameFocused, setNicknameFocused] = useState(false);
+  const refNicknameDidMount = useRef(null);
+  const refExistNicknameDidMount = useRef(null);
+
+  const [existNickname, setExistNickname] = useState(false);
+
+  const setUserInfoFunc = async () => {
+    setUserInfo(await getCurrentUser());
+  };
+
+  useEffect(() => {
+    spinner.start();
+    setUserInfoFunc();
+    spinner.stop();
+  }, [UserContext, ProgressContext]);
+
+  useEffect(() => {
+    setNickname(userInfo.nickname);
+  }, [userInfo]);
+
+  const nicknameCheck = () => {
+    if (!nickname) {
+      setNicknameError('*필수 항목입니다.');
+    } else if (existNickname) {
+      setNicknameError(
+        '*이미 존재하는 닉네임입니다. 다른 닉네임을 사용하세요.'
+      );
+    } else {
+      setNicknameError('');
+    }
+  };
+
+  const isExistNicknameFunc = async () => {
+    spinner.start();
+    setExistNickname(await isExistNickname(nickname));
+    spinner.stop();
+  };
+
+  useEffect(() => {
+    if (refNicknameDidMount.current) {
+      if (nicknameFocused === false) {
+        isExistNicknameFunc();
+        console.log('existNicknam', existNickname);
+        nicknameCheck();
+      }
+    } else {
+      refNicknameDidMount.current = true;
+    }
+  }, [nicknameFocused]);
+
+  useEffect(() => {
+    if (refExistNicknameDidMount.current) {
+      nicknameCheck();
+    } else {
+      refExistNicknameDidMount.current = true;
+    }
+  }, [existNickname]);
+
+  function sleep(ms) {
+    const wakeUpTime = Date.now() + ms;
+    while (Date.now() < wakeUpTime) {}
+  }
+
+  const conditionCheck = async () => {
+    console.log('1', !nickname, nicknameError, existNickname);
+    if (!nickname || nicknameError || existNickname) {
+      Alert.alert('Update Error', '닉네임 정보를 확인하세요.');
+    } else {
+      try {
+        spinner.start();
+        await updateNicknameInfo(nickname);
+        Alert.alert('Success', '정보 업데이트에 성공했습니다.', [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('Footer', { screen: 'Home' }),
+          },
+        ]);
+      } catch (e) {
+        Alert.alert('Update Error', e.message);
+      } finally {
+        spinner.stop();
+      }
+    }
+  };
+
+  let cnt = 0;
+
+  const lastCheck = () => {
+    if (cnt === 0) {
+      spinner.start();
+      isExistNicknameFunc();
+      nicknameCheck();
+      spinner.stop();
+      cnt += 1;
+    } else {
+      conditionCheck();
+      cnt = 0;
+    }
+  };
+
+  const _handleUpdateBtnPress = () => {
+    cnt = 0;
+    lastCheck();
+    spinner.start();
+    sleep(2000);
+    spinner.stop();
+    lastCheck();
+  };
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -52,17 +175,21 @@ const NicknameInfo = ({ navigation }) => {
             <RowWrapper>
               <Input
                 label="Nickname"
-                placeholder="닉네임"
-                placeholderTextColor="#8E8E8E"
                 returnKeyType="done"
-                value={nickname}
+                defaultValue={userInfo.nickname}
                 onChangeText={setNickname}
+                onBlur={() => [
+                  setNickname(removeWhitespace(nickname)),
+                  setNicknameFocused(false),
+                ]}
+                onFocus={() => setNicknameFocused(true)}
+                onSubmitEditing={_handleUpdateBtnPress}
               />
             </RowWrapper>
             <ErrorText>{nicknameError}</ErrorText>
             <View style={styles.topShadow}>
               <View style={styles.bottomShadow}>
-                <ButtonWrapper onPress={() => navigation.goBack()}>
+                <ButtonWrapper onPress={_handleUpdateBtnPress}>
                   <CustomText
                     font="Medium"
                     size={responsiveScreenFontSize(1.8)}

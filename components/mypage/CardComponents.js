@@ -37,36 +37,6 @@ const CardComponents = ({ navigation }) => {
     }
   };
 
-  // title="Deactivation"
-  // onPress={() =>
-  //   Alert.alert(
-  //     '탈퇴 경고',
-  //     '정말 탈퇴하시겠습니까?',
-  //     [
-  //       {
-  //         text: 'Cancel',
-  //         onPress: () => console.log('Cancel Pressed'),
-  //         style: 'cancel',
-  //       },
-  //       {
-  //         text: 'OK',
-  //         onPress: async () => {
-  //           try {
-  //             spinner.start();
-  //             await deactivate();
-  //           } catch (e) {
-  //             Alert.alert('deactivate error', '에러 발생');
-  //           } finally {
-  //             setUser({});
-  //             spinner.stop();
-  //           }
-  //         },
-  //       },
-  //     ],
-  //     { cancelable: false }
-  //   )
-  // }
-
   return (
     <ColumnWrapper>
       <TopRowWrapper onPress={() => navigation.navigate('Calendar')}>

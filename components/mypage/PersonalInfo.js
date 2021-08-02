@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Close from 'react-native-vector-icons/EvilIcons';
 import Icon from 'react-native-vector-icons/AntDesign';
+import { UserContext, ProgressContext } from '../contexts';
 import {
   BackgroundWrapper,
   Body,
@@ -11,6 +12,8 @@ import {
 } from './DropOutStyle';
 import { CustomText } from './ModalComponentStyle';
 import { Header, PageTitle } from './MypageStyle';
+import { getCurrentUser } from '../firebase';
+import { dorms } from '../utils';
 import {
   LinkWrapper,
   ProfileInfoWrapper,
@@ -19,6 +22,24 @@ import {
 } from './PersonalInfoStyle';
 
 const PersonalInfo = ({ navigation }) => {
+  const { spinner } = useContext(ProgressContext);
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    dorm: '',
+    room: '',
+    sid: '',
+    nickname: '',
+  });
+
+  const setUserInfoFunc = async () => {
+    spinner.start();
+    setUserInfo(await getCurrentUser());
+    spinner.stop();
+  };
+
+  useEffect(() => {
+    setUserInfoFunc();
+  }, [UserContext, ProgressContext]);
   return (
     <BackgroundWrapper>
       <Header>
@@ -38,7 +59,7 @@ const PersonalInfo = ({ navigation }) => {
               size={responsiveScreenFontSize(1.93)}
               color="#1D1D1D"
             >
-              차승민
+              {userInfo.name}
             </CustomText>
             <CustomText
               font="Regular"
@@ -73,6 +94,13 @@ const PersonalInfo = ({ navigation }) => {
           >
             소속 동/호실
           </CustomText>
+          <CustomText
+            font="Medium"
+            size={responsiveScreenFontSize(1.72)}
+            color="#850000"
+          >
+            {dorms(userInfo.dorm)} / {userInfo.room}호
+          </CustomText>
           <Icon name="right" size={14} color="#707070" />
         </LinkWrapper>
         <LinkWrapper onPress={() => navigation.navigate('NicknameInfo')}>
@@ -82,6 +110,13 @@ const PersonalInfo = ({ navigation }) => {
             color="#707070"
           >
             닉네임
+          </CustomText>
+          <CustomText
+            font="Medium"
+            size={responsiveScreenFontSize(1.72)}
+            color="#850000"
+          >
+            {userInfo.nickname}
           </CustomText>
           <Icon name="right" size={14} color="#707070" />
         </LinkWrapper>

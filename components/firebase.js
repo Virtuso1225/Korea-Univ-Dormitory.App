@@ -35,11 +35,9 @@ export const signup = async ({
   const currentUser = {
     id: Auth.currentUser.uid,
     sid,
-    email,
     name,
     dorm,
     room,
-    password,
     nickname,
     emailVerified: Auth.currentUser.emailVerified,
   };
@@ -49,10 +47,8 @@ export const signup = async ({
     .set({
       name: currentUser.name,
       sid: currentUser.sid,
-      email: currentUser.email,
       dorm: currentUser.dorm,
       room: currentUser.room,
-      password: currentUser.password,
       nickname: currentUser.nickname,
     })
     .then(() => {
@@ -72,6 +68,24 @@ export const signup = async ({
     .catch('Email not sent!');
 
   return {};
+};
+
+export const comparePassword = async (password) => {
+  let isDifferent = false;
+
+  await firebase
+    .auth()
+    .signInWithEmailAndPassword(Auth.currentUser.email, password)
+    .then(() => {
+      isDifferent = false;
+      console.log('password matched');
+    })
+    .catch((error) => {
+      isDifferent = true;
+      console.log('password no matched: ', error.message);
+    });
+  console.log('firebase is differ', isDifferent);
+  return isDifferent;
 };
 
 export const getCurrentUser = async () => {
@@ -95,10 +109,10 @@ export const getCurrentUser = async () => {
 
 export const getStudentInfo = async (sid) => {
   let studentInfo = {
-    name: '',
     dorm: '',
     room: '',
     sid: '',
+    nickname: '',
   };
   const docRef = fs.collection('studentList').where('sid', '==', sid);
 
@@ -127,19 +141,63 @@ export const isExistNickname = async (nickname) => {
   await docRef
     .get()
     .then((querySnapshot) => {
-      if (!querySnapshot.empty) {
-        isExist = true;
+      if (querySnapshot.empty) {
+        isExist = false;
         console.log('No same nickname found.');
       } else {
-        isExist = false;
+        isExist = true;
+        console.log('isnot중복', isExist);
       }
-      console.log('isnot중복', isExist);
     })
     .catch((error) => {
       console.log('Error getting documents: ', error);
     });
 
   return isExist;
+};
+
+export const updateDormInfo = async (dorm, room) => {
+  const currentUser = {
+    uid: Auth.currentUser.uid,
+    dorm,
+    room,
+  };
+  console.log('currentUser', currentUser);
+  const docRef = fs.collection('users').doc(currentUser.uid);
+
+  await docRef
+    .update({
+      dorm: currentUser.dorm,
+      room: currentUser.room,
+    })
+    .then(() => {
+      console.log('Document successfully updated!');
+    })
+    .catch((error) => {
+      // The document probably doesn't exist.
+      console.error('Error updating document: ', error);
+    });
+};
+
+export const updateNicknameInfo = async (nickname) => {
+  const currentUser = {
+    uid: Auth.currentUser.uid,
+    nickname,
+  };
+  console.log('currentUser', currentUser);
+  const docRef = fs.collection('users').doc(currentUser.uid);
+
+  await docRef
+    .update({
+      nickname: currentUser.nickname,
+    })
+    .then(() => {
+      console.log('Document successfully updated!');
+    })
+    .catch((error) => {
+      // The document probably doesn't exist.
+      console.error('Error updating document: ', error);
+    });
 };
 
 // const uploadImage = async (uri) => {

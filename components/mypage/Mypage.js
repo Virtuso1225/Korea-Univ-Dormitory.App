@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import {
   responsiveScreenFontSize,
   responsiveScreenHeight,
@@ -22,28 +22,22 @@ import {
 } from './MypageStyle';
 
 const Mypage = ({ navigation }) => {
+  const { spinner } = useContext(ProgressContext);
   const [userInfo, setUserInfo] = useState({
-    name: '',
-    email: '',
     dorm: '',
     room: '',
-    password: '',
     sid: '',
     nickname: '',
   });
 
-  const setUserInfoFunc1 = async (_callback) => {
+  const setUserInfoFunc = async () => {
+    spinner.start();
     setUserInfo(await getCurrentUser());
-    _callback();
-    console.log('hi');
-  };
-
-  const setUserInfoFunc2 = () => {
-    setUserInfoFunc1(function () {});
+    spinner.stop();
   };
 
   useEffect(() => {
-    setUserInfoFunc2();
+    setUserInfoFunc();
   }, [UserContext, ProgressContext]);
 
   return (

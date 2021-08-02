@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext, useRef } from 'react';
 import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
   View,
+  Alert,
 } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Close from 'react-native-vector-icons/EvilIcons';
@@ -16,21 +17,148 @@ import {
   RowWrapper,
   CloseWrapper,
 } from './DropOutStyle';
+import { UserContext, ProgressContext } from '../contexts';
 import { CustomText } from './ModalComponentStyle';
 import { Header, PageTitle } from './MypageStyle';
 import { ColumnWrapper, ErrorText, Input2 } from '../register/RegisterStyle';
+import { dorms, removeWhitespace, validateRoom } from '../utils';
+import { getCurrentUser, getStudentInfo, updateDormInfo } from '../firebase';
 
 const DormInfo = ({ navigation }) => {
   const dorms = [
-    '학생동 (구관-남자동)',
+    '학생동(구관-남자동)',
     '학생동(구관-여자동)',
     '프런티어관(신관-남자동)',
     '프런티어관(신관-여자동)',
   ];
+  const { spinner } = useContext(ProgressContext);
+  const [userInfo, setUserInfo] = useState({
+    dorm: '',
+    room: '',
+    sid: '',
+  });
+
+  const [studentInfo, setStudentInfo] = useState({
+    name: '',
+    dorm: '',
+    room: '',
+    sid: '',
+  });
+
   const [dorm, setDorm] = useState('');
   const [room, setRoom] = useState('');
+  const [sid, setSid] = useState('');
+
   const [dormError, setDormError] = useState('');
   const [roomError, setRoomError] = useState('');
+
+  const [dormFocused, setDormFocused] = useState(false);
+  const [roomFocused, setRoomFocused] = useState(false);
+  const [compareStudentInfo, setCompareStudentInfo] = useState(false);
+
+  const refRoomDidMount = useRef(null);
+
+  const setUserInfoFunc = async () => {
+    setUserInfo(await getCurrentUser());
+  };
+
+  useEffect(() => {
+    spinner.start();
+    setUserInfoFunc();
+    spinner.stop();
+  }, [UserContext, ProgressContext]);
+
+  useEffect(() => {
+    spinner.start();
+    setRoom(userInfo.room);
+    setDorm(userInfo.dorm);
+    setSid(userInfo.sid);
+    spinner.stop();
+  }, [userInfo]);
+
+  const setStudentInfoFunc = async () => {
+    setStudentInfo(await getStudentInfo(sid * 1));
+    console.log('sid', studentInfo);
+  };
+
+  useEffect(() => {
+    if (sid !== '') {
+      setStudentInfoFunc();
+    }
+  }, [sid]);
+
+  const roomCheck = () => {
+    if (!room) {
+      setRoomError('*필수 항목입니다.');
+    } else if (room && !validateRoom(room)) {
+      setRoomError('* 양식을 맞춰주세요. ex) 245-1');
+    } else {
+      setRoomError('');
+    }
+  };
+
+  const compareCheck = () => {
+    if (studentInfo.dorm !== dorm) {
+      setCompareStudentInfo(false);
+    } else if (studentInfo.room !== room) {
+      setCompareStudentInfo(false);
+    } else {
+      setCompareStudentInfo(true);
+    }
+    console.log('student', studentInfo.dorm, dorm, studentInfo.room, room);
+  };
+
+  useEffect(() => {
+    if (refRoomDidMount.current) {
+      if (roomFocused === false) {
+        roomCheck();
+      }
+    } else {
+      refRoomDidMount.current = true;
+    }
+  }, [roomFocused]);
+
+  useEffect(() => {
+    compareCheck();
+  }, [dorm, room, studentInfo]);
+
+  const conditionCheck = async () => {
+    if (!room || roomError) {
+      Alert.alert('Update Error', '호실 정보를 확인하세요.');
+    } else if (!compareStudentInfo) {
+      Alert.alert(
+        'Update Error',
+        '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
+      );
+    } else {
+      try {
+        spinner.start();
+        await updateDormInfo(dorm, room);
+        Alert.alert('Success', '정보 업데이트에 성공했습니다.', [
+          {
+            text: 'OK',
+            onPress: () => navigation.navigate('Footer', { screen: 'Home' }),
+          },
+        ]);
+      } catch (e) {
+        Alert.alert('Update Error', e.message);
+      } finally {
+        spinner.stop();
+      }
+    }
+  };
+
+  const _handleUpdateBtnPress = () => {
+    spinner.start();
+    roomCheck();
+    compareCheck();
+    spinner.stop();
+
+    setTimeout(function () {
+      conditionCheck();
+    }, 500);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <BackgroundWrapper>
@@ -62,7 +190,7 @@ const DormInfo = ({ navigation }) => {
                   onSelect={(selectedItem, index) => {
                     setDorm(index);
                   }}
-                  defaultButtonText="소속 동"
+                  defaultValueByIndex={userInfo.dorm}
                   dropdownStyle={styles.dropdownStyle}
                   rowStyle={styles.rowStyle}
                   rowTextStyle={styles.rowTextStyle}
@@ -80,18 +208,23 @@ const DormInfo = ({ navigation }) => {
               <ColumnWrapper>
                 <Input2
                   label="Room"
-                  placeholder="소속 호실 ex) 245 - 1"
-                  placeholderTextColor="#8E8E8E"
-                  returnKeyType="next"
-                  value={room}
+                  returnKeyType="done"
+                  defaultValue={userInfo.room}
+                  // value={room}
                   onChangeText={setRoom}
+                  onBlur={() => [
+                    setRoom(removeWhitespace(room)),
+                    setRoomFocused(false),
+                  ]}
+                  onFocus={() => setRoomFocused(true)}
+                  onSubmitEditing={_handleUpdateBtnPress}
                 />
                 <ErrorText>{roomError}</ErrorText>
               </ColumnWrapper>
             </RowWrapper>
             <View style={styles.topShadow}>
               <View style={styles.bottomShadow}>
-                <ButtonWrapper onPress={() => navigation.goBack()}>
+                <ButtonWrapper onPress={_handleUpdateBtnPress}>
                   <CustomText
                     font="Medium"
                     size={responsiveScreenFontSize(1.8)}
