@@ -34,6 +34,7 @@ const Mypage = ({ navigation }) => {
   const setUserInfoFunc1 = async (_callback) => {
     setUserInfo(await getCurrentUser());
     _callback();
+    console.log('hi');
   };
 
   const setUserInfoFunc2 = () => {

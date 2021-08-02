@@ -28,13 +28,6 @@ import { CustomText } from './ModalComponentStyle';
 const DropOut = ({ navigation }) => {
   const [ischecked, setIschecked] = useState(false);
   const [isdifferent, setIsdifferent] = useState(true);
-  //   React.useEffect(
-  //     () =>
-  //       navigation.addListener('blur', () =>
-  //         navigation.navigate('Footer', { screen: '공지사항' })
-  //       ),
-  //     []
-  //   );
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <BackgroundWrapper>
@@ -43,7 +36,7 @@ const DropOut = ({ navigation }) => {
             <PageTitle marginTop={0} marginLeft={0}>
               회원 탈퇴하기
             </PageTitle>
-            <CloseWrapper onPress={() => navigation.navigate('Mypage')}>
+            <CloseWrapper onPress={() => navigation.goBack()}>
               <Close name="close" size={20} color="#707070" />
             </CloseWrapper>
           </RowWrapper>

@@ -69,7 +69,7 @@ const CardComponents = ({ navigation }) => {
 
   return (
     <ColumnWrapper>
-      <TopRowWrapper>
+      <TopRowWrapper onPress={() => navigation.navigate('Calendar')}>
         <TemperatureIcon />
         <ButtonText>체온기록</ButtonText>
         <Icon

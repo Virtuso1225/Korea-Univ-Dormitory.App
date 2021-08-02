@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import Mypage from './Mypage';
 import DropOut from './DropOut';
+import Temperature from './Temperature';
 
 const Stack = createStackNavigator();
 
@@ -11,6 +12,11 @@ const MypageStack = () => {
       <Stack.Screen
         name="Mypage"
         component={Mypage}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Calendar"
+        component={Temperature}
         options={{ headerShown: false }}
       />
       <Stack.Screen

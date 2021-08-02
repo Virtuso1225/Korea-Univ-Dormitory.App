@@ -60,6 +60,7 @@ const Footer = () => {
               <TextWrapper activated={focused}>공지사항</TextWrapper>
             </NavigationWrapper>
           ),
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
@@ -77,6 +78,7 @@ const Footer = () => {
               <TextWrapper activated={focused}>마이페이지</TextWrapper>
             </NavigationWrapper>
           ),
+          unmountOnBlur: true,
         }}
       />
     </Tab.Navigator>
