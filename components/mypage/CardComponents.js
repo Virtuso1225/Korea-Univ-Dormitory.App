@@ -106,7 +106,7 @@ const CardComponents = ({ navigation }) => {
         <FacilityIcon />
         <ButtonText>최근 예약 내역</ButtonText>
       </RowWrapper>
-      <RowWrapper>
+      <RowWrapper onPress={() => navigation.navigate('PersonalInfo')}>
         <PersonalInfoIcon />
         <ButtonText>개인정보 변경하기</ButtonText>
       </RowWrapper>

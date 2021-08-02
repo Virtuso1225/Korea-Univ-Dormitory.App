@@ -44,6 +44,7 @@ export const EmailDescription = styled.Text`
   font-size: ${responsiveScreenFontSize(1.5)}px;
   font-family: Medium;
 `;
+
 export const Input = styled.TextInput`
   font-size: ${responsiveScreenFontSize(1.5)}px;
   padding-left: 10px;

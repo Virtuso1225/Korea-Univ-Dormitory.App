@@ -33,9 +33,7 @@ const DropOut = ({ navigation }) => {
       <BackgroundWrapper>
         <Header>
           <RowWrapper>
-            <PageTitle marginTop={0} marginLeft={0}>
-              회원 탈퇴하기
-            </PageTitle>
+            <PageTitle>회원 탈퇴하기</PageTitle>
             <CloseWrapper onPress={() => navigation.goBack()}>
               <Close name="close" size={20} color="#707070" />
             </CloseWrapper>

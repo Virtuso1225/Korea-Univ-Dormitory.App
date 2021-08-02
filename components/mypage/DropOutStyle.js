@@ -9,6 +9,7 @@ export const CloseWrapper = styled.Pressable`
   align-items: center;
   justify-content: center;
 `;
+
 export const RowWrapper = styled.View`
   margin-top: ${responsiveScreenHeight(6.9)}px;
   width: ${responsiveScreenWidth(87)}px;
@@ -16,6 +17,7 @@ export const RowWrapper = styled.View`
   justify-content: space-between;
   align-self: center;
 `;
+
 export const BackgroundWrapper = styled.View`
   flex: 1;
   background-color: #f9f7f4;

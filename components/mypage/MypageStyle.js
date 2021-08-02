@@ -25,16 +25,22 @@ export const Header = styled.View`
   border-bottom-color: #dedede;
 `;
 
+export const RowWrapper = styled.View`
+  margin-top: ${responsiveScreenHeight(6.9)}px;
+  width: ${responsiveScreenWidth(87)}px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-self: center;
+`;
+
 export const PageTitle = styled.Text`
-  margin-top: ${(props) => props.marginTop}px;
-  margin-left: ${(props) => props.marginLeft}px;
   font-size: ${responsiveScreenFontSize(2.15)}px;
   font-family: Bold6;
   color: black;
 `;
 
 export const ProfileWrapper = styled.View`
-  flex: 2;
+  flex: 2.4;
   align-items: center;
   justify-content: center;
 `;

@@ -18,6 +18,7 @@ import {
   ProfileTextContainer,
   CustomText,
   ButtonWrapper,
+  RowWrapper,
 } from './MypageStyle';
 
 const Mypage = ({ navigation }) => {
@@ -47,14 +48,11 @@ const Mypage = ({ navigation }) => {
 
   return (
     <Background>
-      <Card value={1.5}>
+      <Card value={0.7}>
         <Header>
-          <PageTitle
-            marginTop={responsiveScreenHeight(6.9)}
-            marginLeft={responsiveScreenHeight(3)}
-          >
-            마이페이지
-          </PageTitle>
+          <RowWrapper>
+            <PageTitle>마이페이지</PageTitle>
+          </RowWrapper>
         </Header>
         <ProfileWrapper>
           <ProfileContainer>
@@ -83,18 +81,18 @@ const Mypage = ({ navigation }) => {
               </CustomText>
             </ProfileTextContainer>
           </ProfileContainer>
-          <ButtonWrapper>
-            <CustomText
-              font="Medium"
-              size={responsiveScreenFontSize(1.5)}
-              margin={0}
-            >
-              프로필 수정
-            </CustomText>
-          </ButtonWrapper>
+          {/* <ButtonWrapper>
+              <CustomText
+                font="Medium"
+                size={responsiveScreenFontSize(1.5)}
+                margin={0}
+              >
+                프로필 수정
+              </CustomText>
+            </ButtonWrapper> */}
         </ProfileWrapper>
       </Card>
-      <Card value={2}>
+      <Card value={1}>
         <CardComponents navigation={navigation} />
       </Card>
     </Background>
