@@ -38,8 +38,15 @@ const PersonalInfo = ({ navigation }) => {
   };
 
   useEffect(() => {
-    setUserInfoFunc();
-  }, [UserContext, ProgressContext]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      spinner.start();
+      setUserInfoFunc();
+      spinner.stop();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   return (
     <BackgroundWrapper>
       <Header>

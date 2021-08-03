@@ -16,37 +16,58 @@ const MypageStack = () => {
       <Stack.Screen
         name="Mypage"
         component={Mypage}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          unmountOnBlur: true,
+        }}
       />
       <Stack.Screen
         name="Calendar"
         component={Temperature}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          unmountOnBlur: true,
+        }}
       />
       <Stack.Screen
         name="PersonalInfo"
         component={PersonalInfo}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          unmountOnBlur: true,
+        }}
       />
       <Stack.Screen
         name="DormInfo"
         component={DormInfo}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          unmountOnBlur: true,
+        }}
       />
       <Stack.Screen
         name="NicknameInfo"
         component={NicknameInfo}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          unmountOnBlur: true,
+        }}
       />
       <Stack.Screen
         name="PasswordInfo"
         component={PasswordInfo}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          unmountOnBlur: true,
+        }}
       />
       <Stack.Screen
         name="Dropout"
         component={DropOut}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: false,
+          unmountOnBlur: true,
+        }}
       />
     </Stack.Navigator>
   );

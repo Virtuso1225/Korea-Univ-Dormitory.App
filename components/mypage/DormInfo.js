@@ -63,10 +63,14 @@ const DormInfo = ({ navigation }) => {
   };
 
   useEffect(() => {
-    spinner.start();
-    setUserInfoFunc();
-    spinner.stop();
-  }, [UserContext, ProgressContext]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      spinner.start();
+      setUserInfoFunc();
+      spinner.stop();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     spinner.start();

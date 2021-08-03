@@ -6,6 +6,7 @@ import {
   View,
   Alert,
 } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Close from 'react-native-vector-icons/EvilIcons';
 import { UserContext, ProgressContext } from '../contexts';
@@ -52,10 +53,14 @@ const NicknameInfo = ({ navigation }) => {
   };
 
   useEffect(() => {
-    spinner.start();
-    setUserInfoFunc();
-    spinner.stop();
-  }, [UserContext, ProgressContext]);
+    const unsubscribe = navigation.addListener('focus', () => {
+      spinner.start();
+      setUserInfoFunc();
+      spinner.stop();
+    });
+
+    return unsubscribe;
+  }, [navigation]);
 
   useEffect(() => {
     setNickname(userInfo.nickname);
@@ -99,11 +104,6 @@ const NicknameInfo = ({ navigation }) => {
     }
   }, [existNickname]);
 
-  function sleep(ms) {
-    const wakeUpTime = Date.now() + ms;
-    while (Date.now() < wakeUpTime) {}
-  }
-
   const conditionCheck = async () => {
     console.log('1', !nickname, nicknameError, existNickname);
     if (!nickname || nicknameError || existNickname) {
@@ -115,7 +115,7 @@ const NicknameInfo = ({ navigation }) => {
         Alert.alert('Success', '정보 업데이트에 성공했습니다.', [
           {
             text: 'OK',
-            onPress: () => navigation.goBack(),
+            onPress: () => navigation.replace('PersonalInfo'),
           },
         ]);
       } catch (e) {
@@ -143,10 +143,6 @@ const NicknameInfo = ({ navigation }) => {
 
   const _handleUpdateBtnPress = () => {
     cnt = 0;
-    lastCheck();
-    spinner.start();
-    sleep(2000);
-    spinner.stop();
     lastCheck();
   };
 
