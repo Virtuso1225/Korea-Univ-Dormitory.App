@@ -166,7 +166,7 @@ const PasswordInfo = ({ navigation }) => {
           updatePasswordInfo(newPassword);
           Alert.alert(
             'Success',
-            '정보 업데이트에 성공했습니다.\n새로 로그인하세요.',
+            '정보 업데이트에 성공했습니다.\n새로운 비밀번호로 로그인하세요.',
             [
               {
                 text: 'OK',

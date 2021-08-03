@@ -19,6 +19,7 @@ import {
   CustomText,
   Button,
 } from './ModalComponentStyle';
+import { removeWhitespace } from '../utils';
 import {
   CloseWrapper,
   BackgroundWrapper,
@@ -31,76 +32,64 @@ import {
   PasswordCheck,
   Password,
   ButtonWrapper,
-  ErrorText,
 } from './DropOutStyle';
+import { ErrorText } from '../register/RegisterStyle';
 
 const DropOut = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
 
   const [isChecked, setIsChecked] = useState(false);
-  const [isDifferent, setIsDifferent] = useState(false);
-  const [password, setPassword] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
-  // const isDifferent = false;
 
-  const refPasswordDidMount = useRef(null);
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
   const refPassword = useRef(null);
+
   const [modalVisible, setModalVisible] = useState(false);
 
-  const comparePasswordFunc = async (callback) => {
-    spinner.start();
-    const isDiff = await comparePassword(password);
-    setIsDifferent(isDiff);
-    sleep();
-    spinner.stop();
+  const comparePasswordFunc = async () => {
+    const isDifferent = await comparePassword(password);
 
-    if (isDiff === isDifferent) {
-      callback();
-    } else {
-      setIsDifferent(isDiff);
-      callback();
-    }
+    return isDifferent;
   };
 
-  useEffect(() => {
-    if (refPasswordDidMount.current) {
-      if (isFocused === false) {
-        comparePasswordFunc(sleep);
-      }
-    } else {
-      refPasswordDidMount.current = true;
-    }
-  }, [isFocused]);
+  const passwordCheck = async (comparePassword) => {
+    let errorMsg = '';
 
-  const sleep = () => {
-    const start = new Date().getTime();
-    while (new Date().getTime() < start + 200);
+    if (!password) {
+      errorMsg = '*필수 항목입니다.';
+    } else if (comparePassword) {
+      errorMsg = '*잘못된 비밀번호입니다.';
+    }
+
+    setPasswordError(errorMsg);
+
+    return errorMsg;
   };
 
-  const conditionCheck = () => {
-    if (isDifferent) {
-      Alert.alert('Deactivation Error', '비밀번호를 확인하세요.');
-    } else {
-      setModalVisible(true);
-    }
+  const lastCheck = async () => {
+    const comparePassword = await comparePasswordFunc();
+    await passwordCheck(comparePassword);
+
+    return comparePassword;
   };
 
-  const _handleDeactivateBtnPress = () => {
-    setIsFocused(false);
-    sleep(1000);
+  const _handleDropOutBtnPress = () => {
     if (!isChecked) {
       Alert.alert('Deactivation Error', '회원 탈퇴 약관에 동의해주세요.');
     } else {
-      setTimeout(() => {
-        spinner.stop();
-        console.log('isDifferent', isDifferent);
-        conditionCheck();
-      }, 1000);
+      lastCheck().then((comparePassword) => {
+        if (!password || comparePassword) {
+          Alert.alert('Deactivation Error', '기존 비밀번호를 확인하세요.');
+        } else {
+          setModalVisible(true);
+        }
+      });
     }
   };
 
-  const deactiveSpinner = async () => {
+  const deactiveFunc = async () => {
     spinner.start();
     await deactivate();
     spinner.stop();
@@ -188,24 +177,20 @@ const DropOut = ({ navigation }) => {
               label="Password"
               placeholder="기존 비밀번호를 입력해주세요."
               placeholderTextColor="#707070"
-              onFocus={() => setIsFocused(true)}
-              onBlur={() => setIsFocused(false)}
+              onBlur={() => setPassword(removeWhitespace(password))}
               value={password}
               onChangeText={setPassword}
               returnKeyType="done"
-              onSubmitEditing={() => setIsFocused(false)}
+              onSubmitEditing={_handleDropOutBtnPress}
               secureTextEntry
             />
-            <ErrorText visible={isDifferent}>
-              *잘못 입력된 비밀번호입니다.
-            </ErrorText>
+            <ErrorText>{passwordError}</ErrorText>
           </PasswordCheck>
           <View style={styles.topShadow}>
             <View style={styles.bottomShadow}>
               <ButtonWrapper
                 title="Deactiviate"
-                onPress={_handleDeactivateBtnPress}
-                // setModalVisible(true)
+                onPress={_handleDropOutBtnPress}
               >
                 <CustomText
                   font="Medium"
@@ -221,7 +206,7 @@ const DropOut = ({ navigation }) => {
             <Modal
               animationType="fade"
               transparent
-              visible={modalVisible && !isDifferent}
+              visible={modalVisible}
               onRequestClose={() => setModalVisible(!modalVisible)}
             >
               <CenterView>
@@ -240,7 +225,7 @@ const DropOut = ({ navigation }) => {
                   >
                     정말 탈퇴 하시겠습니까?
                   </CustomText>
-                  <Button color="#850000" onPress={deactiveSpinner}>
+                  <Button color="#850000" onPress={deactiveFunc}>
                     <CustomText
                       size={responsiveScreenFontSize(1.5)}
                       font="Medium"
