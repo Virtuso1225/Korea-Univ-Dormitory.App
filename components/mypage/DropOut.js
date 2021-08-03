@@ -217,56 +217,54 @@ const DropOut = ({ navigation }) => {
               </ButtonWrapper>
             </View>
           </View>
-          <>
-            <View>
-              <Modal
-                animationType="fade"
-                transparent
-                visible={modalVisible && !isDifferent}
-                onRequestClose={() => setModalVisible(!modalVisible)}
-              >
-                <CenterView>
-                  <ModalWrapper>
+          <View>
+            <Modal
+              animationType="fade"
+              transparent
+              visible={modalVisible && !isDifferent}
+              onRequestClose={() => setModalVisible(!modalVisible)}
+            >
+              <CenterView>
+                <ModalWrapper>
+                  <CustomText
+                    size={responsiveScreenFontSize(1.72)}
+                    font="Medium"
+                    color="#1D1D1D"
+                  >
+                    탈퇴
+                  </CustomText>
+                  <CustomText
+                    size={responsiveScreenFontSize(1.29)}
+                    font="Medium"
+                    color="#404040"
+                  >
+                    정말 탈퇴 하시겠습니까?
+                  </CustomText>
+                  <Button color="#850000" onPress={deactiveSpinner}>
                     <CustomText
-                      size={responsiveScreenFontSize(1.72)}
+                      size={responsiveScreenFontSize(1.5)}
                       font="Medium"
-                      color="#1D1D1D"
+                      color="#FEFCF9"
                     >
-                      탈퇴
+                      탈퇴하기
                     </CustomText>
+                  </Button>
+                  <Button
+                    color="#FFFDF9"
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
                     <CustomText
-                      size={responsiveScreenFontSize(1.29)}
+                      size={responsiveScreenFontSize(1.5)}
                       font="Medium"
-                      color="#404040"
+                      color="#850000"
                     >
-                      정말 탈퇴 하시겠습니까?
+                      닫기
                     </CustomText>
-                    <Button color="#850000" onPress={deactiveSpinner}>
-                      <CustomText
-                        size={responsiveScreenFontSize(1.5)}
-                        font="Medium"
-                        color="#FEFCF9"
-                      >
-                        탈퇴하기
-                      </CustomText>
-                    </Button>
-                    <Button
-                      color="#FFFDF9"
-                      onPress={() => setModalVisible(!modalVisible)}
-                    >
-                      <CustomText
-                        size={responsiveScreenFontSize(1.5)}
-                        font="Medium"
-                        color="#850000"
-                      >
-                        닫기
-                      </CustomText>
-                    </Button>
-                  </ModalWrapper>
-                </CenterView>
-              </Modal>
-            </View>
-          </>
+                  </Button>
+                </ModalWrapper>
+              </CenterView>
+            </Modal>
+          </View>
         </Body>
       </BackgroundWrapper>
     </TouchableWithoutFeedback>

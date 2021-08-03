@@ -115,7 +115,7 @@ const NicknameInfo = ({ navigation }) => {
         Alert.alert('Success', '정보 업데이트에 성공했습니다.', [
           {
             text: 'OK',
-            onPress: () => navigation.navigate('Footer', { screen: 'Home' }),
+            onPress: () => navigation.goBack(),
           },
         ]);
       } catch (e) {
