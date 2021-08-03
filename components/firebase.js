@@ -162,7 +162,7 @@ export const updateDormInfo = async (dorm, room) => {
     dorm,
     room,
   };
-  console.log('currentUser', currentUser);
+
   const docRef = fs.collection('users').doc(currentUser.uid);
 
   await docRef
@@ -174,7 +174,6 @@ export const updateDormInfo = async (dorm, room) => {
       console.log('Document successfully updated!');
     })
     .catch((error) => {
-      // The document probably doesn't exist.
       console.error('Error updating document: ', error);
     });
 };
@@ -184,7 +183,7 @@ export const updateNicknameInfo = async (nickname) => {
     uid: Auth.currentUser.uid,
     nickname,
   };
-  console.log('currentUser', currentUser);
+
   const docRef = fs.collection('users').doc(currentUser.uid);
 
   await docRef
@@ -195,8 +194,20 @@ export const updateNicknameInfo = async (nickname) => {
       console.log('Document successfully updated!');
     })
     .catch((error) => {
-      // The document probably doesn't exist.
       console.error('Error updating document: ', error);
+    });
+};
+
+export const updatePasswordInfo = (password) => {
+  const user = Auth.currentUser;
+
+  user
+    .updatePassword(password)
+    .then(() => {
+      console.log('Password successfully updated');
+    })
+    .catch((error) => {
+      console.log('Password updating error: ', error);
     });
 };
 

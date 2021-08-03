@@ -47,14 +47,9 @@ const DormInfo = ({ navigation }) => {
 
   const [dorm, setDorm] = useState('');
   const [room, setRoom] = useState('');
-  const [sid, setSid] = useState('');
 
-  const [dormError, setDormError] = useState('');
   const [roomError, setRoomError] = useState('');
-
-  const [dormFocused, setDormFocused] = useState(false);
   const [roomFocused, setRoomFocused] = useState(false);
-  const [compareStudentInfo, setCompareStudentInfo] = useState(false);
 
   const refRoomDidMount = useRef(null);
 
@@ -72,44 +67,38 @@ const DormInfo = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
+  const setStudentInfoFunc = async (sid) => {
+    const studentInfo = await getStudentInfo(sid * 1);
+    setStudentInfo(studentInfo);
+  };
+
   useEffect(() => {
-    spinner.start();
     setRoom(userInfo.room);
     setDorm(userInfo.dorm);
-    setSid(userInfo.sid);
-    spinner.stop();
+    setStudentInfoFunc(userInfo.sid);
   }, [userInfo]);
 
-  const setStudentInfoFunc = async () => {
-    setStudentInfo(await getStudentInfo(sid * 1));
-    console.log('sid', studentInfo);
-  };
+  const roomCheck = async () => {
+    let errorMsg = '';
 
-  useEffect(() => {
-    if (sid !== '') {
-      setStudentInfoFunc();
-    }
-  }, [sid]);
-
-  const roomCheck = () => {
     if (!room) {
-      setRoomError('*필수 항목입니다.');
+      errorMsg = '*필수 항목입니다.';
     } else if (room && !validateRoom(room)) {
-      setRoomError('* 양식을 맞춰주세요. ex) 245-1');
-    } else {
-      setRoomError('');
+      errorMsg = '* 양식을 맞춰주세요. ex) 245-1';
     }
+
+    setRoomError(errorMsg);
+
+    return errorMsg;
   };
 
-  const compareCheck = () => {
-    if (studentInfo.dorm !== dorm) {
-      setCompareStudentInfo(false);
-    } else if (studentInfo.room !== room) {
-      setCompareStudentInfo(false);
-    } else {
-      setCompareStudentInfo(true);
+  const compareCheck = async () => {
+    let compareStudentInfo = true;
+    if (studentInfo.dorm !== dorm || studentInfo.room !== room) {
+      compareStudentInfo = false;
     }
-    console.log('student', studentInfo.dorm, dorm, studentInfo.room, room);
+
+    return compareStudentInfo;
   };
 
   useEffect(() => {
@@ -122,45 +111,39 @@ const DormInfo = ({ navigation }) => {
     }
   }, [roomFocused]);
 
-  useEffect(() => {
-    compareCheck();
-  }, [dorm, room, studentInfo]);
-
-  const conditionCheck = async () => {
-    if (!room || roomError) {
-      Alert.alert('Update Error', '호실 정보를 확인하세요.');
-    } else if (!compareStudentInfo) {
-      Alert.alert(
-        'Update Error',
-        '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
-      );
-    } else {
-      try {
-        spinner.start();
-        await updateDormInfo(dorm, room);
-        Alert.alert('Success', '정보 업데이트에 성공했습니다.', [
-          {
-            text: 'OK',
-            onPress: () => navigation.navigate('Footer', { screen: 'Home' }),
-          },
-        ]);
-      } catch (e) {
-        Alert.alert('Update Error', e.message);
-      } finally {
-        spinner.stop();
-      }
-    }
+  const lastCheck = () => {
+    return Promise.all([roomCheck(), compareCheck()]);
   };
 
   const _handleUpdateBtnPress = () => {
-    spinner.start();
-    roomCheck();
-    compareCheck();
-    spinner.stop();
+    lastCheck().then((results) => {
+      const roomError = results[0];
+      const compareStudentInfo = results[1];
 
-    setTimeout(function () {
-      conditionCheck();
-    }, 500);
+      if (!room || roomError) {
+        Alert.alert('Update Error', '호실 정보를 확인하세요.');
+      } else if (!compareStudentInfo) {
+        Alert.alert(
+          'Update Error',
+          '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
+        );
+      } else {
+        try {
+          spinner.start();
+          updateDormInfo(dorm, room);
+          Alert.alert('Success', '정보 업데이트에 성공했습니다.', [
+            {
+              text: 'OK',
+              onPress: () => navigation.replace('PersonalInfo'),
+            },
+          ]);
+        } catch (e) {
+          Alert.alert('Update Error', e.message);
+        } finally {
+          spinner.stop();
+        }
+      }
+    });
   };
 
   return (
@@ -207,7 +190,6 @@ const DormInfo = ({ navigation }) => {
                   }}
                   rowTextForSelection={(item) => item}
                 />
-                <ErrorText>{dormError}</ErrorText>
               </ColumnWrapper>
               <ColumnWrapper>
                 <Input2

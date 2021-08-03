@@ -6,10 +6,10 @@ import {
   View,
   Alert,
 } from 'react-native';
-import { CommonActions } from '@react-navigation/native';
+
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Close from 'react-native-vector-icons/EvilIcons';
-import { UserContext, ProgressContext } from '../contexts';
+import { ProgressContext } from '../contexts';
 import {
   getCurrentUser,
   isExistNickname,
@@ -44,12 +44,10 @@ const NicknameInfo = ({ navigation }) => {
   const [nicknameError, setNicknameError] = useState('');
   const [nicknameFocused, setNicknameFocused] = useState(false);
   const refNicknameDidMount = useRef(null);
-  const refExistNicknameDidMount = useRef(null);
-
-  const [existNickname, setExistNickname] = useState(false);
 
   const setUserInfoFunc = async () => {
-    setUserInfo(await getCurrentUser());
+    const userInfo = await getCurrentUser();
+    setUserInfo(userInfo);
   };
 
   useEffect(() => {
@@ -66,84 +64,67 @@ const NicknameInfo = ({ navigation }) => {
     setNickname(userInfo.nickname);
   }, [userInfo]);
 
-  const nicknameCheck = () => {
-    if (!nickname) {
-      setNicknameError('*필수 항목입니다.');
-    } else if (existNickname) {
-      setNicknameError(
-        '*이미 존재하는 닉네임입니다. 다른 닉네임을 사용하세요.'
-      );
-    } else {
-      setNicknameError('');
-    }
+  const isExistNicknameFunc = async () => {
+    let existNickname = true;
+
+    spinner.start();
+    existNickname = isExistNickname(nickname);
+    spinner.stop();
+
+    return existNickname;
   };
 
-  const isExistNicknameFunc = async () => {
-    spinner.start();
-    setExistNickname(await isExistNickname(nickname));
-    spinner.stop();
+  const nicknameCheck = async (existNickname) => {
+    let errorMsg = '';
+
+    if (!nickname) {
+      errorMsg = '*필수 항목입니다.';
+    } else if (existNickname) {
+      errorMsg = '*이미 존재하는 닉네임입니다. 다른 닉네임을 사용하세요.';
+    }
+
+    return errorMsg;
+  };
+
+  const lastCheck = async () => {
+    const existNickname = await isExistNicknameFunc();
+    const errorMsg = await nicknameCheck(existNickname);
+    setNicknameError(errorMsg);
+
+    return existNickname;
   };
 
   useEffect(() => {
     if (refNicknameDidMount.current) {
       if (nicknameFocused === false) {
-        isExistNicknameFunc();
-        console.log('existNicknam', existNickname);
-        nicknameCheck();
+        lastCheck();
       }
     } else {
       refNicknameDidMount.current = true;
     }
   }, [nicknameFocused]);
 
-  useEffect(() => {
-    if (refExistNicknameDidMount.current) {
-      nicknameCheck();
-    } else {
-      refExistNicknameDidMount.current = true;
-    }
-  }, [existNickname]);
-
-  const conditionCheck = async () => {
-    console.log('1', !nickname, nicknameError, existNickname);
-    if (!nickname || nicknameError || existNickname) {
-      Alert.alert('Update Error', '닉네임 정보를 확인하세요.');
-    } else {
-      try {
-        spinner.start();
-        await updateNicknameInfo(nickname);
-        Alert.alert('Success', '정보 업데이트에 성공했습니다.', [
-          {
-            text: 'OK',
-            onPress: () => navigation.replace('PersonalInfo'),
-          },
-        ]);
-      } catch (e) {
-        Alert.alert('Update Error', e.message);
-      } finally {
-        spinner.stop();
-      }
-    }
-  };
-
-  let cnt = 0;
-
-  const lastCheck = () => {
-    if (cnt === 0) {
-      spinner.start();
-      isExistNicknameFunc();
-      nicknameCheck();
-      spinner.stop();
-      cnt += 1;
-    } else {
-      conditionCheck();
-      cnt = 0;
-    }
-  };
-
   const _handleUpdateBtnPress = () => {
-    cnt = 0;
-    lastCheck();
+    lastCheck().then((existNickname) => {
+      if (!nickname || existNickname) {
+        Alert.alert('Update Error', '닉네임 정보를 확인하세요.');
+      } else {
+        try {
+          spinner.start();
+          updateNicknameInfo(nickname);
+          Alert.alert('Success', '정보 업데이트에 성공했습니다.', [
+            {
+              text: 'OK',
+              onPress: () => navigation.replace('PersonalInfo'),
+            },
+          ]);
+        } catch (e) {
+          Alert.alert('Update Error', e.message);
+        } finally {
+          spinner.stop();
+        }
+      }
+    });
   };
 
   return (
