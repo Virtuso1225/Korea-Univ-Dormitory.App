@@ -9,7 +9,7 @@ import {
 
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Close from 'react-native-vector-icons/EvilIcons';
-import { ProgressContext } from '../contexts';
+import { ProgressContext, UserContext } from '../contexts';
 import {
   getCurrentUser,
   isExistNickname,
@@ -115,7 +115,8 @@ const NicknameInfo = ({ navigation }) => {
           Alert.alert('Success', '정보 업데이트에 성공했습니다.', [
             {
               text: 'OK',
-              onPress: () => navigation.replace('PersonalInfo'),
+              // onPress: () => navigation.replace('PersonalInfo'),
+              onPress: () => navigation.goBack(),
             },
           ]);
         } catch (e) {
@@ -128,59 +129,75 @@ const NicknameInfo = ({ navigation }) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <BackgroundWrapper>
-        <Header>
-          <RowWrapper>
-            <PageTitle>닉네임 변경</PageTitle>
-            <CloseWrapper onPress={() => navigation.goBack()}>
-              <Close name="close" size={20} color="#707070" />
-            </CloseWrapper>
-          </RowWrapper>
-        </Header>
-        <Body>
-          <SelectionWrapper>
-            <SubHeader>
-              <CustomText
-                font="Regular"
-                size={responsiveScreenFontSize(1.5)}
-                color="#707070"
-              >
-                안암학사 어플 프로필을 설정해주세요.
-              </CustomText>
-            </SubHeader>
-            <RowWrapper>
-              <Input
-                label="Nickname"
-                returnKeyType="done"
-                defaultValue={userInfo.nickname}
-                onChangeText={setNickname}
-                onBlur={() => [
-                  setNickname(removeWhitespace(nickname)),
-                  setNicknameFocused(false),
-                ]}
-                onFocus={() => setNicknameFocused(true)}
-                onSubmitEditing={_handleUpdateBtnPress}
-              />
-            </RowWrapper>
-            <ErrorText>{nicknameError}</ErrorText>
-            <View style={styles.topShadow}>
-              <View style={styles.bottomShadow}>
-                <ButtonWrapper onPress={_handleUpdateBtnPress}>
+    <UserContext.Consumer>
+      {({ setProfileInfo, profileInfo }) => (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <BackgroundWrapper>
+            <Header>
+              <RowWrapper>
+                <PageTitle>닉네임 변경</PageTitle>
+                <CloseWrapper onPress={() => navigation.goBack()}>
+                  <Close name="close" size={20} color="#707070" />
+                </CloseWrapper>
+              </RowWrapper>
+            </Header>
+            <Body>
+              <SelectionWrapper>
+                <SubHeader>
                   <CustomText
-                    font="Medium"
-                    size={responsiveScreenFontSize(1.8)}
-                    color="#1D1D1D"
+                    font="Regular"
+                    size={responsiveScreenFontSize(1.5)}
+                    color="#707070"
                   >
-                    완료
+                    안암학사 어플 프로필을 설정해주세요.
                   </CustomText>
-                </ButtonWrapper>
-              </View>
-            </View>
-          </SelectionWrapper>
-        </Body>
-      </BackgroundWrapper>
-    </TouchableWithoutFeedback>
+                </SubHeader>
+                <RowWrapper>
+                  <Input
+                    label="Nickname"
+                    returnKeyType="done"
+                    defaultValue={profileInfo.nickname}
+                    onChangeText={setNickname}
+                    onBlur={() => [
+                      setNickname(removeWhitespace(nickname)),
+                      setNicknameFocused(false),
+                    ]}
+                    onFocus={() => setNicknameFocused(true)}
+                    onSubmitEditing={() => {
+                      _handleUpdateBtnPress();
+                      if (nicknameError === '') {
+                        setProfileInfo({ ...profileInfo, nickname });
+                      }
+                    }}
+                  />
+                </RowWrapper>
+                <ErrorText>{nicknameError}</ErrorText>
+                <View style={styles.topShadow}>
+                  <View style={styles.bottomShadow}>
+                    <ButtonWrapper
+                      onPress={() => {
+                        _handleUpdateBtnPress();
+                        if (nicknameError === '') {
+                          setProfileInfo({ ...profileInfo, nickname });
+                        }
+                      }}
+                    >
+                      <CustomText
+                        font="Medium"
+                        size={responsiveScreenFontSize(1.8)}
+                        color="#1D1D1D"
+                      >
+                        완료
+                      </CustomText>
+                    </ButtonWrapper>
+                  </View>
+                </View>
+              </SelectionWrapper>
+            </Body>
+          </BackgroundWrapper>
+        </TouchableWithoutFeedback>
+      )}
+    </UserContext.Consumer>
   );
 };
 

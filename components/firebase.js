@@ -1,7 +1,9 @@
+import { useContext } from 'react';
 import { Alert } from 'react-native';
 import firebase from 'firebase';
 import config from '../firebase.json';
 import 'firebase/firestore';
+import { UserContext } from './contexts';
 
 const app = !firebase.apps.length
   ? firebase.initializeApp(config)
@@ -12,13 +14,19 @@ const fs = firebase.firestore();
 
 export const signin = async ({ email, password }) => {
   const { user } = await Auth.signInWithEmailAndPassword(email, password);
+  // const { setUser } = useContext(UserContext);
 
   if (!Auth.currentUser.emailVerified) {
     console.log(Auth.currentUser.emailVerified);
     Alert.alert('Signin Error', '메일을 인증하세요.');
     return {};
   }
+  const docRef = fs.collection('users').doc(Auth.currentUser.uid);
 
+  await docRef.get().then((doc) => {
+    // setUser(doc.data());
+    console.log(doc.data());
+  });
   return user;
 };
 
