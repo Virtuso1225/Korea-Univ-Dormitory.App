@@ -13,6 +13,7 @@ import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { signup, getStudentInfo, isExistNickname } from '../firebase';
 import {
+  dorms,
   removeWhitespace,
   validateSid,
   validatePassword,
@@ -46,7 +47,6 @@ const Register = ({ navigation }) => {
     '프런티어관(신관-남자동)',
     '프런티어관(신관-여자동)',
   ];
-
   const { spinner } = useContext(ProgressContext);
 
   const [name, setName] = useState('');
@@ -64,7 +64,6 @@ const Register = ({ navigation }) => {
   const [sidFocused, setSidFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
   const [checkFocused, setCheckFocused] = useState(false);
-  const [dormFocused, setDormFocused] = useState(false);
   const [roomFocused, setRoomFocused] = useState(false);
   const [nicknameFocused, setNicknameFocused] = useState(false);
 
@@ -77,9 +76,6 @@ const Register = ({ navigation }) => {
   const [roomError, setRoomError] = useState('');
   const [nicknameError, setNicknameError] = useState('');
 
-  const [disabled, setDisabled] = useState(true);
-  const [compareStudentInfo, setCompareStudentInfo] = useState(false);
-  const [existNickname, setExistNickname] = useState(false);
   const refName = useRef(null);
   const refSid = useRef(null);
   const refPassword = useRef(null);
@@ -93,10 +89,8 @@ const Register = ({ navigation }) => {
   const refIdDidMount = useRef(null);
   const refPasswordDidMount = useRef(null);
   const refCheckDidMount = useRef(null);
-  const refDormDidMount = useRef(null);
   const refRoomDidMount = useRef(null);
   const refNicknameDidMount = useRef(null);
-  const refExistNicknameDidMount = useRef(null);
 
   const [studentInfo, setStudentInfo] = useState({
     name: '',
@@ -105,50 +99,16 @@ const Register = ({ navigation }) => {
     sid: '',
   });
 
-  useEffect(() => {
-    setDisabled(
-      !(
-        name &&
-        id &&
-        sid &&
-        password &&
-        dorm !== '' &&
-        room &&
-        nickname &&
-        !nameError &&
-        !sidError &&
-        !passwordError &&
-        !checkError &&
-        !roomError &&
-        !nicknameError &&
-        compareStudentInfo &&
-        !existNickname
-      )
-    );
-  }, [
-    name,
-    id,
-    sid,
-    password,
-    dorm,
-    room,
-    nickname,
-    nameError,
-    sidError,
-    passwordError,
-    checkError,
-    roomError,
-    nicknameError,
-    compareStudentInfo,
-    existNickname,
-  ]);
+  const nameCheck = async () => {
+    let errorMsg = '';
 
-  const nameCheck = () => {
     if (!name) {
-      setNameError('*필수 항목입니다.');
-    } else {
-      setNameError('');
+      errorMsg = '*필수 항목입니다.';
     }
+
+    setNameError(errorMsg);
+
+    return errorMsg;
   };
 
   useEffect(() => {
@@ -161,52 +121,18 @@ const Register = ({ navigation }) => {
     }
   }, [nameFocused]);
 
-  const nicknameCheck = () => {
-    if (!nickname) {
-      setNicknameError('*필수 항목입니다.');
-    } else if (existNickname) {
-      setNicknameError(
-        '*이미 존재하는 닉네임입니다. 다른 닉네임을 사용하세요.'
-      );
-    } else {
-      setNicknameError('');
-    }
-  };
+  const sidCheck = async () => {
+    let errorMsg = '';
 
-  const isExistNicknameFunc = async () => {
-    spinner.start();
-    setExistNickname(await isExistNickname(nickname));
-    spinner.stop();
-  };
-
-  useEffect(() => {
-    if (refNicknameDidMount.current) {
-      if (!nicknameFocused) {
-        isExistNicknameFunc();
-        console.log(existNickname);
-        nicknameCheck();
-      }
-    } else {
-      refNicknameDidMount.current = true;
-    }
-  }, [nicknameFocused]);
-
-  useEffect(() => {
-    if (refExistNicknameDidMount.current) {
-      nicknameCheck();
-    } else {
-      refExistNicknameDidMount.current = true;
-    }
-  }, [existNickname]);
-
-  const sidCheck = () => {
     if (!sid) {
-      setSidError('*필수 항목입니다.');
+      errorMsg = '*필수 항목입니다.';
     } else if (sid && !validateSid(sid)) {
-      setSidError('*학번 10자리를 확인해주세요.');
-    } else {
-      setSidError('');
+      errorMsg = '*학번 10자리를 확인해주세요.';
     }
+
+    setSidError(errorMsg);
+
+    return errorMsg;
   };
 
   useEffect(() => {
@@ -222,12 +148,17 @@ const Register = ({ navigation }) => {
   useEffect(() => {
     setEmail(`${id}@korea.ac.kr`);
   }, [id]);
-  const idCheck = () => {
+
+  const idCheck = async () => {
+    let errorMsg = '';
+
     if (!id) {
-      setIdError('*필수 항목입니다.');
-    } else {
-      setIdError('');
+      errorMsg = '*필수 항목입니다.';
     }
+
+    setIdError(errorMsg);
+
+    return errorMsg;
   };
 
   useEffect(() => {
@@ -240,14 +171,18 @@ const Register = ({ navigation }) => {
     }
   }, [idFocused]);
 
-  const passwordCheck = () => {
+  const passwordCheck = async () => {
+    let errorMsg = '';
+
     if (!password) {
-      setPasswordError('*필수 항목입니다.');
+      errorMsg = '*필수 항목입니다.';
     } else if (password && !validatePassword(password)) {
-      setPasswordError('* 영문, 숫자, 특수기호를 모두 포함한 6자리 이상일 것.');
-    } else {
-      setPasswordError('');
+      errorMsg = '* 영문, 숫자, 특수기호를 모두 포함한 6자리 이상일 것.';
     }
+
+    setPasswordError(errorMsg);
+
+    return errorMsg;
   };
 
   useEffect(() => {
@@ -260,14 +195,18 @@ const Register = ({ navigation }) => {
     }
   }, [passwordFocused]);
 
-  const checkCheck = () => {
+  const checkCheck = async () => {
+    let errorMsg = '';
+
     if (!check) {
-      setCheckError('*필수 항목입니다.');
+      errorMsg = '*필수 항목입니다.';
     } else if (check && password !== check) {
-      setCheckError('* 입력 값이 일치하지 않습니다.');
-    } else {
-      setCheckError('');
+      errorMsg = '* 입력 값이 일치하지 않습니다.';
     }
+
+    setCheckError(errorMsg);
+
+    return errorMsg;
   };
 
   useEffect(() => {
@@ -276,16 +215,20 @@ const Register = ({ navigation }) => {
     } else {
       refCheckDidMount.current = true;
     }
-  }, [check]);
+  }, [checkFocused]);
 
-  const roomCheck = () => {
+  const roomCheck = async () => {
+    let errorMsg = '';
+
     if (!room) {
-      setRoomError('*필수 항목입니다.');
+      errorMsg = '*필수 항목입니다.';
     } else if (room && !validateRoom(room)) {
-      setRoomError('* 양식을 맞춰주세요. ex) 245-1');
-    } else {
-      setRoomError('');
+      errorMsg = '* 양식을 맞춰주세요. ex) 245-1';
     }
+
+    setRoomError(errorMsg);
+
+    return errorMsg;
   };
 
   useEffect(() => {
@@ -298,98 +241,140 @@ const Register = ({ navigation }) => {
     }
   }, [roomFocused]);
 
-  const setStudentInfoFunc = async () => {
-    setStudentInfo(await getStudentInfo(sid * 1));
+  const isExistNicknameFunc = async () => {
+    let existNickname = true;
+
+    spinner.start();
+    existNickname = isExistNickname(nickname);
+    spinner.stop();
+
+    return existNickname;
+  };
+
+  const nicknameCheck = async (existNickname) => {
+    let errorMsg = '';
+
+    if (!nickname) {
+      errorMsg = '*필수 항목입니다.';
+    } else if (existNickname) {
+      errorMsg = '*이미 존재하는 닉네임입니다. 다른 닉네임을 사용하세요.';
+    }
+
+    setNicknameError(errorMsg);
+
+    return errorMsg;
+  };
+
+  const lastNicknameCheck = async () => {
+    const existNickname = await isExistNicknameFunc();
+    await nicknameCheck(existNickname);
+
+    return existNickname;
   };
 
   useEffect(() => {
-    if (!nameFocused && !sidFocused && !dormFocused && !roomFocused) {
-      setStudentInfoFunc();
-
-      console.log('studentInfo.dorm', studentInfo.dorm);
-      if (studentInfo.name !== name) {
-        setCompareStudentInfo(false);
-      } else if (studentInfo.dorm !== dorm) {
-        setCompareStudentInfo(false);
-      } else if (studentInfo.room !== room) {
-        setCompareStudentInfo(false);
-      } else {
-        setCompareStudentInfo(true);
+    if (refNicknameDidMount.current) {
+      if (nicknameFocused === false) {
+        lastNicknameCheck();
       }
+    } else {
+      refNicknameDidMount.current = true;
     }
-  }, [nameFocused, sidFocused, dormFocused, roomFocused]);
+  }, [nicknameFocused]);
 
-  const sleep = (delay) => {
-    const start = new Date().getTime();
-    while (new Date().getTime() < start + delay);
+  const setStudentInfoFunc = async (sid) => {
+    const studentInfo = await getStudentInfo(sid * 1);
+    setStudentInfo(studentInfo);
   };
 
-  const conditionCheck = async () => {
-    if (!name || nameError) {
-      Alert.alert('Signup Error', '이름을 확인하세요.');
-    } else if (!nickname || nicknameError) {
-      Alert.alert('Signup Error', '닉네임을 확인하세요.');
-    } else if (existNickname) {
-      Alert.alert('Signup Error', '닉네임을 확인하세요.');
-    } else if (!sid || sidError) {
-      Alert.alert('Signup Error', '학번을 확인하세요.');
-    } else if (!id || idError) {
-      Alert.alert('Signup Error', '메일 주소를 확인하세요.');
-    } else if (!password || passwordError) {
-      Alert.alert('Signup Error', '비밀번호를 확인하세요.');
-    } else if (!check || checkError) {
-      Alert.alert('Signup Error', '비밀번호 확인을 확인하세요.');
-    } else if (!room || roomError) {
-      Alert.alert('Signup Error', '호실 정보를 확인하세요.');
-    } else if (!compareStudentInfo) {
-      Alert.alert(
-        'Signup Error',
-        '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
-      );
-    } else {
-      try {
-        spinner.start();
-        await signup({
-          name,
-          sid,
-          email,
-          password,
-          dorm,
-          room,
-          nickname,
-        });
+  const lastStudentInfoCheck = async () => {
+    await setStudentInfoFunc(sid);
 
-        Alert.alert('이메일 인증 요청', '메일을 확인해주세요.', [
-          {
-            onPress: () => {
-              navigation.navigate('Login');
-            },
-          },
-        ]);
-      } catch (e) {
-        Alert.alert('Signup Error', e.message);
-      } finally {
-        spinner.stop();
-      }
+    let compareStudentInfo = true;
+
+    if (
+      studentInfo.name !== name ||
+      studentInfo.dorm !== dorm ||
+      studentInfo.room !== room
+    ) {
+      compareStudentInfo = false;
     }
+
+    return compareStudentInfo;
+  };
+
+  const lastCheck = () => {
+    return Promise.all([
+      lastNicknameCheck(),
+      lastStudentInfoCheck(),
+      nameCheck(),
+      sidCheck(),
+      idCheck(),
+      passwordCheck(),
+      checkCheck(),
+      roomCheck(),
+    ]);
   };
 
   const _handleSignupBtnPress = () => {
-    spinner.start();
-    passwordCheck();
-    nameCheck();
-    nicknameCheck();
-    sidCheck();
-    roomCheck();
-    idCheck();
-    checkCheck();
-    sleep(2000);
-    spinner.stop();
-    console.log('disabled', disabled);
+    lastCheck().then((results) => {
+      const existNickname = results[0];
+      const compareStudentInfo = results[1];
+      const nameError = results[2];
+      const sidError = results[3];
+      const idError = results[4];
+      const passwordError = results[5];
+      const checkError = results[6];
+      const roomError = results[7];
 
-    setTimeout(function () {
-      conditionCheck();
-    }, 500);
+      console.log('results', results);
+
+      if (nameError) {
+        Alert.alert('Signup Error', '이름을 확인하세요.');
+      } else if (sidError) {
+        Alert.alert('Signup Error', '학번을 확인하세요.');
+      } else if (idError) {
+        Alert.alert('Signup Error', '메일 주소를 확인하세요.');
+      } else if (passwordError) {
+        Alert.alert('Signup Error', '비밀번호를 확인하세요.');
+      } else if (checkError) {
+        Alert.alert('Signup Error', '비밀번호 확인을 확인하세요.');
+      } else if (roomError) {
+        Alert.alert('Signup Error', '호실 정보를 확인하세요.');
+      } else if (existNickname) {
+        Alert.alert('Signup Error', '닉네임을 확인하세요.');
+      } else if (!compareStudentInfo) {
+        Alert.alert(
+          'Signup Error',
+          '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
+        );
+      } else {
+        try {
+          spinner.start();
+          signup({
+            name,
+            sid,
+            email,
+            password,
+            dorm,
+            room,
+            nickname,
+          });
+
+          Alert.alert('이메일 인증 요청', '메일을 확인해주세요.', [
+            {
+              onPress: () => {
+                navigation.navigate('Login');
+              },
+            },
+          ]);
+        } catch (e) {
+          Alert.alert('Signup Error', e.message);
+        } finally {
+          spinner.stop();
+        }
+      }
+    });
   };
 
   return (
@@ -421,30 +406,12 @@ const Register = ({ navigation }) => {
                 returnKeyType="next"
                 value={name}
                 onChangeText={setName}
-                onSubmitEditing={() => refNickname.current.focus()}
+                onSubmitEditing={() => refSid.current.focus()}
                 onBlur={() => [setName(name.trim()), setNameFocused(false)]}
                 onFocus={() => setNameFocused(true)}
                 maxLength={12}
               />
-              <ErrorText visible={nameFocused}>{nameError}</ErrorText>
-            </InputWrapper>
-            <InputWrapper>
-              <Input
-                ref={refNickname}
-                label="Nickname"
-                placeholder="닉네임"
-                placeholderTextColor="#8E8E8E"
-                returnKeyType="next"
-                value={nickname}
-                onChangeText={setNickname}
-                onBlur={() => [
-                  setNickname(removeWhitespace(nickname)),
-                  setNicknameFocused(false),
-                ]}
-                onFocus={() => setNicknameFocused(true)}
-                onSubmitEditing={() => refSid.current.focus()}
-              />
-              <ErrorText>{nicknameError}</ErrorText>
+              <ErrorText>{nameError}</ErrorText>
             </InputWrapper>
             <InputWrapper>
               <Input
@@ -455,56 +422,13 @@ const Register = ({ navigation }) => {
                 returnKeyType="next"
                 value={sid}
                 onChangeText={setSid}
-                onSubmitEditing={() => refRoom.current.focus()}
+                onSubmitEditing={() => refId.current.focus()}
                 maxLength={10}
                 onFocus={() => setSidFocused(true)}
                 onBlur={() => setSidFocused(false)}
               />
               <ErrorText>{sidError}</ErrorText>
             </InputWrapper>
-            <RowWrapper>
-              <ColumnWrapper>
-                <SelectDropdown
-                  data={dorms}
-                  buttonStyle={styles.buttonStyle}
-                  buttonTextStyle={styles.buttonTextStyle}
-                  onSelect={(selectedItem, index) => {
-                    setDorm(index);
-                  }}
-                  defaultButtonText="소속 동"
-                  dropdownStyle={styles.dropdownStyle}
-                  rowStyle={styles.rowStyle}
-                  rowTextStyle={styles.rowTextStyle}
-                  renderDropdownIcon={() => (
-                    <Icon name="down" size={10} color="#9F9F9F" />
-                  )}
-                  dropDownIconPosition="right"
-                  buttonTextAfterSelection={(selectedItem) => {
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item) => item}
-                />
-                <ErrorText>{dormError}</ErrorText>
-              </ColumnWrapper>
-              <ColumnWrapper>
-                <Input2
-                  ref={refRoom}
-                  label="Room"
-                  placeholder="소속 호실 ex) 245 - 1"
-                  placeholderTextColor="#8E8E8E"
-                  returnKeyType="next"
-                  value={room}
-                  onChangeText={setRoom}
-                  onSubmitEditing={() => refId.current.focus()}
-                  onBlur={() => [
-                    setRoom(removeWhitespace(room)),
-                    setRoomFocused(false),
-                  ]}
-                  onFocus={() => setRoomFocused(true)}
-                />
-                <ErrorText>{roomError}</ErrorText>
-              </ColumnWrapper>
-            </RowWrapper>
             <ColumnWrapper>
               <RowWrapper>
                 <Input
@@ -552,7 +476,7 @@ const Register = ({ navigation }) => {
                 label="PasswordCheck"
                 placeholder="비밀번호 확인"
                 placeholderTextColor="#8E8E8E"
-                returnKeyType="done"
+                returnKeyType="next"
                 value={check}
                 onChangeText={setCheck}
                 onBlur={() => [
@@ -560,10 +484,71 @@ const Register = ({ navigation }) => {
                   setCheckFocused(false),
                 ]}
                 onFocus={() => setCheckFocused(true)}
-                onSubmitEditing={_handleSignupBtnPress}
+                onSubmitEditing={() => refRoom.current.focus()}
                 secureTextEntry
               />
               <ErrorText>{checkError}</ErrorText>
+            </InputWrapper>
+            <RowWrapper>
+              <ColumnWrapper>
+                <SelectDropdown
+                  data={dorms}
+                  buttonStyle={styles.buttonStyle}
+                  buttonTextStyle={styles.buttonTextStyle}
+                  onSelect={(selectedItem, index) => {
+                    setDorm(index);
+                  }}
+                  defaultButtonText="소속 동"
+                  dropdownStyle={styles.dropdownStyle}
+                  rowStyle={styles.rowStyle}
+                  rowTextStyle={styles.rowTextStyle}
+                  renderDropdownIcon={() => (
+                    <Icon name="down" size={10} color="#9F9F9F" />
+                  )}
+                  dropDownIconPosition="right"
+                  buttonTextAfterSelection={(selectedItem) => {
+                    return selectedItem;
+                  }}
+                  rowTextForSelection={(item) => item}
+                />
+                <ErrorText>{dormError}</ErrorText>
+              </ColumnWrapper>
+              <ColumnWrapper>
+                <Input2
+                  ref={refRoom}
+                  label="Room"
+                  placeholder="소속 호실 ex) 245 - 1"
+                  placeholderTextColor="#8E8E8E"
+                  returnKeyType="next"
+                  value={room}
+                  onChangeText={setRoom}
+                  onSubmitEditing={() => refNickname.current.focus()}
+                  onBlur={() => [
+                    setRoom(removeWhitespace(room)),
+                    setRoomFocused(false),
+                  ]}
+                  onFocus={() => setRoomFocused(true)}
+                />
+                <ErrorText>{roomError}</ErrorText>
+              </ColumnWrapper>
+            </RowWrapper>
+            <InputWrapper>
+              <Input
+                ref={refNickname}
+                label="Nickname"
+                placeholder="닉네임"
+                placeholderTextColor="#8E8E8E"
+                returnKeyType="done"
+                value={nickname}
+                onChangeText={setNickname}
+                onBlur={() => [
+                  setNickname(removeWhitespace(nickname)),
+                  setNicknameFocused(false),
+                ]}
+                onFocus={() => setNicknameFocused(true)}
+                onSubmitEditing={_handleSignupBtnPress}
+              />
+              <ErrorText>{nicknameError}</ErrorText>
             </InputWrapper>
           </SubWrapper>
         </KeyboardAvoidingView>

@@ -26,7 +26,7 @@ import { getCurrentUser, getStudentInfo, updateDormInfo } from '../firebase';
 
 const DormInfo = ({ navigation }) => {
   const dorms = [
-    '학생동(구관-남자동)',
+    '학생동 (구관-남자동)',
     '학생동(구관-여자동)',
     '프런티어관(신관-남자동)',
     '프런티어관(신관-여자동)',
@@ -120,7 +120,7 @@ const DormInfo = ({ navigation }) => {
       const roomError = results[0];
       const compareStudentInfo = results[1];
 
-      if (!room || roomError) {
+      if (roomError) {
         Alert.alert('Update Error', '호실 정보를 확인하세요.');
       } else if (!compareStudentInfo) {
         Alert.alert(
