@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
-import { signin } from '../firebase';
+import { signin, getCurrentUser } from '../firebase';
 
 import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
 import { UserContext, ProgressContext } from '../contexts';
@@ -42,6 +42,7 @@ const Front = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSelected, setSelection] = useState(false);
   const { setUser } = useContext(UserContext);
+  const { setProfileInfo } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);
 
@@ -68,6 +69,8 @@ const Front = ({ navigation }) => {
       spinner.start();
       const user = await signin({ email, password });
       setUser(user);
+      const profile = await getCurrentUser();
+      setProfileInfo(profile);
     } catch (e) {
       Alert.alert('Signin Error', e.message);
     } finally {
@@ -125,15 +128,7 @@ const Front = ({ navigation }) => {
               </InputWrapper>
             </TextWrapper>
             <CheckWrapper>
-              <TouchableOpacity
-                onPress={() => {
-                  if (isSelected) {
-                    setSelection(false);
-                  } else {
-                    setSelection(true);
-                  }
-                }}
-              >
+              <TouchableOpacity onPress={() => setSelection(!isSelected)}>
                 <Check>
                   {isSelected && (
                     <Icon name="check" size={25} color="#850000" />

@@ -44,6 +44,7 @@ export const EmailDescription = styled.Text`
   font-size: ${responsiveScreenFontSize(1.5)}px;
   font-family: Medium;
 `;
+
 export const Input = styled.TextInput`
   font-size: ${responsiveScreenFontSize(1.5)}px;
   padding-left: 10px;
@@ -121,7 +122,7 @@ export const ErrorText = styled.Text`
   margin-top: 3.5px;
   color: rgba(133, 0, 0, 1);
   font-size: 10px;
-  /* display: ${(props) => (props.current !== null ? 'flex' : 'none')}; */
+  font-family: Regular;
 `;
 
 export const ColumnWrapper = styled.View`

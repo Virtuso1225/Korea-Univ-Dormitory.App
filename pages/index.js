@@ -15,6 +15,7 @@ const Navigation = () => {
     Medium: require('../fonts/SCDream5.otf'),
     Bold6: require('../fonts/SCDream6.otf'),
     ExtraBold: require('../fonts/SCDream7.otf'),
+    Heavy: require('../fonts/SCDream8.otf'),
   });
   const { user } = useContext(UserContext);
   const { inProgress } = useContext(ProgressContext);

@@ -20,7 +20,7 @@ import {
 } from './CardComponentsStyle';
 import ModalComponent from './ModalComponent';
 
-const CardComponents = () => {
+const CardComponents = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
   const { setUser } = useContext(UserContext);
   const [temperature, setTemperature] = useState('36.2');
@@ -39,7 +39,7 @@ const CardComponents = () => {
 
   return (
     <ColumnWrapper>
-      <TopRowWrapper>
+      <TopRowWrapper onPress={() => navigation.navigate('Calendar')}>
         <TemperatureIcon />
         <ButtonText>체온기록</ButtonText>
         <Icon
@@ -76,42 +76,12 @@ const CardComponents = () => {
         <FacilityIcon />
         <ButtonText>최근 예약 내역</ButtonText>
       </RowWrapper>
-      <RowWrapper>
+      <RowWrapper onPress={() => navigation.navigate('PersonalInfo')}>
         <PersonalInfoIcon />
         <ButtonText>개인정보 변경하기</ButtonText>
       </RowWrapper>
       <ModalComponent handlePress={Signout} />
-      <RowWrapper
-        title="Deactivation"
-        onPress={() =>
-          Alert.alert(
-            '탈퇴 경고',
-            '정말 탈퇴하시겠습니까?',
-            [
-              {
-                text: 'Cancel',
-                onPress: () => console.log('Cancel Pressed'),
-                style: 'cancel',
-              },
-              {
-                text: 'OK',
-                onPress: async () => {
-                  try {
-                    spinner.start();
-                    await deactivate();
-                  } catch (e) {
-                    Alert.alert('deactivate error', '에러 발생');
-                  } finally {
-                    setUser({});
-                    spinner.stop();
-                  }
-                },
-              },
-            ],
-            { cancelable: false }
-          )
-        }
-      >
+      <RowWrapper onPress={() => navigation.navigate('Dropout')}>
         <DeleteIcon />
         <ButtonText>탈퇴하기</ButtonText>
       </RowWrapper>

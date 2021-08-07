@@ -1,6 +1,5 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Mypage from '../mypage/Mypage';
 import Notice from '../notice/Notice';
 import {
   Megaphone,
@@ -10,6 +9,7 @@ import {
 } from '../../assets/Svgs';
 import Main from '../main/Main';
 import { NavigationWrapper, TextWrapper } from './FooterStyle';
+import MypageStack from '../mypage/MypageStack';
 
 const Tab = createBottomTabNavigator();
 
@@ -60,11 +60,12 @@ const Footer = () => {
               <TextWrapper activated={focused}>공지사항</TextWrapper>
             </NavigationWrapper>
           ),
+          unmountOnBlur: true,
         }}
       />
       <Tab.Screen
         name="마이페이지"
-        component={Mypage}
+        component={MypageStack}
         options={{
           tabBarIcon: ({ focused }) => (
             <NavigationWrapper>
@@ -77,6 +78,7 @@ const Footer = () => {
               <TextWrapper activated={focused}>마이페이지</TextWrapper>
             </NavigationWrapper>
           ),
+          unmountOnBlur: true,
         }}
       />
     </Tab.Navigator>
