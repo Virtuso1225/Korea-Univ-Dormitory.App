@@ -171,7 +171,7 @@ const Register = ({ navigation }) => {
     if (!password) {
       errorMsg = '*필수 항목입니다.';
     } else if (password && !validatePassword(password)) {
-      errorMsg = '* 비밀번호는 6자리 이상으로 설정해주세요.';
+      errorMsg = '* 영문, 숫자를 모두 포함한 6자리 이상일 것.';
     }
 
     setPasswordError(errorMsg);

@@ -82,6 +82,26 @@ export const signup = async ({
   return {};
 };
 
+export const findPassword = async (email) => {
+  console.log(email);
+  const result = [];
+  await firebase
+    .auth()
+    .sendPasswordResetEmail(email)
+    .then(() => {
+      console.log('Password reset email sent!');
+      result.push(true);
+    })
+    .catch((error) => {
+      console.log(error.code, error.message);
+      result.push(false);
+      result.push(error.code);
+      result.push(error.message);
+    });
+
+  return result;
+};
+
 export const comparePassword = async (password) => {
   let isDifferent = false;
 
