@@ -38,10 +38,13 @@ export const signup = async ({
   dorm,
   room,
   nickname,
+  studentIndex,
 }) => {
+  console.log(studentIndex);
   await Auth.createUserWithEmailAndPassword(email, password);
   const currentUser = {
     id: Auth.currentUser.uid,
+    studentIndex,
     sid,
     name,
     dorm,
@@ -58,6 +61,7 @@ export const signup = async ({
       dorm: currentUser.dorm,
       room: currentUser.room,
       nickname: currentUser.nickname,
+      index: currentUser.studentIndex,
     })
     .then(() => {
       console.log('firestore()DB 유저 추가 성공');
@@ -99,10 +103,8 @@ export const comparePassword = async (password) => {
 export const getCurrentUser = async () => {
   let currentUserInfo = {
     name: '',
-    email: '',
     dorm: '',
     room: '',
-    password: '',
     sid: '',
     nickname: '',
   };
@@ -120,7 +122,8 @@ export const getStudentInfo = async (sid) => {
     dorm: '',
     room: '',
     sid: '',
-    nickname: '',
+    name: '',
+    index: '',
   };
   const docRef = fs.collection('studentList').where('sid', '==', sid);
 
@@ -138,6 +141,8 @@ export const getStudentInfo = async (sid) => {
     .catch((error) => {
       console.log('Error getting documents: ', error);
     });
+
+  console.log(studentInfo);
 
   return studentInfo;
 };
@@ -253,8 +258,45 @@ export const signout = () => {
 export const deactivate = async () => {
   const user = Auth.currentUser;
   const { uid } = Auth.currentUser;
+
+  const collectionPenaltyPath = `users/${uid}/penaltyInfo`;
+  const collectionStayOutPath = `users/${uid}/stayOutInfo`;
+  const collectionTempPath = `users/${uid}/tempInfo`;
   const docRef = fs.collection('users').doc(uid);
 
+  await deleteCollection(fs, collectionPenaltyPath);
+  await deleteCollection(fs, collectionStayOutPath);
+  await deleteCollection(fs, collectionTempPath);
+
   await docRef.delete();
+
   user.delete();
+
+  async function deleteCollection(db, collectionPath) {
+    const collectionRef = db.collection(collectionPath);
+
+    return new Promise((resolve, reject) => {
+      deleteQueryBatch(db, collectionRef, resolve).catch(reject);
+    });
+  }
+
+  async function deleteQueryBatch(db, query, resolve) {
+    const snapshot = await query.get();
+
+    const batchSize = snapshot.size;
+    if (batchSize === 0) {
+      resolve();
+      return;
+    }
+
+    const batch = db.batch();
+    snapshot.docs.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+    await batch.commit();
+
+    setImmediate(() => {
+      deleteQueryBatch(db, query, resolve);
+    });
+  }
 };
