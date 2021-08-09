@@ -44,6 +44,7 @@ const Front = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
   const { setProfileInfo } = useContext(UserContext);
   const { setOvernightDate } = useContext(UserContext);
+  const { setTemperature } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);
 
@@ -72,7 +73,8 @@ const Front = ({ navigation }) => {
       setUser(user);
       const profile = await getCurrentUser();
       setProfileInfo(profile);
-      setOvernightDate({ startDate: '2021-08-09', endDate: '2021-08-09' });
+      setOvernightDate({ startDate: '', endDate: '' });
+      setTemperature({ '2021-08-26': '36.5' });
     } catch (e) {
       Alert.alert('Signin Error', e.message);
     } finally {

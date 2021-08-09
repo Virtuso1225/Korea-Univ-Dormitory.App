@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import moment from 'moment';
 import { UserContext, ProgressContext } from '../contexts';
 import { signout, deactivate } from '../firebase';
 import {
@@ -23,7 +24,8 @@ import ModalComponent from './ModalComponent';
 const CardComponents = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
   const { setUser } = useContext(UserContext);
-  const [temperature, setTemperature] = useState('36.2');
+  const { temperature } = useContext(UserContext);
+  const today = moment().format('YYYY-MM-DD');
   const [penalty, setPenalty] = useState('1');
   const Signout = async () => {
     try {
@@ -48,17 +50,28 @@ const CardComponents = ({ navigation }) => {
           color="#FF0000"
           style={{
             marginLeft: 10,
-            display: temperature === '' ? 'flex' : 'none',
+            display: temperature[today] === undefined ? 'flex' : 'none',
           }}
         />
-        <ErrorText visible={temperature}>오늘의 체온을 기록해주세요!</ErrorText>
-        <DescriptionText font="Regular" visible={temperature}>
+        <ErrorText visible={temperature[today] === undefined}>
+          오늘의 체온을 기록해주세요!
+        </ErrorText>
+        <DescriptionText
+          font="Regular"
+          visible={temperature[today] === undefined}
+        >
           #오늘의 체온:
         </DescriptionText>
-        <DescriptionText font="ExtraBold" visible={temperature}>
-          {temperature}℃
+        <DescriptionText
+          font="ExtraBold"
+          visible={temperature[today] === undefined}
+        >
+          {temperature[today]}°C
         </DescriptionText>
-        <DescriptionText font="Regular" visible={temperature}>
+        <DescriptionText
+          font="Regular"
+          visible={temperature[today] === undefined}
+        >
           #오늘의 외박여부:
         </DescriptionText>
       </TopRowWrapper>
