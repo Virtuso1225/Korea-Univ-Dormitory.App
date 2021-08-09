@@ -87,7 +87,6 @@ const FindPassword = ({ navigation }) => {
         try {
           spinner.start();
           passwordResetEmail().then((result) => {
-            console.log(result);
             if (result[0]) {
               Alert.alert(
                 '이메일 인증 요청',

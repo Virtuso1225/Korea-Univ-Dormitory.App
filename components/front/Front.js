@@ -10,7 +10,13 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
-import { signin, getCurrentUser, getNotice, getMyPenalty } from '../firebase';
+import {
+  signin,
+  getCurrentUser,
+  getNotice,
+  getMyPenalty,
+  getMyTemperature,
+} from '../firebase';
 
 import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
 import { UserContext, ProgressContext } from '../contexts';
@@ -43,7 +49,6 @@ const Front = ({ navigation }) => {
   const [isSelected, setSelection] = useState(false);
   const { setUser } = useContext(UserContext);
   const {
-    profileInfo,
     setProfileInfo,
     setNotice,
     setMyPenalty,
@@ -73,7 +78,12 @@ const Front = ({ navigation }) => {
   };
 
   const setGlobalInfo = () => {
-    return Promise.all([getCurrentUser(), getNotice(), getMyPenalty()]);
+    return Promise.all([
+      getCurrentUser(),
+      getNotice(),
+      getMyPenalty(),
+      getMyTemperature(),
+    ]);
   };
 
   const _handleSigninBtnPress = async () => {
@@ -83,8 +93,11 @@ const Front = ({ navigation }) => {
       setUser(user);
 
       const result = await setGlobalInfo().then((results) => {
+        console.log(results[3]);
         setNotice(results[1]);
         setMyPenalty(results[2]);
+        setTemperature(results[3]);
+        // setTemperature({ '2021-08-26': '36.5' });
         return [results[0], results[2]];
       });
 
@@ -94,9 +107,7 @@ const Front = ({ navigation }) => {
         sum.myPenaltySum += item.points;
       });
       setProfileInfo({ ...result[0], ...sum });
-      console.log('profileInfo', result[0], sum, profileInfo);
-      setOvernightDate({ startDate: '', endDate: '' });
-      setTemperature({ '2021-08-10': '36.5' });
+      setOvernightDate({ startDate: '2021-08-10', endDate: '2021-08-12' });
     } catch (e) {
       Alert.alert('Signin Error', e.message);
     } finally {

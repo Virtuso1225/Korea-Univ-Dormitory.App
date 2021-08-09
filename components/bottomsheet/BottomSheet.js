@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   Keyboard,
   KeyboardAvoidingView,
@@ -7,10 +7,12 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   View,
+  Alert,
 } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icons from 'react-native-vector-icons/Entypo';
 import moment from 'moment';
+import { UserContext, ProgressContext } from '../contexts';
 import {
   BlurBackground,
   BottomModalWrapper,
@@ -22,17 +24,33 @@ import {
   TemperatureInput,
   CustomTextMargin,
 } from './BottomSheetStyle';
+import { setMyTemperature } from '../firebase';
 import { TemperatureIcon } from '../../assets/Svgs';
 import ModalCalendarContainer from './ModalCalendarContainer';
-import { UserContext } from '../contexts';
 
 const BottomSheet = () => {
+  const { spinner } = useContext(ProgressContext);
+  const { setTemperature, temperature } = useContext(UserContext);
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState('');
   const today = moment().format('YYYY-MM-DD');
+
+  const _handleSetTempBtnPress = async () => {
+    try {
+      spinner.start();
+      await setMyTemperature(value);
+      console.log('temperature', temperature);
+      setTemperature({ ...temperature, [today]: value });
+    } catch (e) {
+      Alert.alert('SetTemperature Error', e.message);
+    } finally {
+      spinner.stop();
+    }
+  };
+
   return (
     <UserContext.Consumer>
-      {({ setTemperature, temperature }) => (
+      {({ temperature }) => (
         <View>
           <Modal
             animationType="slide"
@@ -70,15 +88,13 @@ const BottomSheet = () => {
                         </CustomTextMargin>
                         <TemperatureInput
                           keyboardType="number-pad"
-                          placeholder={temperature[today]}
-                          value={value}
-                          onChangeText={setValue}
-                          onSubmitEditing={() =>
-                            setTemperature({
-                              ...temperature,
-                              [today]: value,
-                            })
+                          defaultValue={
+                            temperature[today]
+                              ? temperature[today].toString()
+                              : ''
                           }
+                          onChangeText={setValue}
+                          onSubmitEditing={_handleSetTempBtnPress}
                         />
                         <CustomTextMargin
                           font="Bold6"
@@ -89,14 +105,7 @@ const BottomSheet = () => {
                         </CustomTextMargin>
                         <View style={styles.topShadow}>
                           <View style={styles.bottomShadow}>
-                            <SubmitButton
-                              onPress={() =>
-                                setTemperature({
-                                  ...temperature,
-                                  [today]: value,
-                                })
-                              }
-                            >
+                            <SubmitButton onPress={_handleSetTempBtnPress}>
                               <CustomTextMargin
                                 font="Medium"
                                 size="14"

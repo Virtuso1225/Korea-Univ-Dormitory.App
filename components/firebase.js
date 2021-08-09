@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { Alert } from 'react-native';
 import firebase from 'firebase';
 import config from '../firebase.json';
@@ -17,16 +17,11 @@ export const signin = async ({ email, password }) => {
   // const { setUser } = useContext(UserContext);
 
   if (!Auth.currentUser.emailVerified) {
-    console.log(Auth.currentUser.emailVerified);
     Alert.alert('Signin Error', '메일을 인증하세요.');
     return {};
   }
-  const docRef = fs.collection('users').doc(Auth.currentUser.uid);
+  fs.collection('users').doc(Auth.currentUser.uid);
 
-  await docRef.get().then((doc) => {
-    // setUser(doc.data());
-    console.log(doc.data());
-  });
   return user;
 };
 
@@ -82,7 +77,6 @@ export const signup = async ({
 };
 
 export const findPassword = async (email) => {
-  console.log(email);
   const result = [];
   await firebase
     .auth()
@@ -161,15 +155,79 @@ export const getStudentInfo = async (sid) => {
       console.log('Error getting documents: ', error);
     });
 
-  console.log(studentInfo);
-
   return studentInfo;
+};
+
+export const setMyTemperature = async (myTemperature) => {
+  const onlyDate = (date) => {
+    const d = new Date(date);
+
+    let month = `${d.getMonth() + 1}`;
+    let day = `${d.getDate()}`;
+    const year = `${d.getFullYear()}`;
+
+    if (month < 10) month = `0${month}`;
+    if (day < 10) day = `0${day}`;
+
+    return [year, month, day].join('');
+  };
+
+  const now = new Date();
+  const { uid } = Auth.currentUser;
+  const collectionTempPath = `users/${uid}/tempInfo`;
+  await fs
+    .collection(collectionTempPath)
+    .doc(onlyDate(now.getTime()))
+    .set({
+      temperature: myTemperature * 1,
+      timestamp: now,
+    })
+    .then(() => {
+      console.log('Document successfully written!');
+    })
+    .catch((error) => {
+      console.error('Error writing document: ', error);
+    });
 };
 
 export const getMyTemperature = async () => {
   const { uid } = Auth.currentUser;
+  const dateToString = (inputDate) => {
+    const d = new Date(inputDate * 1000);
+    let month = `${d.getMonth() + 1}`;
+    let day = `${d.getDate()}`;
+    const year = `${d.getFullYear()}`;
+
+    if (month < 10) month = `0${month}`;
+    if (day < 10) day = `0${day}`;
+
+    return [year, month, day].join('-');
+  };
 
   const collectionTempPath = `users/${uid}/tempInfo`;
+
+  const temp = {};
+
+  let date = '';
+  let temperature = 0;
+
+  await fs
+    .collection(collectionTempPath)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        try {
+          date = dateToString(doc.data().timestamp.seconds);
+          temperature = doc.data().temperature;
+
+          temp[date] = temperature;
+        } catch (error) {
+          console.log('체온 불러오기 실패');
+        }
+      });
+    });
+
+  return temp;
 };
 
 export const getMyStayOut = async () => {
@@ -204,7 +262,6 @@ export const getMyPenalty = async () => {
     .get()
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
-        console.log(doc.data());
         try {
           penaltyObject = doc.data();
 
@@ -329,7 +386,6 @@ export const isExistNickname = async (nickname) => {
         console.log('No same nickname found.');
       } else {
         isExist = true;
-        console.log('isnot중복', isExist);
       }
     })
     .catch((error) => {
