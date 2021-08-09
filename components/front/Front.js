@@ -72,7 +72,7 @@ const Front = ({ navigation }) => {
       setUser(user);
       const profile = await getCurrentUser();
       setProfileInfo(profile);
-      setOvernightDate({ startDate: '25', endDate: '27' });
+      setOvernightDate({ startDate: '2021-08-09', endDate: '2021-08-09' });
     } catch (e) {
       Alert.alert('Signin Error', e.message);
     } finally {

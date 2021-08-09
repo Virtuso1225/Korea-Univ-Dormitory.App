@@ -17,18 +17,16 @@ import {
   ModalActiveBar,
   ModalHeader,
   OptionContainer,
-  OvernightButton,
   RowWrapper,
   SubmitButton,
   TemperatureInput,
   CustomTextMargin,
 } from './BottomSheetStyle';
-import { OvernightIcon, TemperatureIcon } from '../../assets/Svgs';
+import { TemperatureIcon } from '../../assets/Svgs';
 import ModalCalendarContainer from './ModalCalendarContainer';
 
 const BottomSheet = () => {
   const [modalVisible, setModalVisible] = useState(false);
-  const value = moment();
   return (
     <View>
       <Modal

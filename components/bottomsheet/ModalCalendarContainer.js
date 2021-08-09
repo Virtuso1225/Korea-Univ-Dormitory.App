@@ -1,25 +1,9 @@
 import React, { useState } from 'react';
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  Modal,
-  Platform,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Icons from 'react-native-vector-icons/Entypo';
-import moment from 'moment';
+import { Modal, StyleSheet, View } from 'react-native';
 import {
   BlurBackground,
-  BottomModalWrapper,
   CustomTextMargin,
-  ModalActiveBar,
-  ModalHeader,
-  OptionContainer,
   OvernightButton,
-  TemperatureInput,
 } from './BottomSheetStyle';
 import {
   CalendarModalWrapper,
@@ -40,7 +24,7 @@ const ModalCalendarContainer = () => {
   const [dateSelection, setDateSelection] = useState(true);
   return (
     <UserContext.Consumer>
-      {({ overnightDate }) => (
+      {({ setOvernightDate, overnightDate }) => (
         <View>
           <Modal
             animationType="slide"
@@ -138,12 +122,23 @@ const ModalCalendarContainer = () => {
                 </OptionHeader>
                 <ModalCalendar isSelected={dateSelection} />
                 <SubmitWrapper>
-                  <ButtonWrapper onPress={() => setModalVisible(false)}>
+                  <ButtonWrapper
+                    onPress={() => {
+                      setModalVisible(false);
+                      setOvernightDate({ startDate: '', endDate: '' });
+                      setDateSelection(true);
+                    }}
+                  >
                     <CustomText font="Medium" color="#9B1818" size="15">
                       취소
                     </CustomText>
                   </ButtonWrapper>
-                  <ButtonWrapper onPress={() => setModalVisible(false)}>
+                  <ButtonWrapper
+                    onPress={() => {
+                      setModalVisible(false);
+                      setDateSelection(true);
+                    }}
+                  >
                     <CustomText font="Medium" color="#9B1818" size="15">
                       확인
                     </CustomText>
@@ -158,7 +153,10 @@ const ModalCalendarContainer = () => {
               외박 기록
             </CustomTextMargin>
             <CustomTextMargin font="Medium" size="13" color="#404040">
-              7월 08일 목 - 7월 10일 토
+              {overnightDate.startDate.split('-')[1]}월{' '}
+              {overnightDate.startDate.split('-')[2]}일 -{' '}
+              {overnightDate.endDate.split('-')[1]}월{' '}
+              {overnightDate.endDate.split('-')[2]}일
             </CustomTextMargin>
           </OvernightButton>
         </View>

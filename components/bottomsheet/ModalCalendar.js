@@ -8,13 +8,11 @@ import {
 } from 'react-native';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Close from 'react-native-vector-icons/EvilIcons';
 import {
   responsiveScreenWidth,
   responsiveScreenFontSize,
   responsiveScreenHeight,
 } from 'react-native-responsive-dimensions';
-import { CloseWrapper } from '../mypage/DropOutStyle';
 import { UserContext } from '../contexts';
 
 const ModalCalendar = ({ isSelected }) => {
@@ -36,7 +34,23 @@ const ModalCalendar = ({ isSelected }) => {
     setCalendar(a);
   }, [value]);
 
-  const dayStyle = (day) => {
+  const dayStyle = (day, period) => {
+    if (
+      isSelected &&
+      day.format('DD') === period.startDate.split('-')[2] &&
+      !day.isAfter(value.clone().endOf('month'), 'day') &&
+      value.format('MM') === period.startDate.split('-')[1]
+    ) {
+      return styles.period;
+    }
+    if (
+      !isSelected &&
+      day.format('DD') === period.endDate.split('-')[2] &&
+      !day.isAfter(value.clone().endOf('month'), 'day') &&
+      value.format('MM') === period.endDate.split('-')[1]
+    ) {
+      return styles.period;
+    }
     if (value.month() + 1 !== month) {
       if (
         day.isBefore(value.clone().startOf('month'), 'day') ||
@@ -56,6 +70,29 @@ const ModalCalendar = ({ isSelected }) => {
       return styles.today;
     }
     return styles.thisMonth;
+  };
+
+  const dayWrapper = (day, period) => {
+    if (
+      isSelected &&
+      day.format('DD') === period.startDate.split('-')[2] &&
+      !day.isAfter(value.clone().endOf('month'), 'day') &&
+      value.format('MM') === period.startDate.split('-')[1]
+    ) {
+      return styles.periodWrapper;
+    }
+    if (
+      !isSelected &&
+      day.format('DD') === period.endDate.split('-')[2] &&
+      !day.isAfter(value.clone().endOf('month'), 'day') &&
+      value.format('MM') === period.endDate.split('-')[1]
+    ) {
+      return styles.periodWrapper;
+    }
+    if (value.isSame(day, 'day') && value.month() + 1 === month) {
+      return styles.todayWrapper;
+    }
+    return styles.defaultWrapper;
   };
   return (
     <UserContext.Consumer>
@@ -126,28 +163,24 @@ const ModalCalendar = ({ isSelected }) => {
                     if (isSelected) {
                       setOvernightDate({
                         ...overnightDate,
-                        startDate: `${value.format('YYYY')}${-value.format(
+                        startDate: `${value.format('YYYY')}-${value.format(
                           'MM'
-                        )}${-day.format('D')}`,
+                        )}-${day.format('DD')}`,
                       });
                     } else {
                       setOvernightDate({
                         ...overnightDate,
-                        endDate: `${value.format('YYYY')}${-value.format(
+                        endDate: `${value.format('YYYY')}-${value.format(
                           'MM'
-                        )}${-day.format('D')}`,
+                        )}-${day.format('DD')}`,
                       });
                     }
                   }}
                 >
-                  <View
-                    style={
-                      dayStyle(day) === styles.today
-                        ? styles.todayWrapper
-                        : styles.defaultWrapper
-                    }
-                  >
-                    <Text style={dayStyle(day)}>{day.format('D')}</Text>
+                  <View style={dayWrapper(day, overnightDate)}>
+                    <Text style={dayStyle(day, overnightDate)}>
+                      {day.format('D')}
+                    </Text>
                   </View>
                 </Pressable>
               ))}
@@ -176,9 +209,22 @@ const styles = StyleSheet.create({
   },
   todayWrapper: {
     backgroundColor: '#D8D8DA',
-    borderRadius: 10,
-    width: 20,
-    height: 20,
+    borderRadius: 12.5,
+    width: 25,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  period: {
+    color: '#9B1818',
+    fontFamily: 'Medium',
+    fontSize: 13,
+  },
+  periodWrapper: {
+    backgroundColor: 'rgba(133, 0, 0, 0.17)',
+    borderRadius: 12.5,
+    width: 25,
+    height: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -188,9 +234,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   defaultWrapper: {
-    borderRadius: 10,
-    width: 20,
-    height: 20,
+    borderRadius: 12.5,
+    width: 25,
+    height: 25,
     justifyContent: 'center',
     alignItems: 'center',
   },
