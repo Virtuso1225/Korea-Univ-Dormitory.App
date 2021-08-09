@@ -74,7 +74,10 @@ const BottomSheet = () => {
                           value={value}
                           onChangeText={setValue}
                           onSubmitEditing={() =>
-                            changeTemperature(value, temperature)
+                            setTemperature({
+                              ...temperature,
+                              [today]: value,
+                            })
                           }
                         />
                         <CustomTextMargin
