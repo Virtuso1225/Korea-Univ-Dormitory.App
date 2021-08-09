@@ -10,7 +10,7 @@ import {
   Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
-import { signin, getCurrentUser } from '../firebase';
+import { signin, getCurrentUser, getNotice, getMyPenalty } from '../firebase';
 
 import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
 import { UserContext, ProgressContext } from '../contexts';
@@ -42,8 +42,9 @@ const Front = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSelected, setSelection] = useState(false);
   const { setUser } = useContext(UserContext);
-  const { setProfileInfo } = useContext(UserContext);
-  const { setOvernightDate } = useContext(UserContext);
+  const { profileInfo, setProfileInfo, setNotice, setMyPenalty } =
+    useContext(UserContext);
+
   const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);
 
@@ -65,20 +66,36 @@ const Front = ({ navigation }) => {
     setPassword(removeWhitespace(password));
   };
 
+  const setGlobalInfo = () => {
+    return Promise.all([getCurrentUser(), getNotice(), getMyPenalty()]);
+  };
+
   const _handleSigninBtnPress = async () => {
     try {
       spinner.start();
       const user = await signin({ email, password });
       setUser(user);
-      const profile = await getCurrentUser();
-      setProfileInfo(profile);
-      setOvernightDate({ startDate: '2021-08-09', endDate: '2021-08-09' });
+
+      const result = await setGlobalInfo().then((results) => {
+        setNotice(results[1]);
+        setMyPenalty(results[2]);
+        return [results[0], results[2]];
+      });
+
+      const sum = { myPenaltySum: 0 };
+
+      result[1].forEach((item, index) => {
+        sum.myPenaltySum += item.points;
+      });
+      setProfileInfo({ ...result[0], ...sum });
     } catch (e) {
       Alert.alert('Signin Error', e.message);
     } finally {
+      console.log('profileInfo', profileInfo);
       spinner.stop();
     }
   };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <View
