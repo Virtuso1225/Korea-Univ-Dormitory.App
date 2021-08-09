@@ -12,17 +12,30 @@ const UserContext = createContext({
     sid: '',
     nickname: '',
   },
+  overnightDate: {
+    startDate: '',
+    endDate: '',
+  },
   setUser: () => {},
   setProfileInfo: () => {},
+  setOvernightDate: () => {},
 });
 
 const UserProvider = ({ children }) => {
   const [user, setUserInfo] = useState({});
   const [profileInfo, setProfileInfo] = useState();
+  const [overnightDate, setOvernightDate] = useState();
   const setUser = ({ uid }) => {
     setUserInfo({ uid });
   };
-  const value = { user, setUser, profileInfo, setProfileInfo };
+  const value = {
+    user,
+    setUser,
+    profileInfo,
+    setProfileInfo,
+    overnightDate,
+    setOvernightDate,
+  };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };
 

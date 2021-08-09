@@ -1,22 +1,23 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Pressable,
+} from 'react-native';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/AntDesign';
-import Close from 'react-native-vector-icons/EvilIcons';
 import {
   responsiveScreenWidth,
   responsiveScreenFontSize,
   responsiveScreenHeight,
 } from 'react-native-responsive-dimensions';
-import { CloseWrapper } from '../mypage/DropOutStyle';
 import { UserContext } from '../contexts';
 
-const Calendar = ({ navigation }) => {
+const ModalCalendar = ({ isSelected }) => {
   const [calendar, setCalendar] = useState([]);
   const [value, setValue] = useState(moment());
-  const { overnightDate } = useContext(UserContext);
-  const startDate = moment(overnightDate.startDate);
-  const endDate = moment(overnightDate.endDate);
   const startDay = value.clone().startOf('month').startOf('week');
   const endDay = value.clone().endOf('month').endOf('week');
   const month = new Date().getMonth() + 1;
@@ -33,7 +34,23 @@ const Calendar = ({ navigation }) => {
     setCalendar(a);
   }, [value]);
 
-  const dayStyle = (day) => {
+  const dayStyle = (day, period) => {
+    if (
+      isSelected &&
+      day.format('DD') === period.startDate.split('-')[2] &&
+      !day.isAfter(value.clone().endOf('month'), 'day') &&
+      value.format('MM') === period.startDate.split('-')[1]
+    ) {
+      return styles.period;
+    }
+    if (
+      !isSelected &&
+      day.format('DD') === period.endDate.split('-')[2] &&
+      !day.isAfter(value.clone().endOf('month'), 'day') &&
+      value.format('MM') === period.endDate.split('-')[1]
+    ) {
+      return styles.period;
+    }
     if (value.month() + 1 !== month) {
       if (
         day.isBefore(value.clone().startOf('month'), 'day') ||
@@ -54,15 +71,23 @@ const Calendar = ({ navigation }) => {
     }
     return styles.thisMonth;
   };
+
   const dayWrapper = (day, period) => {
-    if (day.format('YYYY-MM-DD') === startDate.format('YYYY-MM-DD')) {
-      return styles.periodStart;
+    if (
+      isSelected &&
+      day.format('DD') === period.startDate.split('-')[2] &&
+      !day.isAfter(value.clone().endOf('month'), 'day') &&
+      value.format('MM') === period.startDate.split('-')[1]
+    ) {
+      return styles.periodWrapper;
     }
-    if (day.format('YYYY-MM-DD') === endDate.format('YYYY-MM-DD')) {
-      return styles.periodEnd;
-    }
-    if (day.isBefore(endDate, 'day') && day.isAfter(startDate, 'day')) {
-      return styles.periodBetween;
+    if (
+      !isSelected &&
+      day.format('DD') === period.endDate.split('-')[2] &&
+      !day.isAfter(value.clone().endOf('month'), 'day') &&
+      value.format('MM') === period.endDate.split('-')[1]
+    ) {
+      return styles.periodWrapper;
     }
     if (value.isSame(day, 'day') && value.month() + 1 === month) {
       return styles.todayWrapper;
@@ -71,7 +96,7 @@ const Calendar = ({ navigation }) => {
   };
   return (
     <UserContext.Consumer>
-      {({ overnightDate }) => (
+      {({ setOvernightDate, overnightDate }) => (
         <View>
           <View
             style={{
@@ -80,79 +105,23 @@ const Calendar = ({ navigation }) => {
               alignItems: 'center',
             }}
           >
+            <View>
+              <Text style={styles.headerText}>{value.format('M')}월</Text>
+            </View>
             <TouchableOpacity
               onPress={() => {
                 setValue(value.clone().subtract(1, 'month'));
               }}
             >
-              <Icon name="left" size={20} color="black" />
+              <Icon name="left" size={20} color="#9B1818" />
             </TouchableOpacity>
-            <View>
-              <Text style={styles.headerText}>
-                {value.format('YYYY')}.{value.format('M')}
-              </Text>
-            </View>
             <TouchableOpacity
               onPress={() => setValue(value.clone().add(1, 'month'))}
             >
-              <Icon name="right" size={20} color="black" />
+              <Icon name="right" size={20} color="#9B1818" />
             </TouchableOpacity>
-            <CloseWrapper onPress={() => navigation.goBack()}>
-              <Close name="close" size={20} color="#707070" />
-            </CloseWrapper>
           </View>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <View style={styles.tempInfo}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View
-                    style={{
-                      backgroundColor: 'rgba(155, 24, 24, 0.2)',
-                      width: 31,
-                      height: 23,
-                      borderRadius: 8,
-                    }}
-                  />
-                  <Text
-                    style={{
-                      fontFamily: 'Medium',
-                      color: '#707070',
-                      fontSize: 11,
-                    }}
-                  >
-                    {' '}
-                    : 외박 기록
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                  }}
-                >
-                  <View
-                    style={{
-                      backgroundColor: '#850000',
-                      width: 11,
-                      height: 11,
-                      borderRadius: 5.5,
-                    }}
-                  />
-                  <Text
-                    style={{
-                      fontFamily: 'Medium',
-                      color: '#707070',
-                      fontSize: 11,
-                    }}
-                  >
-                    {' '}
-                    : 체온 기록 완료
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={{ flexDirection: 'row' }}>
+          <View style={{ flexDirection: 'row', marginTop: 10 }}>
             {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
               <View
                 key={day}
@@ -164,8 +133,8 @@ const Calendar = ({ navigation }) => {
                 <Text
                   style={{
                     fontFamily: 'Medium',
-                    fontSize: 11,
-                    color: day === '일' ? 'red' : 'black',
+                    fontSize: 12,
+                    color: day === '일' ? 'red' : '#A0A0A0',
                   }}
                 >
                   {day}
@@ -177,25 +146,43 @@ const Calendar = ({ navigation }) => {
             <View
               key={week}
               style={{
-                height: 100,
-                flexShrink: 1,
+                width: '90%',
+                height: 50,
                 flexDirection: 'row',
-                borderBottomWidth: 0.4,
-                borderBottomColor: '#CBCCCE',
               }}
             >
               {week.map((day) => (
-                <View
+                <Pressable
                   key={day}
                   style={{
                     flex: 1,
                     alignItems: 'center',
+                    paddingTop: 5,
+                  }}
+                  onPress={() => {
+                    if (isSelected) {
+                      setOvernightDate({
+                        ...overnightDate,
+                        startDate: `${value.format('YYYY')}-${value.format(
+                          'MM'
+                        )}-${day.format('DD')}`,
+                      });
+                    } else {
+                      setOvernightDate({
+                        ...overnightDate,
+                        endDate: `${value.format('YYYY')}-${value.format(
+                          'MM'
+                        )}-${day.format('DD')}`,
+                      });
+                    }
                   }}
                 >
                   <View style={dayWrapper(day, overnightDate)}>
-                    <Text style={dayStyle(day)}>{day.format('D')}</Text>
+                    <Text style={dayStyle(day, overnightDate)}>
+                      {day.format('D')}
+                    </Text>
                   </View>
-                </View>
+                </Pressable>
               ))}
             </View>
           ))}
@@ -204,72 +191,54 @@ const Calendar = ({ navigation }) => {
     </UserContext.Consumer>
   );
 };
-
 const styles = StyleSheet.create({
   notThisMonth: {
     color: 'gray',
     fontFamily: 'Medium',
-    fontSize: 11,
+    fontSize: 13,
   },
   thisMonth: {
     color: 'black',
     fontFamily: 'Medium',
-    fontSize: 11,
+    fontSize: 13,
   },
   today: {
     color: 'black',
     fontFamily: 'Medium',
-    fontSize: 11,
+    fontSize: 13,
   },
   todayWrapper: {
     backgroundColor: '#D8D8DA',
-    borderRadius: 10,
-    width: 20,
-    height: 20,
+    borderRadius: 12.5,
+    width: 25,
+    height: 25,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 3,
   },
   period: {
     color: '#9B1818',
     fontFamily: 'Medium',
-    fontSize: 11,
+    fontSize: 13,
   },
-  periodStart: {
+  periodWrapper: {
     backgroundColor: 'rgba(133, 0, 0, 0.17)',
-    borderTopLeftRadius: 12.5,
-    borderBottomLeftRadius: 12.5,
-    width: '100%',
-    height: '100%',
+    borderRadius: 12.5,
+    width: 25,
+    height: 25,
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 5,
-  },
-  periodBetween: {
-    backgroundColor: 'rgba(133, 0, 0, 0.17)',
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    paddingTop: 5,
-  },
-  periodEnd: {
-    backgroundColor: 'rgba(133, 0, 0, 0.17)',
-    borderTopRightRadius: 12.5,
-    borderBottomRightRadius: 12.5,
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    paddingTop: 5,
   },
   default: {
     color: 'black',
     fontFamily: 'Medium',
-    fontSize: 11,
+    fontSize: 13,
   },
   defaultWrapper: {
-    width: '100%',
-    height: '100%',
+    borderRadius: 12.5,
+    width: 25,
+    height: 25,
+    justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 5,
   },
   topShadow: {
     shadowOffset: {
@@ -290,8 +259,9 @@ const styles = StyleSheet.create({
     shadowColor: '#DED7CA',
   },
   headerText: {
-    fontFamily: 'Heavy',
+    fontFamily: 'Bold6',
     fontSize: responsiveScreenFontSize(2.36),
+    color: '#404040',
   },
   tempInfo: {
     width: responsiveScreenWidth(89.48),
@@ -307,4 +277,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 });
-export default Calendar;
+export default ModalCalendar;

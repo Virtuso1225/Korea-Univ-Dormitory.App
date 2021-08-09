@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React from 'react';
 import {
   responsiveScreenFontSize,
   responsiveScreenHeight,
 } from 'react-native-responsive-dimensions';
 import CardComponents from './CardComponents';
-import { UserContext, ProgressContext } from '../contexts';
-import { getCurrentUser } from '../firebase';
+import { UserContext } from '../contexts';
 import { dorms } from '../utils';
 import {
   Background,
@@ -17,12 +16,11 @@ import {
   ProfileImageContainer,
   ProfileTextContainer,
   CustomText,
-  ButtonWrapper,
   RowWrapper,
 } from './MypageStyle';
 
 const Mypage = ({ navigation }) => {
-  const { spinner } = useContext(ProgressContext);
+  // const { spinner } = useContext(ProgressContext);
 
   // const [userInfo, setUserInfo] = useState({
   //   dorm: '',
