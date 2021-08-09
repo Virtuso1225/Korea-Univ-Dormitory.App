@@ -1,8 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
+import moment from 'moment';
 import { UserContext, ProgressContext } from '../contexts';
-import { signout, getMyPenalty } from '../firebase';
+import { signout } from '../firebase';
 import {
   DeleteIcon,
   FacilityIcon,
@@ -24,7 +25,7 @@ const CardComponents = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
   const { setUser, setProfileInfo, setMyPenalty, setNotice } =
     useContext(UserContext);
-  const [temperature, setTemperature] = useState('36.2');
+  const today = moment().format('YYYY-MM-DD');
 
   const Signout = async () => {
     try {
@@ -44,7 +45,7 @@ const CardComponents = ({ navigation }) => {
 
   return (
     <UserContext.Consumer>
-      {({ profileInfo }) => (
+      {({ profileInfo, temperature }) => (
         <ColumnWrapper>
           <TopRowWrapper onPress={() => navigation.navigate('Calendar')}>
             <TemperatureIcon />
@@ -55,19 +56,28 @@ const CardComponents = ({ navigation }) => {
               color="#FF0000"
               style={{
                 marginLeft: 10,
-                display: temperature === '' ? 'flex' : 'none',
+                display: temperature[today] === undefined ? 'flex' : 'none',
               }}
             />
-            <ErrorText visible={temperature}>
+            <ErrorText visible={temperature[today] === undefined}>
               오늘의 체온을 기록해주세요!
             </ErrorText>
-            <DescriptionText font="Regular" visible={temperature}>
+            <DescriptionText
+              font="Regular"
+              visible={temperature[today] !== undefined}
+            >
               #오늘의 체온:
             </DescriptionText>
-            <DescriptionText font="ExtraBold" visible={temperature}>
-              {temperature}℃
+            <DescriptionText
+              font="ExtraBold"
+              visible={temperature[today] !== undefined}
+            >
+              {temperature[today]}°C
             </DescriptionText>
-            <DescriptionText font="Regular" visible={temperature}>
+            <DescriptionText
+              font="Regular"
+              visible={temperature[today] !== undefined}
+            >
               #오늘의 외박여부:
             </DescriptionText>
           </TopRowWrapper>

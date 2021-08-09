@@ -13,14 +13,14 @@ const UserContext = createContext({
     nickname: '',
   },
   overnightDate: [],
-  myTemperature: [],
+  temperature: [],
   myPenalty: [],
   notice: [],
 
   setUser: () => {},
   setProfileInfo: () => {},
   setOvernightDate: () => {},
-  setMyTemperature: () => {},
+  setTemperature: () => {},
   setMyPenalty: () => {},
   setNotice: () => {},
 });
@@ -29,7 +29,7 @@ const UserProvider = ({ children }) => {
   const [user, setUserInfo] = useState({});
   const [profileInfo, setProfileInfo] = useState();
   const [overnightDate, setOvernightDate] = useState();
-  const [myTemperature, setMyTemperature] = useState();
+  const [temperature, setTemperature] = useState();
   const [myPenalty, setMyPenalty] = useState();
   const [notice, setNotice] = useState();
   const setUser = ({ uid }) => {
@@ -42,8 +42,8 @@ const UserProvider = ({ children }) => {
     setProfileInfo,
     overnightDate,
     setOvernightDate,
-    myTemperature,
-    setMyTemperature,
+    temperature,
+    setTemperature,
     myPenalty,
     setMyPenalty,
     notice,

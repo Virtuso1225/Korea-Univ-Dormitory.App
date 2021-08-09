@@ -42,8 +42,14 @@ const Front = ({ navigation }) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [isSelected, setSelection] = useState(false);
   const { setUser } = useContext(UserContext);
-  const { profileInfo, setProfileInfo, setNotice, setMyPenalty } =
-    useContext(UserContext);
+  const {
+    profileInfo,
+    setProfileInfo,
+    setNotice,
+    setMyPenalty,
+    setOvernightDate,
+    setTemperature,
+  } = useContext(UserContext);
 
   const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);
@@ -88,10 +94,12 @@ const Front = ({ navigation }) => {
         sum.myPenaltySum += item.points;
       });
       setProfileInfo({ ...result[0], ...sum });
+      console.log('profileInfo', result[0], sum, profileInfo);
+      setOvernightDate({ startDate: '', endDate: '' });
+      setTemperature({ '2021-08-10': '36.5' });
     } catch (e) {
       Alert.alert('Signin Error', e.message);
     } finally {
-      console.log('profileInfo', profileInfo);
       spinner.stop();
     }
   };

@@ -54,7 +54,7 @@ const Calendar = ({ navigation }) => {
     }
     return styles.thisMonth;
   };
-  const dayWrapper = (day, period) => {
+  const dayWrapper = (day) => {
     if (day.format('YYYY-MM-DD') === startDate.format('YYYY-MM-DD')) {
       return styles.periodStart;
     }
@@ -64,14 +64,11 @@ const Calendar = ({ navigation }) => {
     if (day.isBefore(endDate, 'day') && day.isAfter(startDate, 'day')) {
       return styles.periodBetween;
     }
-    if (value.isSame(day, 'day') && value.month() + 1 === month) {
-      return styles.todayWrapper;
-    }
     return styles.defaultWrapper;
   };
   return (
     <UserContext.Consumer>
-      {({ overnightDate }) => (
+      {({ overnightDate, temperature }) => (
         <View>
           <View
             style={{
@@ -83,6 +80,7 @@ const Calendar = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 setValue(value.clone().subtract(1, 'month'));
+                console.log(temperature);
               }}
             >
               <Icon name="left" size={20} color="black" />
@@ -192,8 +190,23 @@ const Calendar = ({ navigation }) => {
                     alignItems: 'center',
                   }}
                 >
-                  <View style={dayWrapper(day, overnightDate)}>
-                    <Text style={dayStyle(day)}>{day.format('D')}</Text>
+                  <View style={dayWrapper(day)}>
+                    <View
+                      style={
+                        value.isSame(day, 'day') && value.month() + 1 === month
+                          ? styles.todayWrapper
+                          : ''
+                      }
+                    >
+                      <Text style={dayStyle(day)}>{day.format('D')}</Text>
+                    </View>
+                    <View
+                      style={
+                        temperature[day.format('YYYY-MM-DD')] !== undefined
+                          ? styles.dot
+                          : ''
+                      }
+                    />
                   </View>
                 </View>
               ))}
@@ -228,7 +241,6 @@ const styles = StyleSheet.create({
     height: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 3,
   },
   period: {
     color: '#9B1818',
@@ -292,6 +304,13 @@ const styles = StyleSheet.create({
   headerText: {
     fontFamily: 'Heavy',
     fontSize: responsiveScreenFontSize(2.36),
+  },
+  dot: {
+    width: 11,
+    height: 11,
+    borderRadius: 5.5,
+    backgroundColor: '#850000',
+    marginTop: 4,
   },
   tempInfo: {
     width: responsiveScreenWidth(89.48),
