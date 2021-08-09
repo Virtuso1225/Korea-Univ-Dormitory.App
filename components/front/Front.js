@@ -43,6 +43,7 @@ const Front = ({ navigation }) => {
   const [isSelected, setSelection] = useState(false);
   const { setUser } = useContext(UserContext);
   const { setProfileInfo } = useContext(UserContext);
+  const { setOvernightDate } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);
 
@@ -71,6 +72,7 @@ const Front = ({ navigation }) => {
       setUser(user);
       const profile = await getCurrentUser();
       setProfileInfo(profile);
+      setOvernightDate({ startDate: '25', endDate: '27' });
     } catch (e) {
       Alert.alert('Signin Error', e.message);
     } finally {

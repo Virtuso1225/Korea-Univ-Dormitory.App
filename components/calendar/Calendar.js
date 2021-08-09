@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import moment from 'moment';
 import Icon from 'react-native-vector-icons/AntDesign';
+import Close from 'react-native-vector-icons/EvilIcons';
 import {
   responsiveScreenWidth,
   responsiveScreenFontSize,
   responsiveScreenHeight,
 } from 'react-native-responsive-dimensions';
+import { CloseWrapper } from '../mypage/DropOutStyle';
 
-const Calendar = () => {
+const Calendar = ({ navigation }) => {
   const [calendar, setCalendar] = useState([]);
   const [value, setValue] = useState(moment());
   const startDay = value.clone().startOf('month').startOf('week');
@@ -62,7 +64,7 @@ const Calendar = () => {
             setValue(value.clone().subtract(1, 'month'));
           }}
         >
-          <Icon name="left" size={15} color="black" />
+          <Icon name="left" size={20} color="black" />
         </TouchableOpacity>
         <View>
           <Text style={styles.headerText}>
@@ -72,8 +74,11 @@ const Calendar = () => {
         <TouchableOpacity
           onPress={() => setValue(value.clone().add(1, 'month'))}
         >
-          <Icon name="right" size={15} color="black" />
+          <Icon name="right" size={20} color="black" />
         </TouchableOpacity>
+        <CloseWrapper onPress={() => navigation.goBack()}>
+          <Close name="close" size={20} color="#707070" />
+        </CloseWrapper>
       </View>
       <View style={styles.topShadow}>
         <View style={styles.bottomShadow}>
@@ -118,11 +123,34 @@ const Calendar = () => {
           </View>
         </View>
       </View>
+      <View style={{ flexDirection: 'row' }}>
+        {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
+          <View
+            key={day}
+            style={{
+              flex: 1,
+              alignItems: 'center',
+            }}
+          >
+            <Text
+              style={{
+                fontFamily: 'Medium',
+                fontSize: 11,
+                color: day === '일' ? 'red' : 'black',
+              }}
+            >
+              {day}
+            </Text>
+          </View>
+        ))}
+      </View>
+
       {calendar.map((week) => (
         <View
           key={week}
           style={{
             height: 100,
+            flexShrink: 1,
             flexDirection: 'row',
             borderBottomWidth: 0.4,
             borderBottomColor: '#CBCCCE',
@@ -133,6 +161,7 @@ const Calendar = () => {
               key={day}
               style={{
                 flex: 1,
+                flexShrink: 1,
                 alignItems: 'center',
                 paddingTop: 5,
               }}

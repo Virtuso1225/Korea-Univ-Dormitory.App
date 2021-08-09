@@ -1,17 +1,18 @@
 import React from 'react';
-import CalendarComponent from './CalendarComponent';
 import { BackgroundWrapper } from './DropOutStyle';
 import { BotttomWrapper, CalenderWrapper } from './TemperatureStyle';
 import Calendar from '../calendar/Calendar';
+import BottomSheet from '../bottomsheet/BottomSheet';
 
-const Temperature = () => {
+const Temperature = ({ navigation }) => {
   return (
     <BackgroundWrapper>
       <CalenderWrapper>
-        {/* <CalendarComponent /> */}
-        <Calendar />
+        <Calendar navigation={navigation} />
       </CalenderWrapper>
-      <BotttomWrapper />
+      <BotttomWrapper>
+        <BottomSheet />
+      </BotttomWrapper>
     </BackgroundWrapper>
   );
 };

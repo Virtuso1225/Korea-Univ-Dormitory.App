@@ -584,3 +584,39 @@ export const NormalTempIcon = () => (
     </G>
   </Svg>
 );
+
+export const OvernightIcon = () => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={12.757}
+    height={18.8}
+    viewBox="0 0 12.757 18.8"
+  >
+    <G
+      data-name="\uADF8\uB8F9 156"
+      transform="translate(-78.449 -237.36)"
+      fill="none"
+      stroke="#1e1e1e"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={0.8}
+    >
+      <Path
+        data-name="\uD328\uC2A4 132"
+        d="M90.451 238.411h-4.9v-.6l-1.89.6H79.2a.355.355 0 00-.354.354v14.694a.355.355 0 00.354.354h.817v.236l5.5 1.711v-1.947h4.927a.355.355 0 00.354-.354v-14.693a.355.355 0 00-.347-.355z"
+      />
+      <Circle
+        data-name="\uD0C0\uC6D0 49"
+        cx={0.64}
+        cy={0.64}
+        r={0.64}
+        transform="translate(83.175 246.058)"
+      />
+      <Path data-name="\uC120 75" d="M82.106 246.701h.976" />
+      <Path
+        data-name="\uD328\uC2A4 133"
+        d="M80.058 254v-14.475l5.469-1.765-.028 17.952z"
+      />
+    </G>
+  </Svg>
+);
