@@ -87,7 +87,7 @@ const ModalCalendarContainer = () => {
                           size="12"
                           color={!dateSelection ? '#9B1818' : '#CFCFCF'}
                         >
-                          끝
+                          종료
                         </CustomText>
                         <RowWrapper>
                           <CustomText

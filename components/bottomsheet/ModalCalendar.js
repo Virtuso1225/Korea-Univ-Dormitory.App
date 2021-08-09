@@ -134,7 +134,7 @@ const ModalCalendar = ({ isSelected }) => {
                   style={{
                     fontFamily: 'Medium',
                     fontSize: 12,
-                    color: day === '일' ? 'red' : 'black',
+                    color: day === '일' ? 'red' : '#A0A0A0',
                   }}
                 >
                   {day}
