@@ -58,7 +58,6 @@ const Register = ({ navigation }) => {
   const [dorm, setDorm] = useState('');
   const [room, setRoom] = useState('');
   const [nickname, setNickname] = useState('');
-  // const [index, setIndex] = useState('');
 
   const [nameFocused, setNameFocused] = useState(false);
   const [idFocused, setIdFocused] = useState(false);

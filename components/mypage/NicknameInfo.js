@@ -10,11 +10,7 @@ import {
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Close from 'react-native-vector-icons/EvilIcons';
 import { ProgressContext, UserContext } from '../contexts';
-import {
-  getCurrentUser,
-  isExistNickname,
-  updateNicknameInfo,
-} from '../firebase';
+import { isExistNickname, updateNicknameInfo } from '../firebase';
 import {
   SubHeader,
   SelectionWrapper,
@@ -34,35 +30,11 @@ import { removeWhitespace } from '../utils';
 
 const NicknameInfo = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
-  const [userInfo, setUserInfo] = useState({
-    dorm: '',
-    room: '',
-    sid: '',
-  });
 
   const [nickname, setNickname] = useState('');
   const [nicknameError, setNicknameError] = useState('');
   const [nicknameFocused, setNicknameFocused] = useState(false);
   const refNicknameDidMount = useRef(null);
-
-  const setUserInfoFunc = async () => {
-    const userInfo = await getCurrentUser();
-    setUserInfo(userInfo);
-  };
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      spinner.start();
-      setUserInfoFunc();
-      spinner.stop();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  useEffect(() => {
-    setNickname(userInfo.nickname);
-  }, [userInfo]);
 
   const isExistNicknameFunc = async () => {
     let existNickname = true;
@@ -104,9 +76,11 @@ const NicknameInfo = ({ navigation }) => {
     }
   }, [nicknameFocused]);
 
-  const _handleUpdateBtnPress = () => {
-    lastCheck().then((existNickname) => {
+  const _handleUpdateBtnPress = async () => {
+    let result = true;
+    await lastCheck().then((existNickname) => {
       if (!nickname || existNickname) {
+        result = false;
         Alert.alert('Update Error', '닉네임 정보를 확인하세요.');
       } else {
         try {
@@ -126,6 +100,8 @@ const NicknameInfo = ({ navigation }) => {
         }
       }
     });
+
+    return result;
   };
 
   return (
@@ -163,9 +139,9 @@ const NicknameInfo = ({ navigation }) => {
                       setNicknameFocused(false),
                     ]}
                     onFocus={() => setNicknameFocused(true)}
-                    onSubmitEditing={() => {
-                      _handleUpdateBtnPress();
-                      if (nicknameError === '') {
+                    onSubmitEditing={async () => {
+                      const result = await _handleUpdateBtnPress();
+                      if (result) {
                         setProfileInfo({ ...profileInfo, nickname });
                       }
                     }}
@@ -175,9 +151,10 @@ const NicknameInfo = ({ navigation }) => {
                 <View style={styles.topShadow}>
                   <View style={styles.bottomShadow}>
                     <ButtonWrapper
-                      onPress={() => {
-                        _handleUpdateBtnPress();
-                        if (nicknameError === '') {
+                      onPress={async () => {
+                        const result = await _handleUpdateBtnPress();
+
+                        if (result) {
                           setProfileInfo({ ...profileInfo, nickname });
                         }
                       }}
