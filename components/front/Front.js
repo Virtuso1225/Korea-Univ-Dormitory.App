@@ -161,6 +161,18 @@ const Front = ({ navigation }) => {
             </View>
           </View>
         </BottomWrapper>
+        <BottomWrapper>
+          <View style={styles.topShadow}>
+            <View style={styles.bottomShadow}>
+              <ButtonWrapper
+                title="비번찾기(임시)"
+                onPress={() => navigation.navigate('FindPassword')}
+              >
+                <StyledButton>비번찾기(임시)</StyledButton>
+              </ButtonWrapper>
+            </View>
+          </View>
+        </BottomWrapper>
       </View>
     </TouchableWithoutFeedback>
   );

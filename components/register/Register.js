@@ -16,8 +16,8 @@ import {
   dorms,
   removeWhitespace,
   validateSid,
-  validatePassword,
   validateRoom,
+  validatePassword,
 } from '../utils';
 import { UserContext, ProgressContext } from '../contexts';
 
@@ -91,13 +91,6 @@ const Register = ({ navigation }) => {
   const refCheckDidMount = useRef(null);
   const refRoomDidMount = useRef(null);
   const refNicknameDidMount = useRef(null);
-
-  const [studentInfo, setStudentInfo] = useState({
-    name: '',
-    dorm: '',
-    room: '',
-    sid: '',
-  });
 
   const nameCheck = async () => {
     let errorMsg = '';
@@ -177,7 +170,7 @@ const Register = ({ navigation }) => {
     if (!password) {
       errorMsg = '*필수 항목입니다.';
     } else if (password && !validatePassword(password)) {
-      errorMsg = '* 영문, 숫자, 특수기호를 모두 포함한 6자리 이상일 것.';
+      errorMsg = '* 영문, 숫자를 모두 포함한 6자리 이상일 것.';
     }
 
     setPasswordError(errorMsg);
@@ -283,24 +276,25 @@ const Register = ({ navigation }) => {
   }, [nicknameFocused]);
 
   const setStudentInfoFunc = async (sid) => {
-    const studentInfo = await getStudentInfo(sid * 1);
-    setStudentInfo(studentInfo);
+    const getStudentInfoChart = await getStudentInfo(sid * 1);
+
+    return getStudentInfoChart;
   };
 
   const lastStudentInfoCheck = async () => {
-    await setStudentInfoFunc(sid);
+    const studentInfoChart = await setStudentInfoFunc(sid);
 
     let compareStudentInfo = true;
 
     if (
-      studentInfo.name !== name ||
-      studentInfo.dorm !== dorm ||
-      studentInfo.room !== room
+      studentInfoChart.name !== name ||
+      studentInfoChart.dorm !== dorm ||
+      studentInfoChart.room !== room
     ) {
       compareStudentInfo = false;
     }
 
-    return compareStudentInfo;
+    return [compareStudentInfo, studentInfoChart.index];
   };
 
   const lastCheck = () => {
@@ -319,15 +313,14 @@ const Register = ({ navigation }) => {
   const _handleSignupBtnPress = () => {
     lastCheck().then((results) => {
       const existNickname = results[0];
-      const compareStudentInfo = results[1];
+      const compareStudentInfo = results[1][0];
+      const studentIndex = results[1][1];
       const nameError = results[2];
       const sidError = results[3];
       const idError = results[4];
       const passwordError = results[5];
       const checkError = results[6];
       const roomError = results[7];
-
-      console.log('results', results);
 
       if (nameError) {
         Alert.alert('Signup Error', '이름을 확인하세요.');
@@ -344,6 +337,7 @@ const Register = ({ navigation }) => {
       } else if (existNickname) {
         Alert.alert('Signup Error', '닉네임을 확인하세요.');
       } else if (!compareStudentInfo) {
+        console.log('results', results);
         Alert.alert(
           'Signup Error',
           '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
@@ -351,6 +345,8 @@ const Register = ({ navigation }) => {
       } else {
         try {
           spinner.start();
+          console.log('studentIndex', studentIndex);
+
           signup({
             name,
             sid,
@@ -359,6 +355,7 @@ const Register = ({ navigation }) => {
             dorm,
             room,
             nickname,
+            studentIndex,
           });
 
           Alert.alert('이메일 인증 요청', '메일을 확인해주세요.', [

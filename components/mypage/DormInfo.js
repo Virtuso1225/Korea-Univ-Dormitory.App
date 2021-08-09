@@ -21,8 +21,8 @@ import { UserContext, ProgressContext } from '../contexts';
 import { CustomText } from './ModalComponentStyle';
 import { Header, PageTitle } from './MypageStyle';
 import { ColumnWrapper, ErrorText, Input2 } from '../register/RegisterStyle';
-import { dorms, removeWhitespace, validateRoom } from '../utils';
-import { getCurrentUser, getStudentInfo, updateDormInfo } from '../firebase';
+import { removeWhitespace, validateRoom } from '../utils';
+import { getStudentInfo, updateDormInfo } from '../firebase';
 
 const DormInfo = ({ navigation }) => {
   const dorms = [
@@ -32,51 +32,15 @@ const DormInfo = ({ navigation }) => {
     '프런티어관(신관-여자동)',
   ];
   const { spinner } = useContext(ProgressContext);
-  const [userInfo, setUserInfo] = useState({
-    dorm: '',
-    room: '',
-    sid: '',
-  });
+  const { profileInfo } = useContext(UserContext);
 
-  const [studentInfo, setStudentInfo] = useState({
-    name: '',
-    dorm: '',
-    room: '',
-    sid: '',
-  });
-
-  const [dorm, setDorm] = useState('');
-  const [room, setRoom] = useState('');
+  const [dorm, setDorm] = useState(profileInfo.dorm);
+  const [room, setRoom] = useState(profileInfo.room);
 
   const [roomError, setRoomError] = useState('');
   const [roomFocused, setRoomFocused] = useState(false);
 
   const refRoomDidMount = useRef(null);
-
-  const setUserInfoFunc = async () => {
-    setUserInfo(await getCurrentUser());
-  };
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      spinner.start();
-      setUserInfoFunc();
-      spinner.stop();
-    });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  const setStudentInfoFunc = async (sid) => {
-    const studentInfo = await getStudentInfo(sid * 1);
-    setStudentInfo(studentInfo);
-  };
-
-  useEffect(() => {
-    setRoom(userInfo.room);
-    setDorm(userInfo.dorm);
-    setStudentInfoFunc(userInfo.sid);
-  }, [userInfo]);
 
   const roomCheck = async () => {
     let errorMsg = '';
@@ -92,15 +56,6 @@ const DormInfo = ({ navigation }) => {
     return errorMsg;
   };
 
-  const compareCheck = async () => {
-    let compareStudentInfo = true;
-    if (studentInfo.dorm !== dorm || studentInfo.room !== room) {
-      compareStudentInfo = false;
-    }
-
-    return compareStudentInfo;
-  };
-
   useEffect(() => {
     if (refRoomDidMount.current) {
       if (roomFocused === false) {
@@ -111,18 +66,39 @@ const DormInfo = ({ navigation }) => {
     }
   }, [roomFocused]);
 
+  const setStudentInfoFunc = async (sid) => {
+    const getStudentInfoChart = await getStudentInfo(sid * 1);
+
+    return getStudentInfoChart;
+  };
+
+  const compareCheck = async () => {
+    const studentInfoChart = await setStudentInfoFunc(profileInfo.sid);
+
+    let compareStudentInfo = true;
+    if (studentInfoChart.dorm !== dorm || studentInfoChart.room !== room) {
+      compareStudentInfo = false;
+    }
+
+    return compareStudentInfo;
+  };
+
   const lastCheck = () => {
     return Promise.all([roomCheck(), compareCheck()]);
   };
 
-  const _handleUpdateBtnPress = () => {
-    lastCheck().then((results) => {
+  const _handleUpdateBtnPress = async () => {
+    let result = true;
+
+    await lastCheck().then((results) => {
       const roomError = results[0];
       const compareStudentInfo = results[1];
 
       if (roomError) {
+        result = false;
         Alert.alert('Update Error', '호실 정보를 확인하세요.');
       } else if (!compareStudentInfo) {
+        result = false;
         Alert.alert(
           'Update Error',
           '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
@@ -144,87 +120,107 @@ const DormInfo = ({ navigation }) => {
         }
       }
     });
+
+    return result;
   };
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <BackgroundWrapper>
-        <Header>
-          <RowWrapper>
-            <PageTitle>소속 동/호실 변경</PageTitle>
-            <CloseWrapper onPress={() => navigation.goBack()}>
-              <Close name="close" size={20} color="#707070" />
-            </CloseWrapper>
-          </RowWrapper>
-        </Header>
-        <Body>
-          <SelectionWrapper>
-            <SubHeader>
-              <CustomText
-                font="Regular"
-                size={responsiveScreenFontSize(1.5)}
-                color="#707070"
-              >
-                안암학사 어플 프로필을 설정해주세요.
-              </CustomText>
-            </SubHeader>
-            <RowWrapper>
-              <ColumnWrapper>
-                <SelectDropdown
-                  data={dorms}
-                  buttonStyle={styles.buttonStyle}
-                  buttonTextStyle={styles.buttonTextStyle}
-                  onSelect={(selectedItem, index) => {
-                    setDorm(index);
-                  }}
-                  defaultValueByIndex={userInfo.dorm}
-                  dropdownStyle={styles.dropdownStyle}
-                  rowStyle={styles.rowStyle}
-                  rowTextStyle={styles.rowTextStyle}
-                  renderDropdownIcon={() => (
-                    <Icon name="down" size={10} color="#9F9F9F" />
-                  )}
-                  dropDownIconPosition="right"
-                  buttonTextAfterSelection={(selectedItem) => {
-                    return selectedItem;
-                  }}
-                  rowTextForSelection={(item) => item}
-                />
-              </ColumnWrapper>
-              <ColumnWrapper>
-                <Input2
-                  label="Room"
-                  returnKeyType="done"
-                  defaultValue={userInfo.room}
-                  // value={room}
-                  onChangeText={setRoom}
-                  onBlur={() => [
-                    setRoom(removeWhitespace(room)),
-                    setRoomFocused(false),
-                  ]}
-                  onFocus={() => setRoomFocused(true)}
-                  onSubmitEditing={_handleUpdateBtnPress}
-                />
-                <ErrorText>{roomError}</ErrorText>
-              </ColumnWrapper>
-            </RowWrapper>
-            <View style={styles.topShadow}>
-              <View style={styles.bottomShadow}>
-                <ButtonWrapper onPress={_handleUpdateBtnPress}>
+    <UserContext.Consumer>
+      {({ setProfileInfo, profileInfo }) => (
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <BackgroundWrapper>
+            <Header>
+              <RowWrapper>
+                <PageTitle>소속 동/호실 변경</PageTitle>
+                <CloseWrapper onPress={() => navigation.goBack()}>
+                  <Close name="close" size={20} color="#707070" />
+                </CloseWrapper>
+              </RowWrapper>
+            </Header>
+            <Body>
+              <SelectionWrapper>
+                <SubHeader>
                   <CustomText
-                    font="Medium"
-                    size={responsiveScreenFontSize(1.8)}
-                    color="#1D1D1D"
+                    font="Regular"
+                    size={responsiveScreenFontSize(1.5)}
+                    color="#707070"
                   >
-                    완료
+                    안암학사 어플 프로필을 설정해주세요.
                   </CustomText>
-                </ButtonWrapper>
-              </View>
-            </View>
-          </SelectionWrapper>
-        </Body>
-      </BackgroundWrapper>
-    </TouchableWithoutFeedback>
+                </SubHeader>
+                <RowWrapper>
+                  <ColumnWrapper>
+                    <SelectDropdown
+                      data={dorms}
+                      buttonStyle={styles.buttonStyle}
+                      buttonTextStyle={styles.buttonTextStyle}
+                      onSelect={(selectedItem, index) => {
+                        setDorm(index);
+                      }}
+                      defaultValueByIndex={profileInfo.dorm}
+                      dropdownStyle={styles.dropdownStyle}
+                      rowStyle={styles.rowStyle}
+                      rowTextStyle={styles.rowTextStyle}
+                      renderDropdownIcon={() => (
+                        <Icon name="down" size={10} color="#9F9F9F" />
+                      )}
+                      dropDownIconPosition="right"
+                      buttonTextAfterSelection={(selectedItem) => {
+                        return selectedItem;
+                      }}
+                      rowTextForSelection={(item) => item}
+                    />
+                  </ColumnWrapper>
+                  <ColumnWrapper>
+                    <Input2
+                      label="Room"
+                      returnKeyType="done"
+                      // defaultValue={profileInfo.room}
+                      value={room}
+                      onChangeText={setRoom}
+                      onBlur={() => [
+                        setRoom(removeWhitespace(room)),
+                        setRoomFocused(false),
+                      ]}
+                      onFocus={() => setRoomFocused(true)}
+                      onSubmitEditing={async () => {
+                        const result = await _handleUpdateBtnPress();
+
+                        if (result) {
+                          setProfileInfo({ ...profileInfo, dorm, room });
+                        }
+                      }}
+                    />
+                    <ErrorText>{roomError}</ErrorText>
+                  </ColumnWrapper>
+                </RowWrapper>
+                <View style={styles.topShadow}>
+                  <View style={styles.bottomShadow}>
+                    <ButtonWrapper
+                      onPress={async () => {
+                        const result = await _handleUpdateBtnPress();
+
+                        if (result) {
+                          setProfileInfo({ ...profileInfo, dorm, room });
+                        }
+                      }}
+                    >
+                      <CustomText
+                        font="Medium"
+                        size={responsiveScreenFontSize(1.8)}
+                        color="#1D1D1D"
+                      >
+                        완료
+                      </CustomText>
+                    </ButtonWrapper>
+                  </View>
+                </View>
+              </SelectionWrapper>
+            </Body>
+          </BackgroundWrapper>
+        </TouchableWithoutFeedback>
+      )}
+    </UserContext.Consumer>
   );
 };
 

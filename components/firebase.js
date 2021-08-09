@@ -29,10 +29,12 @@ export const signup = async ({
   dorm,
   room,
   nickname,
+  studentIndex,
 }) => {
   await Auth.createUserWithEmailAndPassword(email, password);
   const currentUser = {
     id: Auth.currentUser.uid,
+    studentIndex,
     sid,
     name,
     dorm,
@@ -49,6 +51,7 @@ export const signup = async ({
       dorm: currentUser.dorm,
       room: currentUser.room,
       nickname: currentUser.nickname,
+      index: currentUser.studentIndex,
     })
     .then(() => {
       console.log('firestore()DB 유저 추가 성공');
@@ -67,6 +70,26 @@ export const signup = async ({
     .catch('Email not sent!');
 
   return {};
+};
+
+export const findPassword = async (email) => {
+  console.log(email);
+  const result = [];
+  await firebase
+    .auth()
+    .sendPasswordResetEmail(email)
+    .then(() => {
+      console.log('Password reset email sent!');
+      result.push(true);
+    })
+    .catch((error) => {
+      console.log(error.code, error.message);
+      result.push(false);
+      result.push(error.code);
+      result.push(error.message);
+    });
+
+  return result;
 };
 
 export const comparePassword = async (password) => {
@@ -90,10 +113,8 @@ export const comparePassword = async (password) => {
 export const getCurrentUser = async () => {
   let currentUserInfo = {
     name: '',
-    email: '',
     dorm: '',
     room: '',
-    password: '',
     sid: '',
     nickname: '',
   };
@@ -111,7 +132,8 @@ export const getStudentInfo = async (sid) => {
     dorm: '',
     room: '',
     sid: '',
-    nickname: '',
+    name: '',
+    index: '',
   };
   const docRef = fs.collection('studentList').where('sid', '==', sid);
 
@@ -130,7 +152,106 @@ export const getStudentInfo = async (sid) => {
       console.log('Error getting documents: ', error);
     });
 
+  console.log(studentInfo);
+
   return studentInfo;
+};
+
+export const getNotice = async () => {
+  const dateToString = (inputDate) => {
+    const d = new Date(inputDate * 1000);
+    let month = `${d.getMonth() + 1}`;
+    let day = `${d.getDate()}`;
+    const year = `${d.getFullYear()}`;
+
+    if (month < 10) month = `0${month}`;
+    if (day < 10) day = `0${day}`;
+
+    return [year, month, day].join('.');
+  };
+
+  const compareDate = (dueDate) => {
+    const onlyDate = (date) => {
+      const d = new Date(date);
+
+      let month = `${d.getMonth() + 1}`;
+      let day = `${d.getDate()}`;
+      const year = `${d.getFullYear()}`;
+
+      if (month < 10) month = `0${month}`;
+      if (day < 10) day = `0${day}`;
+
+      return [year, month, day].join('');
+    };
+
+    let result = true;
+    const t1 = new Date();
+    const t2 = dueDate * 1000;
+
+    if (onlyDate(t1.getTime()) < onlyDate(t2)) {
+      result = false;
+    } else {
+      result = true;
+    }
+    return result;
+  };
+
+  let noticeObject = {
+    title: '',
+    content: '',
+    date: '',
+    afterDue: '',
+    due: '',
+    highlight: '',
+  };
+
+  const notice = [];
+  const noticeAfterDue = [];
+
+  await fs
+    .collection('notice')
+    .orderBy('highlight', 'desc')
+    .orderBy('date', 'desc')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        try {
+          noticeObject = doc.data();
+
+          if (compareDate(noticeObject.date.seconds)) {
+            noticeObject.date = dateToString(noticeObject.date.seconds);
+
+            if (noticeObject.highlight) {
+              noticeObject.highlight = 0;
+            } else {
+              noticeObject.highlight = 1;
+            }
+
+            if (noticeObject.due) {
+              if (!compareDate(noticeObject.due.seconds)) {
+                noticeObject.afterDue = 1;
+              } else {
+                noticeObject.afterDue = 0;
+              }
+              noticeObject.due = dateToString(noticeObject.due.seconds);
+            } else {
+              noticeObject.afterDue = 2;
+              noticeObject.due = '9999.99.99';
+            }
+
+            if (noticeObject.afterDue === 0) {
+              noticeAfterDue.push(noticeObject);
+            } else {
+              notice.push(noticeObject);
+            }
+          }
+        } catch (error) {
+          console.log('실패');
+        }
+      });
+    });
+
+  return { notice, noticeAfterDue };
 };
 
 export const isExistNickname = async (nickname) => {
@@ -244,8 +365,45 @@ export const signout = () => {
 export const deactivate = async () => {
   const user = Auth.currentUser;
   const { uid } = Auth.currentUser;
+
+  const collectionPenaltyPath = `users/${uid}/penaltyInfo`;
+  const collectionStayOutPath = `users/${uid}/stayOutInfo`;
+  const collectionTempPath = `users/${uid}/tempInfo`;
   const docRef = fs.collection('users').doc(uid);
 
+  await deleteCollection(fs, collectionPenaltyPath);
+  await deleteCollection(fs, collectionStayOutPath);
+  await deleteCollection(fs, collectionTempPath);
+
   await docRef.delete();
+
   user.delete();
+
+  async function deleteCollection(db, collectionPath) {
+    const collectionRef = db.collection(collectionPath);
+
+    return new Promise((resolve, reject) => {
+      deleteQueryBatch(db, collectionRef, resolve).catch(reject);
+    });
+  }
+
+  async function deleteQueryBatch(db, query, resolve) {
+    const snapshot = await query.get();
+
+    const batchSize = snapshot.size;
+    if (batchSize === 0) {
+      resolve();
+      return;
+    }
+
+    const batch = db.batch();
+    snapshot.docs.forEach((doc) => {
+      batch.delete(doc.ref);
+    });
+    await batch.commit();
+
+    setImmediate(() => {
+      deleteQueryBatch(db, query, resolve);
+    });
+  }
 };
