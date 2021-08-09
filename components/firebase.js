@@ -40,7 +40,6 @@ export const signup = async ({
   nickname,
   studentIndex,
 }) => {
-  console.log(studentIndex);
   await Auth.createUserWithEmailAndPassword(email, password);
   const currentUser = {
     id: Auth.currentUser.uid,
@@ -165,6 +164,103 @@ export const getStudentInfo = async (sid) => {
   console.log(studentInfo);
 
   return studentInfo;
+};
+
+export const getNotice = async () => {
+  const dateToString = (inputDate) => {
+    const d = new Date(inputDate * 1000);
+    let month = `${d.getMonth() + 1}`;
+    let day = `${d.getDate()}`;
+    const year = `${d.getFullYear()}`;
+
+    if (month < 10) month = `0${month}`;
+    if (day < 10) day = `0${day}`;
+
+    return [year, month, day].join('.');
+  };
+
+  const compareDate = (dueDate) => {
+    const onlyDate = (date) => {
+      const d = new Date(date);
+
+      let month = `${d.getMonth() + 1}`;
+      let day = `${d.getDate()}`;
+      const year = `${d.getFullYear()}`;
+
+      if (month < 10) month = `0${month}`;
+      if (day < 10) day = `0${day}`;
+
+      return [year, month, day].join('');
+    };
+
+    let result = true;
+    const t1 = new Date();
+    const t2 = dueDate * 1000;
+
+    if (onlyDate(t1.getTime()) < onlyDate(t2)) {
+      result = false;
+    } else {
+      result = true;
+    }
+    return result;
+  };
+
+  let noticeObject = {
+    title: '',
+    content: '',
+    date: '',
+    afterDue: '',
+    due: '',
+    highlight: '',
+  };
+
+  const notice = [];
+  const noticeAfterDue = [];
+
+  await fs
+    .collection('notice')
+    .orderBy('highlight', 'desc')
+    .orderBy('date', 'desc')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        try {
+          noticeObject = doc.data();
+
+          if (compareDate(noticeObject.date.seconds)) {
+            noticeObject.date = dateToString(noticeObject.date.seconds);
+
+            if (noticeObject.highlight) {
+              noticeObject.highlight = 0;
+            } else {
+              noticeObject.highlight = 1;
+            }
+
+            if (noticeObject.due) {
+              if (!compareDate(noticeObject.due.seconds)) {
+                noticeObject.afterDue = 1;
+              } else {
+                noticeObject.afterDue = 0;
+              }
+              noticeObject.due = dateToString(noticeObject.due.seconds);
+            } else {
+              noticeObject.afterDue = 2;
+              noticeObject.due = '9999.99.99';
+            }
+
+            if (noticeObject.afterDue === 0) {
+              noticeAfterDue.push(noticeObject);
+            } else {
+              notice.push(noticeObject);
+            }
+          }
+        } catch (error) {
+          console.log('실패');
+        }
+      });
+    });
+
+  return { notice, noticeAfterDue };
 };
 
 export const isExistNickname = async (nickname) => {

@@ -24,29 +24,6 @@ import {
 const Mypage = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
 
-  // const [userInfo, setUserInfo] = useState({
-  //   dorm: '',
-  //   room: '',
-  //   sid: '',
-  //   nickname: '',
-  // });
-
-  // const setUserInfoFunc = async () => {
-  //   spinner.start();
-  //   setUserInfo(await getCurrentUser());
-  //   spinner.stop();
-  // };
-
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('focus', () => {
-  //     spinner.start();
-  //     setUserInfoFunc();
-  //     spinner.stop();
-  //   });
-
-  //   return unsubscribe;
-  // }, [navigation]);
-
   return (
     <UserContext.Consumer>
       {({ profileInfo }) => (
@@ -84,15 +61,6 @@ const Mypage = ({ navigation }) => {
                   </CustomText>
                 </ProfileTextContainer>
               </ProfileContainer>
-              {/* <ButtonWrapper>
-           <CustomText
-             font="Medium"
-             size={responsiveScreenFontSize(1.5)}
-             margin={0}
-           >
-             프로필 수정
-           </CustomText>
-         </ButtonWrapper> */}
             </ProfileWrapper>
           </Card>
           <Card value={1}>

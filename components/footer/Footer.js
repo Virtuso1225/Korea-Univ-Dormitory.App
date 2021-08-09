@@ -1,6 +1,6 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Notice from '../notice/Notice';
+
 import {
   Megaphone,
   ActivatedMegaphone,
@@ -8,6 +8,7 @@ import {
   MypageIcon,
 } from '../../assets/Svgs';
 import Main from '../main/Main';
+import Notice from '../notice/Notice';
 import { NavigationWrapper, TextWrapper } from './FooterStyle';
 import MypageStack from '../mypage/MypageStack';
 
