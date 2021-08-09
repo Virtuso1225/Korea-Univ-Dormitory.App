@@ -166,6 +166,60 @@ export const getStudentInfo = async (sid) => {
   return studentInfo;
 };
 
+export const getMyTemperature = async () => {
+  const { uid } = Auth.currentUser;
+
+  const collectionTempPath = `users/${uid}/tempInfo`;
+};
+
+export const getMyStayOut = async () => {
+  const { uid } = Auth.currentUser;
+
+  const collectionStayOutPath = `users/${uid}/stayOutInfo`;
+};
+
+export const getMyPenalty = async () => {
+  const dateToString = (inputDate) => {
+    const d = new Date(inputDate * 1000);
+    const month = `${d.getMonth() + 1}`;
+    const day = `${d.getDate()}`;
+
+    return [month, day].join('/');
+  };
+  const { uid } = Auth.currentUser;
+
+  const collectionPenaltyPath = `users/${uid}/penaltyInfo`;
+
+  let penaltyObject = {
+    points: 0,
+    reason: '',
+    date: '',
+  };
+
+  const penalty = [];
+
+  await fs
+    .collection(collectionPenaltyPath)
+    .orderBy('timestamp', 'desc')
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc.data());
+        try {
+          penaltyObject = doc.data();
+
+          penaltyObject.date = dateToString(doc.data().timestamp);
+
+          penalty.push(penaltyObject);
+        } catch (error) {
+          console.log('실패');
+        }
+      });
+    });
+
+  return penalty;
+};
+
 export const getNotice = async () => {
   const dateToString = (inputDate) => {
     const d = new Date(inputDate * 1000);
@@ -214,7 +268,7 @@ export const getNotice = async () => {
     highlight: '',
   };
 
-  const notice = [];
+  const noticeBeforeDue = [];
   const noticeAfterDue = [];
 
   await fs
@@ -251,7 +305,7 @@ export const getNotice = async () => {
             if (noticeObject.afterDue === 0) {
               noticeAfterDue.push(noticeObject);
             } else {
-              notice.push(noticeObject);
+              noticeBeforeDue.push(noticeObject);
             }
           }
         } catch (error) {
@@ -260,7 +314,7 @@ export const getNotice = async () => {
       });
     });
 
-  return { notice, noticeAfterDue };
+  return { noticeBeforeDue, noticeAfterDue };
 };
 
 export const isExistNickname = async (nickname) => {

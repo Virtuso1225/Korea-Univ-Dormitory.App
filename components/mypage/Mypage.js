@@ -5,7 +5,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import CardComponents from './CardComponents';
 import { UserContext, ProgressContext } from '../contexts';
-import { getCurrentUser } from '../firebase';
+
 import { dorms } from '../utils';
 import {
   Background,
