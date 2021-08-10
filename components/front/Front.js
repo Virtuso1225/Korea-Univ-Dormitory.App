@@ -186,16 +186,6 @@ const Front = ({ navigation }) => {
               </ButtonWrapper>
             </View>
           </View>
-          {/* <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper
-                title="회원가입"
-                onPress={() => navigation.navigate('Register')}
-              >
-                <StyledButton>Register</StyledButton>
-              </ButtonWrapper>
-            </View>
-          </View> */}
           <RowWrapper>
             <Pressable onPress={() => navigation.navigate('FindPassword')}>
               <CustomText font="Regular" size={12.5} color="#707070">
@@ -210,18 +200,6 @@ const Front = ({ navigation }) => {
             </Pressable>
           </RowWrapper>
         </BottomWrapper>
-        {/* <BottomWrapper>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper
-                title="비번찾기(임시)"
-                onPress={() => navigation.navigate('FindPassword')}
-              >
-                <StyledButton>비번찾기(임시)</StyledButton>
-              </ButtonWrapper>
-            </View>
-          </View>
-        </BottomWrapper> */}
       </View>
     </TouchableWithoutFeedback>
   );
