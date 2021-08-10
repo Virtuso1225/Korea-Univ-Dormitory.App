@@ -38,7 +38,7 @@ const BottomSheet = () => {
     try {
       spinner.start();
       await setMyTemperature(value);
-      console.log('temperature', temperature);
+
       setTemperature({ ...temperature, [today]: value });
     } catch (e) {
       Alert.alert('SetTemperature Error', e.message);

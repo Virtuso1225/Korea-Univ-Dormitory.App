@@ -3,7 +3,7 @@ import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
 import { UserContext, ProgressContext } from '../contexts';
-import { signout, getMyStayOut } from '../firebase';
+import { signout, getMyStayOutTimestamp } from '../firebase';
 import {
   DeleteIcon,
   FacilityIcon,
@@ -26,16 +26,13 @@ const CardComponents = ({ navigation }) => {
   const { setUser, setProfileInfo, setMyPenalty, setNotice, overnightDate } =
     useContext(UserContext);
   const now = new Date();
-  const todayNow = new Date(now.getFullYear, now.getMonth, now.getDate);
+  const todayNow = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const toTimestamp = (inputDate) => {
+    const arr = inputDate.split('-');
+    const timestamp = new Date(arr[0], arr[1] - 1, arr[2]);
 
-  const stayOut = async () => {
-    const myStayOut = await getMyStayOut();
-    return myStayOut;
+    return timestamp;
   };
-
-  const [todayOverNight, setTodayOverNight] = useState(
-    stayOut().endDate >= todayNow && todayNow >= stayOut().startDate
-  );
 
   const today = moment().format('YYYY-MM-DD');
   const Signout = async () => {
@@ -85,21 +82,27 @@ const CardComponents = ({ navigation }) => {
             >
               {temperature[today]}°C
             </DescriptionText>
-            <DescriptionText font="Regular" visible={profileInfo}>
+            <DescriptionText font="Regular" visible={overnightDate}>
               #오늘의 외박여부:
             </DescriptionText>
-            {/* <DescriptionText
+            <DescriptionText
               font="ExtraBold"
-              visible={async () => {
-                (await stayOut().endDate) >= todayNow &&
-                todayNow >= (await stayOut().startDate)
-                  ? true
-                  : false;
-              }}
+              visible={
+                toTimestamp(overnightDate.endDate) >= todayNow &&
+                todayNow >= toTimestamp(overnightDate.startDate)
+              }
             >
               O
-            </DescriptionText> */}
-            <DescriptionText font="ExtraBold" visible={todayOverNight}>
+            </DescriptionText>
+            <DescriptionText
+              font="ExtraBold"
+              visible={
+                !(
+                  toTimestamp(overnightDate.endDate) >= todayNow &&
+                  todayNow >= toTimestamp(overnightDate.startDate)
+                )
+              }
+            >
               X
             </DescriptionText>
           </TopRowWrapper>

@@ -266,25 +266,32 @@ export const setMyStayOut = async (startD, endD) => {
   let err = 0;
   if (dateToTimestamp(startD) > dateToTimestamp(endD)) {
     err = 3;
-  } else if (
-    dateToTimestamp(startD) <
-    new Date(now.getFullYear(), now.getMonth(), now.getDate())
-  ) {
-    err = 1;
   } else {
-    const myStayOut = await getMyStayOut();
+    const myStayOut = await getMyStayOutTimestamp();
 
     if (myStayOut.startDate === '') {
-      await addNewStayOut();
+      if (
+        dateToTimestamp(startD) <
+        new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      ) {
+        err = 1;
+      } else {
+        await addNewStayOut();
+      }
     } else if (
       myStayOut.startDate <
       new Date(now.getFullYear(), now.getMonth(), now.getDate())
     ) {
-      if (dateToTimestamp(startD) !== myStayOut.startDate) {
+      if (dateToTimestamp(startD).getTime() !== myStayOut.startDate.getTime()) {
         err = 2;
       } else {
         await updateStayOut(myStayOut);
       }
+    } else if (
+      dateToTimestamp(startD) <
+      new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    ) {
+      err = 1;
     } else {
       Promise.all([
         docRef
@@ -300,6 +307,7 @@ export const setMyStayOut = async (startD, endD) => {
       ]);
     }
   }
+
   return err;
 };
 export const getMyTemperature = async () => {
@@ -342,6 +350,41 @@ export const getMyTemperature = async () => {
   return temp;
 };
 
+export const getMyStayOutTimestamp = async () => {
+  const { uid } = Auth.currentUser;
+  const collectionStayOutPath = `users/${uid}/stayOutInfo`;
+  const toTimestamp = (inputDate) => {
+    const output = new Date(inputDate * 1000);
+    return output;
+  };
+  const stayOut = {
+    startDate: '',
+    endDate: '',
+  };
+
+  const now = new Date();
+  await fs
+    .collection(collectionStayOutPath)
+    .where(
+      'endDate',
+      '>=',
+      new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    )
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        try {
+          if (doc.data().length !== 0) {
+            stayOut.endDate = toTimestamp(doc.data().endDate.seconds);
+            stayOut.startDate = toTimestamp(doc.data().startDate.seconds);
+          }
+        } catch (error) {
+          console.log('외박 기록 불러오기 실패');
+        }
+      });
+    });
+  return stayOut;
+};
 export const getMyStayOut = async () => {
   const { uid } = Auth.currentUser;
 

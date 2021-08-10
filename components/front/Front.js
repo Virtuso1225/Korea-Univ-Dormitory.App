@@ -99,7 +99,6 @@ const Front = ({ navigation }) => {
         setMyPenalty(results[2]);
         setTemperature(results[3]);
         setOvernightDate(results[4]);
-        console.log('overnightDate', results[4]);
         return [results[0], results[2]];
       });
 

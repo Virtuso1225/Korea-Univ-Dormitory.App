@@ -57,7 +57,12 @@ const Notice = ({ navigation }) => {
       const arr = [];
       await obj.forEach((item, index) => {
         dataObj = [];
-        dataObj.push(item.isChecked);
+        if (item.isChecked) {
+          dataObj.push(1);
+        } else {
+          dataObj.push(0);
+        }
+
         dataObj.push(item.title);
         dataObj.push(item.content);
         dataObj.push(item.date);
@@ -69,13 +74,23 @@ const Notice = ({ navigation }) => {
 
       return arr;
     };
+
+    const changeChecked = async (index) => {
+      notice.noticeBeforeDue[index].isChecked = true;
+    };
+
     const unsubscribe = navigation.addListener('focus', async () => {
       spinner.start();
+      const newNotice = notice;
+      await changeChecked(0);
+      console.log('notice', notice.noticeBeforeDue[0].isChecked);
       const dataArr = await makeArray(notice.noticeBeforeDue);
       const dataArrAfterDue = await makeArray(notice.noticeAfterDue);
 
       setDataArr(dataArr);
       setDataArrAfterDue(dataArrAfterDue);
+
+      console.log(newNotice.noticeBeforeDue[0].isChecked);
 
       spinner.stop();
     });
