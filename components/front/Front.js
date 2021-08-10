@@ -55,6 +55,8 @@ const Front = ({ navigation }) => {
     setMyPenalty,
     setOvernightDate,
     setTemperature,
+    notice,
+    overnightDate,
   } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);
@@ -93,11 +95,11 @@ const Front = ({ navigation }) => {
       const user = await signin({ email, password });
       setUser(user);
       const result = await setGlobalInfo().then((results) => {
-        console.log(results[3]);
         setNotice(results[1]);
         setMyPenalty(results[2]);
         setTemperature(results[3]);
         setOvernightDate(results[4]);
+        console.log('overnightDate', results[4]);
         return [results[0], results[2]];
       });
 

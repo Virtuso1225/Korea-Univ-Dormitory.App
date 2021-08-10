@@ -1,9 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
 import { UserContext, ProgressContext } from '../contexts';
-import { signout } from '../firebase';
+import { signout, getMyStayOut } from '../firebase';
 import {
   DeleteIcon,
   FacilityIcon,
@@ -23,8 +23,20 @@ import ModalComponent from './ModalComponent';
 
 const CardComponents = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
-  const { setUser, setProfileInfo, setMyPenalty, setNotice } =
+  const { setUser, setProfileInfo, setMyPenalty, setNotice, overnightDate } =
     useContext(UserContext);
+  const now = new Date();
+  const todayNow = new Date(now.getFullYear, now.getMonth, now.getDate);
+
+  const stayOut = async () => {
+    const myStayOut = await getMyStayOut();
+    return myStayOut;
+  };
+
+  const [todayOverNight, setTodayOverNight] = useState(
+    stayOut().endDate >= todayNow && todayNow >= stayOut().startDate
+  );
+
   const today = moment().format('YYYY-MM-DD');
   const Signout = async () => {
     try {
@@ -44,7 +56,7 @@ const CardComponents = ({ navigation }) => {
 
   return (
     <UserContext.Consumer>
-      {({ profileInfo, temperature }) => (
+      {({ profileInfo, temperature, overnightDate }) => (
         <ColumnWrapper>
           <TopRowWrapper onPress={() => navigation.navigate('Calendar')}>
             <TemperatureIcon />
@@ -73,11 +85,22 @@ const CardComponents = ({ navigation }) => {
             >
               {temperature[today]}°C
             </DescriptionText>
-            <DescriptionText
-              font="Regular"
-              visible={temperature[today] !== undefined}
-            >
+            <DescriptionText font="Regular" visible={profileInfo}>
               #오늘의 외박여부:
+            </DescriptionText>
+            {/* <DescriptionText
+              font="ExtraBold"
+              visible={async () => {
+                (await stayOut().endDate) >= todayNow &&
+                todayNow >= (await stayOut().startDate)
+                  ? true
+                  : false;
+              }}
+            >
+              O
+            </DescriptionText> */}
+            <DescriptionText font="ExtraBold" visible={todayOverNight}>
+              X
             </DescriptionText>
           </TopRowWrapper>
           <RowWrapper onPress={() => navigation.navigate('MyPenalty')}>

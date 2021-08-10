@@ -31,19 +31,30 @@ const ModalCalendarContainer = () => {
     try {
       spinner.start();
 
-      const isAfterToday = await setMyStayOut(
+      const err = await setMyStayOut(
         overnightDate.startDate,
         overnightDate.endDate
       );
 
-      if (!isAfterToday) {
-        const stayOutDB = await getMyStayOut();
+      const stayOutDB = await getMyStayOut();
+
+      if (err === 1) {
         Alert.alert(
           'SetStayOut Error',
           '외박 등록 시작일은 오늘부터 가능합니다.'
         );
-        setOvernightDate(stayOutDB);
+      } else if (err === 2) {
+        Alert.alert(
+          'SetStayOut Error',
+          '이미 진행 중인 외박 일정은 종료일만 변경 가능합니다.'
+        );
+      } else if (err === 3) {
+        Alert.alert(
+          'SetStayOut Error',
+          '종료일은 시작일 이전이 될 수 없습니다.'
+        );
       }
+      setOvernightDate(stayOutDB);
     } catch (e) {
       Alert.alert('SetStayOut Error', e.message);
     } finally {
@@ -151,9 +162,10 @@ const ModalCalendarContainer = () => {
                 <ModalCalendar isSelected={dateSelection} />
                 <SubmitWrapper>
                   <ButtonWrapper
-                    onPress={() => {
+                    onPress={async () => {
+                      const myStayOut = await getMyStayOut();
                       setModalVisible(false);
-                      setOvernightDate({ startDate: '', endDate: '' });
+                      setOvernightDate(myStayOut);
                       setDateSelection(true);
                     }}
                   >
@@ -168,7 +180,6 @@ const ModalCalendarContainer = () => {
                         overnightDate.endDate
                       );
                       setModalVisible(false);
-                      // setOvernightDate({ startDate: '', endDate: '' });
                       setDateSelection(true);
                     }}
                   >

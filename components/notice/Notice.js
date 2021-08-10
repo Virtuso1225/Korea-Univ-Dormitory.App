@@ -57,7 +57,7 @@ const Notice = ({ navigation }) => {
       const arr = [];
       await obj.forEach((item, index) => {
         dataObj = [];
-        dataObj.push(index + 1);
+        dataObj.push(item.isChecked);
         dataObj.push(item.title);
         dataObj.push(item.content);
         dataObj.push(item.date);

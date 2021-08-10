@@ -228,38 +228,79 @@ export const setMyStayOut = async (startD, endD) => {
   };
 
   const collectionStayOutPath = `users/${uid}/stayOutInfo`;
+  const docRef = fs.collection(collectionStayOutPath);
   const now = new Date();
 
-  let isAfterToday = true;
-  if (
+  const addNewStayOut = async () => {
+    await docRef
+      .doc(onlyDate(startD))
+      .set({
+        startDate: dateToTimestamp(startD),
+        endDate: dateToTimestamp(endD),
+        submitDate: now,
+      })
+      .then(() => {
+        console.log('Document successfully written!');
+      })
+      .catch((error) => {
+        console.error('Error writing document: ', error);
+      });
+  };
+
+  const updateStayOut = async (myStayOut) => {
+    await docRef
+      .doc(onlyDate(myStayOut.startDate))
+      .update({
+        endDate: dateToTimestamp(endD),
+        submitDate: now,
+      })
+      .then(() => {
+        console.log('Document successfully updated!');
+      })
+      .catch((error) => {
+        // The document probably doesn't exist.
+        console.error('Error updating document: ', error);
+      });
+  };
+
+  let err = 0;
+  if (dateToTimestamp(startD) > dateToTimestamp(endD)) {
+    err = 3;
+  } else if (
     dateToTimestamp(startD) <
     new Date(now.getFullYear(), now.getMonth(), now.getDate())
   ) {
-    isAfterToday = false;
+    err = 1;
   } else {
     const myStayOut = await getMyStayOut();
 
     if (myStayOut.startDate === '') {
-      await fs
-        .collection(collectionStayOutPath)
-        .doc(onlyDate(startD))
-        .set({
-          startDate: dateToTimestamp(startD),
-          endDate: dateToTimestamp(endD),
-          submitDate: now,
-        })
-        .then(() => {
-          console.log('Document successfully written!');
-        })
-        .catch((error) => {
-          console.error('Error writing document: ', error);
-        });
+      await addNewStayOut();
+    } else if (
+      myStayOut.startDate <
+      new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    ) {
+      if (dateToTimestamp(startD) !== myStayOut.startDate) {
+        err = 2;
+      } else {
+        await updateStayOut(myStayOut);
+      }
     } else {
-      console.log('왜/');
+      Promise.all([
+        docRef
+          .doc(onlyDate(myStayOut.startDate))
+          .delete()
+          .then(() => {
+            console.log('Document successfully deleted!');
+          })
+          .catch((error) => {
+            console.error('Error removing document: ', error);
+          }),
+        addNewStayOut(),
+      ]);
     }
   }
-
-  return isAfterToday;
+  return err;
 };
 export const getMyTemperature = async () => {
   const { uid } = Auth.currentUser;
@@ -318,7 +359,7 @@ export const getMyStayOut = async () => {
 
   const collectionStayOutPath = `users/${uid}/stayOutInfo`;
 
-  let stayOut = {
+  const stayOut = {
     startDate: '',
     endDate: '',
   };
@@ -436,10 +477,14 @@ export const getNotice = async () => {
     afterDue: '',
     due: '',
     highlight: '',
+    id: 0,
+    isChecked: false,
   };
 
   const noticeBeforeDue = [];
   const noticeAfterDue = [];
+  let cntBefore = 0;
+  let cntAfter = 0;
 
   await fs
     .collection('notice')
@@ -471,10 +516,15 @@ export const getNotice = async () => {
               noticeObject.afterDue = 2;
               noticeObject.due = '9999.99.99';
             }
+            noticeObject.isChecked = false;
 
             if (noticeObject.afterDue === 0) {
+              noticeObject.id = cntAfter;
+              cntAfter += 1;
               noticeAfterDue.push(noticeObject);
             } else {
+              noticeObject.id = cntBefore;
+              cntBefore += 1;
               noticeBeforeDue.push(noticeObject);
             }
           }
