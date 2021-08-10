@@ -47,17 +47,23 @@ export const ProfileWrapper = styled.View`
 
 export const ProfileContainer = styled.View`
   width: ${responsiveScreenWidth(90.76)}px;
-  /* border: 1px solid black; */
+
   flex-direction: row;
 `;
 
 export const ProfileImageContainer = styled.View`
+  width: ${responsiveScreenHeight(7.9)}px;
+  height: ${responsiveScreenHeight(7.9)}px;
+  border-radius: ${responsiveScreenHeight(3.95)}px;
+  background-color: #fefcf9;
+`;
+export const ProfileImage = styled.Image`
   border-radius: ${responsiveScreenHeight(3.95)}px;
   width: ${responsiveScreenHeight(7.9)}px;
   height: ${responsiveScreenHeight(7.9)}px;
-  border: 3px solid #850000;
+  border-color: #850000;
+  border-width: 3px;
 `;
-
 export const ProfileTextContainer = styled.View`
   margin-left: ${responsiveScreenWidth(3.84)}px;
   justify-content: center;

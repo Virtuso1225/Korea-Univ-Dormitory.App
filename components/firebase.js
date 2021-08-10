@@ -12,7 +12,11 @@ const fs = firebase.firestore();
 
 export const signin = async ({ email, password }) => {
   const { user } = await Auth.signInWithEmailAndPassword(email, password);
+  // 한번 로그인하고 지워야함.
   // const { setUser } = useContext(UserContext);
+  // const DEFAULT_PHOTO =
+  //   'https://firebasestorage.googleapis.com/v0/b/anamdormiapp.appspot.com/o/profile%2FIcon_test1.png?alt=media';
+  // await Auth.currentUser.updateProfile({ photoURL: DEFAULT_PHOTO });
 
   if (!Auth.currentUser.emailVerified) {
     Alert.alert('Signin Error', '메일을 인증하세요.');
@@ -21,6 +25,24 @@ export const signin = async ({ email, password }) => {
   fs.collection('users').doc(Auth.currentUser.uid);
 
   return user;
+};
+
+const countImage = () => {
+  let cnt = 0;
+  const listRef = app.storage().ref(`/profile`);
+
+  // Find all the prefixes and items.
+  listRef
+    .listAll()
+    .then(function (res) {
+      res.items.forEach(function (itemRef) {
+        cnt += 1;
+      });
+    })
+    .catch(function (error) {
+      // Uh-oh, an error occurred!
+    });
+  return cnt;
 };
 
 export const signup = async ({
@@ -34,6 +56,7 @@ export const signup = async ({
   studentIndex,
 }) => {
   await Auth.createUserWithEmailAndPassword(email, password);
+
   const currentUser = {
     id: Auth.currentUser.uid,
     studentIndex,
@@ -62,7 +85,10 @@ export const signup = async ({
       console.error('firestore()DB 유저 추가 실패', error);
     });
 
+  const DEFAULT_PHOTO =
+    'https://firebasestorage.googleapis.com/v0/b/anamdormiapp.appspot.com/o/profile%2FIcon_test1.png?alt=media';
   const curUser = Auth.currentUser;
+  await curUser.updateProfile({ photoURL: DEFAULT_PHOTO });
 
   curUser
     .sendEmailVerification()
@@ -72,6 +98,21 @@ export const signup = async ({
     .catch('Email not sent!');
 
   return {};
+};
+
+export const photoUpdate = async (url) => {
+  const curUser = Auth.currentUser;
+  await curUser
+    .updateProfile({
+      photoURL: url,
+    })
+    .then(() => {
+      console.log('업데이트 성공');
+    })
+    .catch((e) => {
+      console.log('업데이트 실패', e.message);
+    });
+  return curUser;
 };
 
 export const findPassword = async (email) => {

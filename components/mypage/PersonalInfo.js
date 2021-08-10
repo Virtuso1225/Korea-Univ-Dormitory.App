@@ -19,7 +19,18 @@ import {
   ProfileInfoWrapper,
   ProfileWrapper,
   ProfileImageContainer,
+  ButtonContainer,
+  ButtonIcon,
+  ProfileImage,
 } from './PersonalInfoStyle';
+
+const PhotoButton = ({ onPress }) => {
+  return (
+    <ButtonContainer onPress={onPress}>
+      <ButtonIcon />
+    </ButtonContainer>
+  );
+};
 
 const PersonalInfo = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
@@ -49,7 +60,7 @@ const PersonalInfo = ({ navigation }) => {
 
   return (
     <UserContext.Consumer>
-      {({ profileInfo }) => (
+      {({ profileInfo, user }) => (
         <BackgroundWrapper>
           <Header>
             <RowWrapper>
@@ -61,7 +72,17 @@ const PersonalInfo = ({ navigation }) => {
           </Header>
           <Body>
             <ProfileWrapper>
-              <ProfileImageContainer />
+              <ProfileImageContainer>
+                <ProfileImage
+                  source={{
+                    uri: user.photoURL,
+                  }}
+                />
+                <PhotoButton
+                  onPress={() => navigation.navigate('ProfileImageInfo')}
+                />
+              </ProfileImageContainer>
+
               <ProfileInfoWrapper>
                 <CustomText
                   font="ExtraBold"
@@ -75,7 +96,7 @@ const PersonalInfo = ({ navigation }) => {
                   size={responsiveScreenFontSize(1.93)}
                   color="#1D1D1D"
                 >
-                  님
+                  님{' '}
                 </CustomText>
                 <CustomText
                   font="ExtraBold"

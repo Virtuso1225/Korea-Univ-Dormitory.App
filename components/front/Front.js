@@ -51,7 +51,7 @@ const Front = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSelected, setSelection] = useState(false);
-  const { setUser } = useContext(UserContext);
+
   const {
     setProfileInfo,
     setNotice,
@@ -60,6 +60,7 @@ const Front = ({ navigation }) => {
     setTemperature,
     notice,
     overnightDate,
+    setUser,
   } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);
@@ -111,7 +112,6 @@ const Front = ({ navigation }) => {
         sum.myPenaltySum += item.points;
       });
       setProfileInfo({ ...result[0], ...sum });
-      // setOvernightDate({ startDate: '2021-08-10', endDate: '2021-08-12' });
     } catch (e) {
       Alert.alert('로그인 에러', e.message);
     } finally {
