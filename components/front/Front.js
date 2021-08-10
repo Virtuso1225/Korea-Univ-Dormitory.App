@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {
@@ -39,8 +40,10 @@ import {
   Titles,
   InputWrapper,
   ErrorText,
+  RowWrapper,
 } from './FrontStyle';
-import { CrimsonLogo, UnderLine } from '../../assets/Svgs';
+import { CrimsonLogo, UnderLine, VerticalLince } from '../../assets/Svgs';
+import { CustomText } from '../mypage/ModalComponentStyle';
 
 const Front = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -179,11 +182,11 @@ const Front = ({ navigation }) => {
           <View style={styles.topShadow}>
             <View style={styles.bottomShadow}>
               <ButtonWrapper title="Sign in" onPress={_handleSigninBtnPress}>
-                <StyledButton>Login</StyledButton>
+                <StyledButton>로그인</StyledButton>
               </ButtonWrapper>
             </View>
           </View>
-          <View style={styles.topShadow}>
+          {/* <View style={styles.topShadow}>
             <View style={styles.bottomShadow}>
               <ButtonWrapper
                 title="회원가입"
@@ -192,9 +195,22 @@ const Front = ({ navigation }) => {
                 <StyledButton>Register</StyledButton>
               </ButtonWrapper>
             </View>
-          </View>
+          </View> */}
+          <RowWrapper>
+            <Pressable onPress={() => navigation.navigate('FindPassword')}>
+              <CustomText font="Regular" size={12.5} color="#707070">
+                비밀번호 찾기
+              </CustomText>
+            </Pressable>
+            <VerticalLince />
+            <Pressable onPress={() => navigation.navigate('Register')}>
+              <CustomText font="Regular" size={12.5} color="#707070">
+                회원가입
+              </CustomText>
+            </Pressable>
+          </RowWrapper>
         </BottomWrapper>
-        <BottomWrapper>
+        {/* <BottomWrapper>
           <View style={styles.topShadow}>
             <View style={styles.bottomShadow}>
               <ButtonWrapper
@@ -205,7 +221,7 @@ const Front = ({ navigation }) => {
               </ButtonWrapper>
             </View>
           </View>
-        </BottomWrapper>
+        </BottomWrapper> */}
       </View>
     </TouchableWithoutFeedback>
   );

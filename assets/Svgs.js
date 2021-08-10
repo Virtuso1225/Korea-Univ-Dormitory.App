@@ -620,3 +620,20 @@ export const OvernightIcon = () => (
     </G>
   </Svg>
 );
+
+export const VerticalLince = () => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={1}
+    height={18}
+    viewBox="0 0 1 18"
+  >
+    <Path
+      data-name="\uC120 175"
+      fill="none"
+      stroke="#707070"
+      opacity={0.15}
+      d="M.5 0v18"
+    />
+  </Svg>
+);
