@@ -27,7 +27,6 @@ import {
 import { setMyTemperature } from '../firebase';
 import { TemperatureIcon } from '../../assets/Svgs';
 import ModalCalendarContainer from './ModalCalendarContainer';
-import { UserContext } from '../contexts';
 
 const BottomSheet = () => {
   const { spinner } = useContext(ProgressContext);

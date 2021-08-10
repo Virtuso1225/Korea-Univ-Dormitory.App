@@ -147,7 +147,7 @@ const ModalCalendar = ({ isSelected }) => {
               key={week}
               style={{
                 width: '90%',
-                height: 50,
+                height: responsiveScreenHeight(5.92),
                 flexDirection: 'row',
               }}
             >

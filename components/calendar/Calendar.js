@@ -68,7 +68,7 @@ const Calendar = ({ navigation }) => {
   };
   return (
     <UserContext.Consumer>
-      {({ overnightDate, temperature }) => (
+      {({ temperature }) => (
         <View>
           <View
             style={{
@@ -175,7 +175,7 @@ const Calendar = ({ navigation }) => {
             <View
               key={week}
               style={{
-                height: 100,
+                height: responsiveScreenHeight(11.84),
                 flexShrink: 1,
                 flexDirection: 'row',
                 borderBottomWidth: 0.4,
