@@ -40,23 +40,20 @@ const ModalCalendarContainer = () => {
 
       if (err === 1) {
         Alert.alert(
-          'SetStayOut Error',
+          '외박 등록 에러',
           '외박 등록 시작일은 오늘부터 가능합니다.'
         );
       } else if (err === 2) {
         Alert.alert(
-          'SetStayOut Error',
+          '외박 등록 에러',
           '이미 진행 중인 외박 일정은 종료일만 변경 가능합니다.'
         );
       } else if (err === 3) {
-        Alert.alert(
-          'SetStayOut Error',
-          '종료일은 시작일 이전이 될 수 없습니다.'
-        );
+        Alert.alert('외박 등록 에러', '종료일은 시작일 이전이 될 수 없습니다.');
       }
       setOvernightDate(stayOutDB);
     } catch (e) {
-      Alert.alert('SetStayOut Error', e.message);
+      Alert.alert('외박 등록 에러', e.message);
     } finally {
       spinner.stop();
     }

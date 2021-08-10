@@ -2,6 +2,8 @@ import styled from 'styled-components/native';
 import {
   responsiveHeight,
   responsiveScreenFontSize,
+  responsiveScreenWidth,
+  responsiveScreenHeight,
 } from 'react-native-responsive-dimensions';
 
 export const TitleWrapper = styled.View`
@@ -110,7 +112,6 @@ export const Description = styled.Text`
 
 export const BottomWrapper = styled.View`
   flex: 1;
-  flex-direction: row;
   align-self: center;
   margin-top: ${responsiveHeight(5.8)}px;
 `;
@@ -119,11 +120,12 @@ export const ButtonWrapper = styled.TouchableOpacity`
   align-items: center;
   background-color: #f9f7f4;
   border-radius: 10px;
-  width: 140px;
-  height: 39px;
+  width: ${responsiveScreenWidth(87.1)}px;
+  height: ${responsiveScreenHeight(5)}px;
   margin-right: 10px;
   margin-left: 10px;
   justify-content: center;
+  border: 1px solid #ffffff;
   /* box-shadow: 5px 5px 8px rgba(15, 41, 107, 0.15); */
 `;
 
@@ -131,4 +133,13 @@ export const StyledButton = styled.Text`
   font-size: 15px;
   color: #850000;
   font-family: Bold6;
+`;
+
+export const RowWrapper = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: ${responsiveScreenHeight(3.19)}px;
+  width: 50%;
+  align-self: center;
 `;

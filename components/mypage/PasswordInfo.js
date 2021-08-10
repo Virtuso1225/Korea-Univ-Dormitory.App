@@ -21,12 +21,7 @@ import {
   RowWrapper,
   CloseWrapper,
 } from './DropOutStyle';
-import {
-  removeWhitespace,
-  validateSid,
-  validatePassword,
-  validateRoom,
-} from '../utils';
+import { removeWhitespace, validatePassword } from '../utils';
 import { comparePassword, updatePasswordInfo, signout } from '../firebase';
 import { CustomText } from './ModalComponentStyle';
 import { Header, PageTitle } from './MypageStyle';
@@ -47,7 +42,7 @@ const PasswordInfo = ({ navigation }) => {
   const refOldPassword = useRef(null);
   const refNewPassword = useRef(null);
   const refCheck = useRef(null);
-  const refOldPasswordDidMount = useRef(null);
+
   const refNewPasswordDidMount = useRef(null);
   const refCheckDidMount = useRef(null);
 
@@ -81,7 +76,7 @@ const PasswordInfo = ({ navigation }) => {
     if (!newPassword) {
       errorMsg = '*필수 항목입니다.';
     } else if (newPassword && !validatePassword(newPassword)) {
-      errorMsg = '* 영문, 숫자, 특수기호를 모두 포함한 6자리 이상일 것.';
+      errorMsg = '* 영문, 숫자를 모두 포함한 6자리 이상일 것.';
     }
 
     setNewPasswordError(errorMsg);
@@ -144,7 +139,7 @@ const PasswordInfo = ({ navigation }) => {
       spinner.start();
       signout();
     } catch (e) {
-      Alert.alert('signout error', '에러 발생');
+      Alert.alert('로그아웃 에러', '다시 시도하세요.');
     } finally {
       setUser({});
       spinner.stop();
@@ -157,15 +152,15 @@ const PasswordInfo = ({ navigation }) => {
       const newPasswordsError = results[1];
 
       if (!oldPassword || comparePassword) {
-        Alert.alert('Update Error', '기존 비밀번호를 확인하세요.');
+        Alert.alert('비밀번호 재설정 에러', '기존 비밀번호를 확인하세요.');
       } else if (newPasswordsError) {
-        Alert.alert('Update Error', '새로운 비밀번호를 확인하세요.');
+        Alert.alert('비밀번호 재설정 에러', '새로운 비밀번호를 확인하세요.');
       } else {
         try {
           spinner.start();
           updatePasswordInfo(newPassword);
           Alert.alert(
-            'Success',
+            'Success!',
             '정보 업데이트에 성공했습니다.\n새로운 비밀번호로 로그인하세요.',
             [
               {
@@ -175,7 +170,7 @@ const PasswordInfo = ({ navigation }) => {
             ]
           );
         } catch (e) {
-          Alert.alert('Update Error', e.message);
+          Alert.alert('비밀번호 재설정 에러', e.message);
         } finally {
           spinner.stop();
         }

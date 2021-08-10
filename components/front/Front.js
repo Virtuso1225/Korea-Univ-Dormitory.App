@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   Alert,
+  Pressable,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Entypo';
 import {
@@ -40,8 +41,10 @@ import {
   Titles,
   InputWrapper,
   ErrorText,
+  RowWrapper,
 } from './FrontStyle';
-import { CrimsonLogo, UnderLine } from '../../assets/Svgs';
+import { CrimsonLogo, UnderLine, VerticalLince } from '../../assets/Svgs';
+import { CustomText } from '../mypage/ModalComponentStyle';
 
 const Front = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -110,7 +113,7 @@ const Front = ({ navigation }) => {
       setProfileInfo({ ...result[0], ...sum });
       // setOvernightDate({ startDate: '2021-08-10', endDate: '2021-08-12' });
     } catch (e) {
-      Alert.alert('Signin Error', e.message);
+      Alert.alert('로그인 에러', e.message);
     } finally {
       spinner.stop();
     }
@@ -183,32 +186,23 @@ const Front = ({ navigation }) => {
           <View style={styles.topShadow}>
             <View style={styles.bottomShadow}>
               <ButtonWrapper title="Sign in" onPress={_handleSigninBtnPress}>
-                <StyledButton>Login</StyledButton>
+                <StyledButton>로그인</StyledButton>
               </ButtonWrapper>
             </View>
           </View>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper
-                title="회원가입"
-                onPress={() => navigation.navigate('Register')}
-              >
-                <StyledButton>Register</StyledButton>
-              </ButtonWrapper>
-            </View>
-          </View>
-        </BottomWrapper>
-        <BottomWrapper>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper
-                title="비번찾기(임시)"
-                onPress={() => navigation.navigate('FindPassword')}
-              >
-                <StyledButton>비번찾기(임시)</StyledButton>
-              </ButtonWrapper>
-            </View>
-          </View>
+          <RowWrapper>
+            <Pressable onPress={() => navigation.navigate('FindPassword')}>
+              <CustomText font="Regular" size={12.5} color="#707070">
+                비밀번호 찾기
+              </CustomText>
+            </Pressable>
+            <VerticalLince />
+            <Pressable onPress={() => navigation.navigate('Register')}>
+              <CustomText font="Regular" size={12.5} color="#707070">
+                회원가입
+              </CustomText>
+            </Pressable>
+          </RowWrapper>
         </BottomWrapper>
       </View>
     </TouchableWithoutFeedback>

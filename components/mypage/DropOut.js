@@ -77,11 +77,11 @@ const DropOut = ({ navigation }) => {
 
   const _handleDropOutBtnPress = () => {
     if (!isChecked) {
-      Alert.alert('Deactivation Error', '회원 탈퇴 약관에 동의해주세요.');
+      Alert.alert('탈퇴하기 에러', '회원 탈퇴 약관에 동의해주세요.');
     } else {
       lastCheck().then((comparePassword) => {
         if (!password || comparePassword) {
-          Alert.alert('Deactivation Error', '기존 비밀번호를 확인하세요.');
+          Alert.alert('탈퇴하기 에러', '기존 비밀번호를 확인하세요.');
         } else {
           setModalVisible(true);
         }

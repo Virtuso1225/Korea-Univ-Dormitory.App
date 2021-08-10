@@ -1,9 +1,9 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
 import { UserContext, ProgressContext } from '../contexts';
-import { signout, getMyStayOutTimestamp } from '../firebase';
+import { signout } from '../firebase';
 import {
   DeleteIcon,
   FacilityIcon,
@@ -23,7 +23,7 @@ import ModalComponent from './ModalComponent';
 
 const CardComponents = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
-  const { setUser, setProfileInfo, setMyPenalty, setNotice, overnightDate } =
+  const { setUser, setProfileInfo, setMyPenalty, setNotice } =
     useContext(UserContext);
   const now = new Date();
   const todayNow = new Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -40,7 +40,7 @@ const CardComponents = ({ navigation }) => {
       spinner.start();
       signout();
     } catch (e) {
-      Alert.alert('signout error', '에러 발생');
+      Alert.alert('로그아웃 에러', '다시 시도하세요.');
     } finally {
       setUser({});
       setProfileInfo({});

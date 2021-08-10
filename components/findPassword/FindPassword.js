@@ -4,8 +4,6 @@ import {
   StyleSheet,
   View,
   TouchableWithoutFeedback,
-  KeyboardAvoidingView,
-  Platform,
   Alert,
 } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
@@ -17,22 +15,16 @@ import { UserContext, ProgressContext } from '../contexts';
 
 import {
   Input,
-  InputWrapper,
   SubWrapper,
-  BottomWrapper,
-  ButtonWrapper,
-  StyledButton,
-  Title,
-  OptionWrapper,
-  OptionDescription,
-  OptionButton,
   ErrorText,
-  Header,
   RowWrapper,
-  Input2,
   EmailDescription,
-  ColumnWrapper,
+  IconWrapper,
 } from './FindPasswordStyle';
+import { BackgroundWrapper, Body, ButtonWrapper } from '../mypage/DropOutStyle';
+import { Header, PageTitle } from '../mypage/MypageStyle';
+import { CustomText } from '../mypage/ModalComponentStyle';
+import { SubHeader } from '../mypage/DormInfoStyle';
 
 const FindPassword = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
@@ -82,7 +74,7 @@ const FindPassword = ({ navigation }) => {
       const idError = results;
 
       if (idError) {
-        Alert.alert('Password Reset Error', '메일 주소를 확인하세요.');
+        Alert.alert('비밀번호 재설정 에러', '메일 주소를 확인하세요.');
       } else {
         try {
           spinner.start();
@@ -101,7 +93,7 @@ const FindPassword = ({ navigation }) => {
               );
             } else if (result[1] === 'auth/user-not-found') {
               Alert.alert(
-                'Password Reset Error',
+                '비밀번호 재설정 에러',
                 '사용자 정보가 없습니다. 회원가입 해주세요.',
                 [
                   {
@@ -112,11 +104,11 @@ const FindPassword = ({ navigation }) => {
                 ]
               );
             } else {
-              Alert.alert('Password Reset Error', result[2]);
+              Alert.alert('비밀번호 재설정 에러', result[2]);
             }
           });
         } catch (e) {
-          Alert.alert('Password Reset Error', e.message);
+          Alert.alert('비밀번호 재설정 에러', e.message);
         } finally {
           spinner.stop();
         }
@@ -126,64 +118,69 @@ const FindPassword = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View
-        style={{ flex: 1, backgroundColor: '#f9f7f4', alignItems: 'center' }}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 4 }}
-        >
-          <Header>
-            <Icon
-              name="left"
-              size={25}
-              color="#707070"
-              title="Login"
-              onPress={() => navigation.navigate('Login')}
-            />
-            <Title>비밀번호 찾기</Title>
-          </Header>
+      <BackgroundWrapper>
+        <Header>
+          <RowWrapper>
+            <IconWrapper>
+              <Icon
+                name="left"
+                size={20}
+                color="#707070"
+                title="Login"
+                onPress={() => navigation.navigate('Login')}
+              />
+            </IconWrapper>
+            <PageTitle>비밀번호 찾기</PageTitle>
+          </RowWrapper>
+        </Header>
+        <Body>
           <SubWrapper>
-            <ColumnWrapper>
-              <RowWrapper>
-                <Input
-                  label="Id"
-                  placeholder="아이디 (KUPID 계정과 동일)"
-                  placeholderTextColor="#8E8E8E"
-                  returnKeyType="next"
-                  value={id}
-                  onChangeText={setId}
-                  onSubmitEditing={_handleFindPasswordBtnPress}
-                  onBlur={() => [
-                    setId(removeWhitespace(id)),
-                    setIdFocused(false),
-                  ]}
-                  onFocus={() => setIdFocused(true)}
-                />
-                <EmailDescription>@korea.ac.kr</EmailDescription>
-              </RowWrapper>
-              <ErrorText>{idError}</ErrorText>
-            </ColumnWrapper>
+            <SubHeader>
+              <CustomText
+                font="Regular"
+                size={responsiveScreenFontSize(1.5)}
+                color="#707070"
+              >
+                이메일을 입력하시면 찾을 수 있는 방법을 알려드려요.
+              </CustomText>
+            </SubHeader>
+            <RowWrapper>
+              <Input
+                label="Id"
+                placeholder="아이디 (KUPID 계정과 동일)"
+                placeholderTextColor="#8E8E8E"
+                returnKeyType="next"
+                value={id}
+                onChangeText={setId}
+                onSubmitEditing={_handleFindPasswordBtnPress}
+                onBlur={() => [
+                  setId(removeWhitespace(id)),
+                  setIdFocused(false),
+                ]}
+                onFocus={() => setIdFocused(true)}
+              />
+              <EmailDescription>@korea.ac.kr</EmailDescription>
+            </RowWrapper>
+            <ErrorText>{idError}</ErrorText>
           </SubWrapper>
-        </KeyboardAvoidingView>
-        <BottomWrapper>
-          <ButtonWrapper
-            title="FindPassword"
-            onPress={_handleFindPasswordBtnPress}
-          >
-            <StyledButton>Reset Password</StyledButton>
-          </ButtonWrapper>
-          <OptionWrapper>
-            <OptionDescription>Already have an account? </OptionDescription>
-            <OptionButton
-              title="Login"
-              onPress={() => navigation.navigate('Login')}
-            >
-              Login
-            </OptionButton>
-          </OptionWrapper>
-        </BottomWrapper>
-      </View>
+          <View style={styles.topShadow}>
+            <View style={styles.bottomShadow}>
+              <ButtonWrapper
+                title="FindPassword"
+                onPress={_handleFindPasswordBtnPress}
+              >
+                <CustomText
+                  font="Medium"
+                  size={responsiveScreenFontSize(1.8)}
+                  color="#1D1D1D"
+                >
+                  완료
+                </CustomText>
+              </ButtonWrapper>
+            </View>
+          </View>
+        </Body>
+      </BackgroundWrapper>
     </TouchableWithoutFeedback>
   );
 };

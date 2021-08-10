@@ -1,9 +1,7 @@
-import { useContext, useState } from 'react';
 import { Alert } from 'react-native';
 import firebase from 'firebase';
 import config from '../firebase.json';
 import 'firebase/firestore';
-import { UserContext } from './contexts';
 
 const app = !firebase.apps.length
   ? firebase.initializeApp(config)

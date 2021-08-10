@@ -38,10 +38,9 @@ const BottomSheet = () => {
     try {
       spinner.start();
       await setMyTemperature(value);
-
       setTemperature({ ...temperature, [today]: value });
     } catch (e) {
-      Alert.alert('SetTemperature Error', e.message);
+      Alert.alert('체온기록 에러', e.message);
     } finally {
       spinner.stop();
     }

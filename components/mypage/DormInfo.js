@@ -96,25 +96,25 @@ const DormInfo = ({ navigation }) => {
 
       if (roomError) {
         result = false;
-        Alert.alert('Update Error', '호실 정보를 확인하세요.');
+        Alert.alert('개인정보 변경하기 에러', '호실 정보를 확인하세요.');
       } else if (!compareStudentInfo) {
         result = false;
         Alert.alert(
-          'Update Error',
+          '개인정보 변경하기 에러',
           '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
         );
       } else {
         try {
           spinner.start();
           updateDormInfo(dorm, room);
-          Alert.alert('Success', '정보 업데이트에 성공했습니다.', [
+          Alert.alert('Success!', '정보 업데이트에 성공했습니다.', [
             {
               text: 'OK',
               onPress: () => navigation.replace('PersonalInfo'),
             },
           ]);
         } catch (e) {
-          Alert.alert('Update Error', e.message);
+          Alert.alert('개인정보 변경하기 에러', e.message);
         } finally {
           spinner.stop();
         }
