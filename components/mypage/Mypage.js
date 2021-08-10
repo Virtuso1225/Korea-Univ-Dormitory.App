@@ -20,8 +20,6 @@ import {
 } from './MypageStyle';
 
 const Mypage = ({ navigation }) => {
-  // const { spinner } = useContext(ProgressContext);
-
   return (
     <UserContext.Consumer>
       {({ profileInfo }) => (

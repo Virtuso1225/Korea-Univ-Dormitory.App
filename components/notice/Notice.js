@@ -15,8 +15,7 @@ import {
   responsiveScreenHeight,
 } from 'react-native-responsive-dimensions';
 
-import { UserContext, ProgressContext } from '../contexts';
-import { getNotice } from '../firebase';
+import { UserContext, ProgressContext, UserProvider } from '../contexts';
 
 import {
   Background,
@@ -34,6 +33,7 @@ import {
 
 const Notice = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
+  const { notice } = useContext(UserContext);
 
   //  title: '', 제목
   // content: '', 내용
@@ -51,13 +51,11 @@ const Notice = ({ navigation }) => {
   const [dataArr, setDataArr] = useState([]);
   const [dataArrAfterDue, setDataArrAfterDue] = useState([]);
 
-  let dataObj = [];
-
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', async () => {
-      spinner.start();
-      const { notice, noticeAfterDue } = await getNoticeArray();
-      notice.forEach((item, index) => {
+    let dataObj = [];
+    const makeArray = async (obj) => {
+      const arr = [];
+      await obj.forEach((item, index) => {
         dataObj = [];
         dataObj.push(index + 1);
         dataObj.push(item.title);
@@ -66,32 +64,24 @@ const Notice = ({ navigation }) => {
         dataObj.push(item.highlight);
         dataObj.push(item.due);
         dataObj.push(item.afterDue);
-        dataArr.push(dataObj);
+        arr.push(dataObj);
       });
 
-      noticeAfterDue.forEach((item, index) => {
-        dataObj = [];
-        dataObj.push(index + 1 + dataArr.length);
-        dataObj.push(item.title);
-        dataObj.push(item.content);
-        dataObj.push(item.date);
-        dataObj.push(item.highlight);
-        dataObj.push(item.due);
-        dataObj.push(item.afterDue);
+      return arr;
+    };
+    const unsubscribe = navigation.addListener('focus', async () => {
+      spinner.start();
+      const dataArr = await makeArray(notice.noticeBeforeDue);
+      const dataArrAfterDue = await makeArray(notice.noticeAfterDue);
 
-        dataArrAfterDue.push(dataObj);
-      });
+      setDataArr(dataArr);
+      setDataArrAfterDue(dataArrAfterDue);
 
       spinner.stop();
     });
 
     return unsubscribe;
-  }, [navigation]);
-
-  const getNoticeArray = async () => {
-    const noticeList = await getNotice();
-    return noticeList;
-  };
+  }, [navigation, notice, spinner]);
 
   return (
     <Background>

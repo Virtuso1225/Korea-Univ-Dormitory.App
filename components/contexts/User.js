@@ -5,21 +5,23 @@ const UserContext = createContext({
     uid: null,
   },
   profileInfo: {
+    index: '',
     name: '',
     dorm: '',
     room: '',
     sid: '',
     nickname: '',
   },
-  overnightDate: {
-    startDate: '',
-    endDate: '',
-  },
+  overnightDate: [],
   temperature: [],
+  myPenalty: [],
+  notice: [],
   setUser: () => {},
   setProfileInfo: () => {},
   setOvernightDate: () => {},
   setTemperature: () => {},
+  setMyPenalty: () => {},
+  setNotice: () => {},
 });
 
 const UserProvider = ({ children }) => {
@@ -27,6 +29,8 @@ const UserProvider = ({ children }) => {
   const [profileInfo, setProfileInfo] = useState();
   const [overnightDate, setOvernightDate] = useState();
   const [temperature, setTemperature] = useState();
+  const [myPenalty, setMyPenalty] = useState();
+  const [notice, setNotice] = useState();
   const setUser = ({ uid }) => {
     setUserInfo({ uid });
   };
@@ -39,6 +43,10 @@ const UserProvider = ({ children }) => {
     setOvernightDate,
     temperature,
     setTemperature,
+    myPenalty,
+    setMyPenalty,
+    notice,
+    setNotice,
   };
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>;
 };

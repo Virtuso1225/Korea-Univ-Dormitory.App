@@ -337,7 +337,6 @@ const Register = ({ navigation }) => {
       } else if (existNickname) {
         Alert.alert('Signup Error', '닉네임을 확인하세요.');
       } else if (!compareStudentInfo) {
-        console.log('results', results);
         Alert.alert(
           'Signup Error',
           '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
@@ -345,7 +344,6 @@ const Register = ({ navigation }) => {
       } else {
         try {
           spinner.start();
-          console.log('studentIndex', studentIndex);
 
           signup({
             name,

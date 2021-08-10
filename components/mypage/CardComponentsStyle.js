@@ -42,5 +42,5 @@ export const DescriptionText = styled.Text`
   font-family: ${(props) => props.font};
   color: #850000;
   margin-left: 10px;
-  display: ${(props) => (props.visible ? 'none' : 'flex')};
+  display: ${(props) => (props.visible ? 'flex' : 'none')};
 `;

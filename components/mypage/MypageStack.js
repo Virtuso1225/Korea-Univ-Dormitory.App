@@ -7,6 +7,7 @@ import PersonalInfo from './PersonalInfo';
 import DormInfo from './DormInfo';
 import NicknameInfo from './NicknameInfo';
 import PasswordInfo from './PasswordInfo';
+import MyPenalty from './MyPenalty';
 
 const Stack = createStackNavigator();
 
@@ -64,6 +65,14 @@ const MypageStack = () => {
       <Stack.Screen
         name="Dropout"
         component={DropOut}
+        options={{
+          headerShown: false,
+          unmountOnBlur: true,
+        }}
+      />
+      <Stack.Screen
+        name="MyPenalty"
+        component={MyPenalty}
         options={{
           headerShown: false,
           unmountOnBlur: true,
