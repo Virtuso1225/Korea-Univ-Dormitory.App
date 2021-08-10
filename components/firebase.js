@@ -189,7 +189,78 @@ export const setMyTemperature = async (myTemperature) => {
       console.error('Error writing document: ', error);
     });
 };
+export const setMyStayOut = async (startD, endD) => {
+  const { uid } = Auth.currentUser;
+  const onlyDate = (date) => {
+    const d = new Date(date);
 
+    let month = `${d.getMonth() + 1}`;
+    let day = `${d.getDate()}`;
+    const year = `${d.getFullYear()}`;
+
+    if (month < 10) month = `0${month}`;
+    if (day < 10) day = `0${day}`;
+
+    return [year, month, day].join('');
+  };
+
+  const dateToString = (inputDate) => {
+    const d = new Date(inputDate * 1000);
+    let month = `${d.getMonth() + 1}`;
+    let day = `${d.getDate()}`;
+    const year = `${d.getFullYear()}`;
+
+    if (month < 10) month = `0${month}`;
+    if (day < 10) day = `0${day}`;
+
+    return [year, month, day].join('-');
+  };
+
+  const dateToTimestamp = (inputDate) => {
+    const array = inputDate.split('-');
+    const month = array[1] * 1;
+    const day = array[2] * 1;
+    const year = array[0] * 1;
+
+    const timestamp = new Date(year, month - 1, day);
+
+    return timestamp;
+  };
+
+  const collectionStayOutPath = `users/${uid}/stayOutInfo`;
+  const now = new Date();
+
+  let isAfterToday = true;
+  if (
+    dateToTimestamp(startD) <
+    new Date(now.getFullYear(), now.getMonth(), now.getDate())
+  ) {
+    isAfterToday = false;
+  } else {
+    const myStayOut = await getMyStayOut();
+
+    if (myStayOut.startDate === '') {
+      await fs
+        .collection(collectionStayOutPath)
+        .doc(onlyDate(startD))
+        .set({
+          startDate: dateToTimestamp(startD),
+          endDate: dateToTimestamp(endD),
+          submitDate: now,
+        })
+        .then(() => {
+          console.log('Document successfully written!');
+        })
+        .catch((error) => {
+          console.error('Error writing document: ', error);
+        });
+    } else {
+      console.log('왜/');
+    }
+  }
+
+  return isAfterToday;
+};
 export const getMyTemperature = async () => {
   const { uid } = Auth.currentUser;
   const dateToString = (inputDate) => {
@@ -233,7 +304,49 @@ export const getMyTemperature = async () => {
 export const getMyStayOut = async () => {
   const { uid } = Auth.currentUser;
 
+  const dateToString = (inputDate) => {
+    const d = new Date(inputDate * 1000);
+    let month = `${d.getMonth() + 1}`;
+    let day = `${d.getDate()}`;
+    const year = `${d.getFullYear()}`;
+
+    if (month < 10) month = `0${month}`;
+    if (day < 10) day = `0${day}`;
+
+    return [year, month, day].join('-');
+  };
+
   const collectionStayOutPath = `users/${uid}/stayOutInfo`;
+
+  let stayOut = {
+    startDate: '',
+    endDate: '',
+  };
+
+  const now = new Date();
+
+  await fs
+    .collection(collectionStayOutPath)
+    .where(
+      'endDate',
+      '>=',
+      new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    )
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        try {
+          if (doc.data().length !== 0) {
+            stayOut.endDate = dateToString(doc.data().endDate.seconds);
+            stayOut.startDate = dateToString(doc.data().startDate.seconds);
+          }
+        } catch (error) {
+          console.log('외박 기록 불러오기 실패');
+        }
+      });
+    });
+
+  return stayOut;
 };
 
 export const getMyPenalty = async () => {

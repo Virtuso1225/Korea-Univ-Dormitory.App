@@ -16,6 +16,7 @@ import {
   getNotice,
   getMyPenalty,
   getMyTemperature,
+  getMyStayOut,
 } from '../firebase';
 
 import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
@@ -82,6 +83,7 @@ const Front = ({ navigation }) => {
       getNotice(),
       getMyPenalty(),
       getMyTemperature(),
+      getMyStayOut(),
     ]);
   };
 
@@ -95,6 +97,7 @@ const Front = ({ navigation }) => {
         setNotice(results[1]);
         setMyPenalty(results[2]);
         setTemperature(results[3]);
+        setOvernightDate(results[4]);
         return [results[0], results[2]];
       });
 
@@ -104,7 +107,7 @@ const Front = ({ navigation }) => {
         sum.myPenaltySum += item.points;
       });
       setProfileInfo({ ...result[0], ...sum });
-      setOvernightDate({ startDate: '2021-08-10', endDate: '2021-08-12' });
+      // setOvernightDate({ startDate: '2021-08-10', endDate: '2021-08-12' });
     } catch (e) {
       Alert.alert('Signin Error', e.message);
     } finally {

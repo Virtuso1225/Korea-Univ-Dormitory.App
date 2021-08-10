@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Modal, StyleSheet, View } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { Modal, StyleSheet, View, Alert } from 'react-native';
+import { UserContext, ProgressContext } from '../contexts';
 import {
   BlurBackground,
   CustomTextMargin,
@@ -17,11 +18,38 @@ import {
 import { CustomText } from '../mypage/ModalComponentStyle';
 import { OvernightIcon } from '../../assets/Svgs';
 import ModalCalendar from './ModalCalendar';
-import { UserContext } from '../contexts';
+import { setMyStayOut, getMyStayOut } from '../firebase';
 
 const ModalCalendarContainer = () => {
+  const { spinner } = useContext(ProgressContext);
+  const { overnightDate, setOvernightDate } = useContext(UserContext);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [dateSelection, setDateSelection] = useState(true);
+
+  const _handleSetStayOutBtnPress = async () => {
+    try {
+      spinner.start();
+
+      const isAfterToday = await setMyStayOut(
+        overnightDate.startDate,
+        overnightDate.endDate
+      );
+
+      if (!isAfterToday) {
+        const stayOutDB = await getMyStayOut();
+        Alert.alert(
+          'SetStayOut Error',
+          '외박 등록 시작일은 오늘부터 가능합니다.'
+        );
+        setOvernightDate(stayOutDB);
+      }
+    } catch (e) {
+      Alert.alert('SetStayOut Error', e.message);
+    } finally {
+      spinner.stop();
+    }
+  };
   return (
     <UserContext.Consumer>
       {({ setOvernightDate, overnightDate }) => (
@@ -135,7 +163,12 @@ const ModalCalendarContainer = () => {
                   </ButtonWrapper>
                   <ButtonWrapper
                     onPress={() => {
+                      _handleSetStayOutBtnPress(
+                        overnightDate.startDate,
+                        overnightDate.endDate
+                      );
                       setModalVisible(false);
+                      // setOvernightDate({ startDate: '', endDate: '' });
                       setDateSelection(true);
                     }}
                   >
