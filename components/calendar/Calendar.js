@@ -80,6 +80,7 @@ const Calendar = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => {
                 setValue(value.clone().subtract(1, 'month'));
+                console.log(temperature);
               }}
             >
               <Icon name="left" size={20} color="black" />

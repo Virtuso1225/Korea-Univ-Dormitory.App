@@ -55,7 +55,6 @@ const Front = ({ navigation }) => {
     setOvernightDate,
     setTemperature,
   } = useContext(UserContext);
-
   const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);
 
@@ -91,13 +90,11 @@ const Front = ({ navigation }) => {
       spinner.start();
       const user = await signin({ email, password });
       setUser(user);
-
       const result = await setGlobalInfo().then((results) => {
         console.log(results[3]);
         setNotice(results[1]);
         setMyPenalty(results[2]);
         setTemperature(results[3]);
-        // setTemperature({ '2021-08-26': '36.5' });
         return [results[0], results[2]];
       });
 

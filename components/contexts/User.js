@@ -16,7 +16,6 @@ const UserContext = createContext({
   temperature: [],
   myPenalty: [],
   notice: [],
-
   setUser: () => {},
   setProfileInfo: () => {},
   setOvernightDate: () => {},

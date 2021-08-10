@@ -27,6 +27,7 @@ import {
 import { setMyTemperature } from '../firebase';
 import { TemperatureIcon } from '../../assets/Svgs';
 import ModalCalendarContainer from './ModalCalendarContainer';
+import { UserContext } from '../contexts';
 
 const BottomSheet = () => {
   const { spinner } = useContext(ProgressContext);
@@ -34,7 +35,6 @@ const BottomSheet = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState('');
   const today = moment().format('YYYY-MM-DD');
-
   const _handleSetTempBtnPress = async () => {
     try {
       spinner.start();

@@ -26,7 +26,6 @@ const CardComponents = ({ navigation }) => {
   const { setUser, setProfileInfo, setMyPenalty, setNotice } =
     useContext(UserContext);
   const today = moment().format('YYYY-MM-DD');
-
   const Signout = async () => {
     try {
       spinner.start();
