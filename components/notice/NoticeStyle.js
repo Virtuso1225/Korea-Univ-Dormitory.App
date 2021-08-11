@@ -29,8 +29,8 @@ export const RowWrapper = styled.View`
   margin-top: ${responsiveScreenHeight(6.9)}px;
   width: ${responsiveScreenWidth(87)}px;
   flex-direction: row;
-  justify-content: space-between;
   align-self: center;
+  align-items: center;
 `;
 
 export const PageTitle = styled.Text`
@@ -39,35 +39,10 @@ export const PageTitle = styled.Text`
   color: black;
 `;
 
-export const ProfileWrapper = styled.View`
-  flex: 2.4;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const ProfileContainer = styled.View`
-  width: ${responsiveScreenWidth(90.76)}px;
-  /* border: 1px solid black; */
-  flex-direction: row;
-`;
-
-export const ProfileImageContainer = styled.View`
-  border-radius: ${responsiveScreenHeight(3.95)}px;
-  width: ${responsiveScreenHeight(7.9)}px;
-  height: ${responsiveScreenHeight(7.9)}px;
-  border: 3px solid #850000;
-`;
-
-export const ProfileTextContainer = styled.View`
-  margin-left: ${responsiveScreenWidth(3.84)}px;
-  justify-content: center;
-`;
-
 export const CustomText = styled.Text`
   font-size: ${(props) => props.size}px;
   font-family: ${(props) => props.font};
-  margin-top: ${(props) => props.margin}px;
-  color: #850000;
+  color: ${(props) => props.color};
 `;
 
 export const ButtonWrapper = styled.TouchableOpacity`
@@ -78,4 +53,34 @@ export const ButtonWrapper = styled.TouchableOpacity`
   margin-top: ${responsiveScreenHeight(4.38)}px;
   justify-content: center;
   align-items: center;
+`;
+
+export const ContentWrapper = styled.Pressable`
+  width: 100%;
+  min-height: ${responsiveScreenHeight(8.86)}px;
+  border-bottom-width: 0.4px;
+  border-bottom-color: #cbccce;
+  justify-content: center;
+`;
+
+export const TitleWrapper = styled.View`
+  flex-direction: row;
+  margin-left: 25px;
+`;
+
+export const IconWrapper = styled.View`
+  margin-right: 11px;
+  justify-content: center;
+`;
+
+export const DateWrapper = styled.View`
+  margin-top: 5px;
+  margin-left: 55px;
+`;
+
+export const Content = styled.View`
+  background-color: #f0edeb;
+  justify-content: center;
+  padding: 23px;
+  display: ${(props) => (props.visible ? 'flex' : 'none')};
 `;

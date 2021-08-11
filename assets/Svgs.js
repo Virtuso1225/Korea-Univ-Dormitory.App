@@ -637,3 +637,36 @@ export const VerticalLince = () => (
     />
   </Svg>
 );
+
+export const NoticeIcon = () => (
+  <Svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={16.671}
+    height={16.517}
+    viewBox="0 0 16.671 16.517"
+  >
+    <G
+      data-name="\uADF8\uB8F9 331"
+      fill="none"
+      stroke="#404040"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.2}
+    >
+      <Path data-name="\uC120 44" d="M4.332 10.08h.025" />
+      <Path
+        data-name="\uD328\uC2A4 98"
+        d="M4.369 14.065c0-.043-.013-.083-.013-.127"
+      />
+      <Path data-name="\uC120 45" d="M4.357 10.08v3.858" />
+      <Path
+        data-name="\uD328\uC2A4 99"
+        d="M8.267 10.08l.01 3.9a1.91 1.91 0 01-1.939 1.939 1.975 1.975 0 01-1.967-1.853"
+      />
+      <Path
+        data-name="\uD328\uC2A4 100"
+        d="M10.68 2.449a.591.591 0 01-.216.041H4.332a3.8 3.8 0 000 7.59h6.14a.587.587 0 01.2.036l4.6 1.679a.591.591 0 00.794-.555V1.2a.591.591 0 00-.807-.55z"
+      />
+    </G>
+  </Svg>
+);

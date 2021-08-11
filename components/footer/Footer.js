@@ -61,7 +61,6 @@ const Footer = () => {
               <TextWrapper activated={focused}>공지사항</TextWrapper>
             </NavigationWrapper>
           ),
-          unmountOnBlur: true,
         }}
       />
       <Tab.Screen

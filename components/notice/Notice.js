@@ -1,40 +1,41 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {
-  Table,
-  TableWrapper,
-  Row,
-  Rows,
-  Col,
-  Cols,
-  Cell,
-} from 'react-native-table-component';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 
 import {
   responsiveScreenFontSize,
   responsiveScreenHeight,
 } from 'react-native-responsive-dimensions';
 
-import { UserContext, ProgressContext, UserProvider } from '../contexts';
+import { UserContext, ProgressContext } from '../contexts';
 
 import {
   Background,
   Card,
   Header,
   PageTitle,
-  ProfileWrapper,
-  ProfileContainer,
-  ProfileImageContainer,
-  ProfileTextContainer,
-  CustomText,
-  ButtonWrapper,
+  ContentWrapper,
   RowWrapper,
+  CustomText,
+  TitleWrapper,
+  IconWrapper,
+  DateWrapper,
+  Content,
 } from './NoticeStyle';
+import { NoticeIcon } from '../../assets/Svgs';
 
 const Notice = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
   const { notice } = useContext(UserContext);
+  const { setNotice } = useContext(UserContext);
 
+  React.useEffect(
+    () =>
+      navigation.addListener('blur', () => {
+        notice.noticeBeforeDue.map((content) => exitHandler(content.id));
+        // notice.noticeAfterDue.map((content) => exitHandler(content.id));
+      }),
+    []
+  );
   //  title: '', 제목
   // content: '', 내용
   // date: '', 날짜(2021.02.11) 문자열
@@ -50,7 +51,6 @@ const Notice = ({ navigation }) => {
 
   const [dataArr, setDataArr] = useState([]);
   const [dataArrAfterDue, setDataArrAfterDue] = useState([]);
-
   useEffect(() => {
     let dataObj = [];
     const makeArray = async (obj) => {
@@ -71,7 +71,6 @@ const Notice = ({ navigation }) => {
         dataObj.push(item.afterDue);
         arr.push(dataObj);
       });
-
       return arr;
     };
 
@@ -98,43 +97,255 @@ const Notice = ({ navigation }) => {
     return unsubscribe;
   }, [navigation, notice, spinner]);
 
+  const checkBeforeHandler = (index, isChecked) => {
+    const content = { ...notice.noticeBeforeDue[index], isChecked: !isChecked };
+
+    setNotice({
+      ...notice,
+      noticeBeforeDue: [
+        ...notice.noticeBeforeDue.slice(0, index),
+        content,
+        ...notice.noticeBeforeDue.slice(index + 1),
+      ],
+    });
+  };
+
+  const checkAfterHandler = (index, isChecked) => {
+    const content = { ...notice.noticeAfterDue[index], isChecked: !isChecked };
+    setNotice({
+      ...notice,
+      noticeAfterDue: [
+        ...notice.noticeAfterDue.slice(0, index),
+        content,
+        ...notice.noticeAfterDue.slice(index + 1),
+      ],
+    });
+  };
+
+  const exitHandler = (index) => {
+    const content = { ...notice.noticeBeforeDue[index], isChecked: false };
+    setNotice({
+      ...notice,
+      noticeBeforeDue: [
+        ...notice.noticeBeforeDue.slice(0, index),
+        content,
+        ...notice.noticeBeforeDue.slice(index + 1),
+      ],
+    });
+  };
   return (
     <Background>
-      <Card value={0.2}>
+      <Card value={1}>
         <Header>
           <RowWrapper>
             <PageTitle>공지사항</PageTitle>
           </RowWrapper>
         </Header>
       </Card>
-      <Card>
-        <View style={styles.container}>
-          <ScrollView style={styles.dataWrapper}>
-            <Table borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}>
-              <Rows data={dataArr} textStyle={styles.text} />
-            </Table>
-            <Table
-              borderStyle={{
-                borderWidth: 2,
-                borderColor: 'grey',
-              }}
-            >
-              <Rows data={dataArrAfterDue} textStyle={styles.text} />
-            </Table>
-          </ScrollView>
-        </View>
+      <Card value={6}>
+        <ScrollView>
+          {notice.noticeBeforeDue.map((content) => (
+            <View key={content.id} value={content}>
+              <ContentWrapper
+                onPress={() => {
+                  checkBeforeHandler(content.id, content.isChecked);
+                }}
+              >
+                <TitleWrapper>
+                  <IconWrapper>
+                    <NoticeIcon />
+                  </IconWrapper>
+                  <CustomText
+                    font="Medium"
+                    size={responsiveScreenFontSize(1.61)}
+                    color="#1D1D1D"
+                  >
+                    {content.title}
+                  </CustomText>
+                </TitleWrapper>
+                <DateWrapper>
+                  <CustomText
+                    font="Medium"
+                    size={responsiveScreenFontSize(1.2)}
+                    color="#ADADAD"
+                  >
+                    {content.date}
+                  </CustomText>
+                </DateWrapper>
+              </ContentWrapper>
+              <ScrollView>
+                <Content visible={content.isChecked}>
+                  <CustomText font="Medium" size="12" color="#1D1D1D">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum. Lorem ipsum dolor sit
+                    amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad
+                    minim veniam, quis nostrud exercitation ullamco laboris nisi
+                    ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                    reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id
+                    est laborum. Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis
+                    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                    commodo consequat. Duis aute irure dolor in reprehenderit in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in
+                    culpa qui officia deserunt mollit anim id est laborum. Lorem
+                    ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                    cupidatat non proident, sunt in culpa qui officia deserunt
+                    mollit anim id est laborum. Lorem ipsum dolor sit amet,
+                    consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad
+                    minim veniam, quis nostrud exercitation ullamco laboris nisi
+                    ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                    reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id
+                    est laborum. Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis
+                    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                    commodo consequat. Duis aute irure dolor in reprehenderit in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in
+                    culpa qui officia deserunt mollit anim id est laborum. Lorem
+                    ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                    cupidatat non proident, sunt in culpa qui officia deserunt
+                    mollit anim id est laborum. Lorem ipsum dolor sit amet,
+                    consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad
+                    minim veniam, quis nostrud exercitation ullamco laboris nisi
+                    ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                    reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id
+                    est laborum.
+                  </CustomText>
+                </Content>
+              </ScrollView>
+            </View>
+          ))}
+          {notice.noticeAfterDue.map((content) => (
+            <View key={content.id} value={content}>
+              <ContentWrapper
+                onPress={() => {
+                  checkAfterHandler(content.id, content.isChecked);
+                }}
+              >
+                <TitleWrapper>
+                  <IconWrapper>
+                    <NoticeIcon />
+                  </IconWrapper>
+                  <CustomText
+                    font="Medium"
+                    size={responsiveScreenFontSize(1.61)}
+                    color="#1D1D1D"
+                  >
+                    {content.title}
+                  </CustomText>
+                </TitleWrapper>
+                <DateWrapper>
+                  <CustomText
+                    font="Medium"
+                    size={responsiveScreenFontSize(1.2)}
+                    color="#ADADAD"
+                  >
+                    {content.date}
+                  </CustomText>
+                </DateWrapper>
+              </ContentWrapper>
+              <ScrollView>
+                <Content visible={content.isChecked}>
+                  <CustomText font="Medium" size="12" color="#1D1D1D">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum. Lorem ipsum dolor sit
+                    amet, consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad
+                    minim veniam, quis nostrud exercitation ullamco laboris nisi
+                    ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                    reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id
+                    est laborum. Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis
+                    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                    commodo consequat. Duis aute irure dolor in reprehenderit in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in
+                    culpa qui officia deserunt mollit anim id est laborum. Lorem
+                    ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                    cupidatat non proident, sunt in culpa qui officia deserunt
+                    mollit anim id est laborum. Lorem ipsum dolor sit amet,
+                    consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad
+                    minim veniam, quis nostrud exercitation ullamco laboris nisi
+                    ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                    reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id
+                    est laborum. Lorem ipsum dolor sit amet, consectetur
+                    adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis
+                    nostrud exercitation ullamco laboris nisi ut aliquip ex ea
+                    commodo consequat. Duis aute irure dolor in reprehenderit in
+                    voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+                    Excepteur sint occaecat cupidatat non proident, sunt in
+                    culpa qui officia deserunt mollit anim id est laborum. Lorem
+                    ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                    eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                    laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+                    irure dolor in reprehenderit in voluptate velit esse cillum
+                    dolore eu fugiat nulla pariatur. Excepteur sint occaecat
+                    cupidatat non proident, sunt in culpa qui officia deserunt
+                    mollit anim id est laborum. Lorem ipsum dolor sit amet,
+                    consectetur adipiscing elit, sed do eiusmod tempor
+                    incididunt ut labore et dolore magna aliqua. Ut enim ad
+                    minim veniam, quis nostrud exercitation ullamco laboris nisi
+                    ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+                    reprehenderit in voluptate velit esse cillum dolore eu
+                    fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                    proident, sunt in culpa qui officia deserunt mollit anim id
+                    est laborum.
+                  </CustomText>
+                </Content>
+              </ScrollView>
+            </View>
+          ))}
+        </ScrollView>
       </Card>
     </Background>
   );
 };
-
-const styles = StyleSheet.create({
-  container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-  head: { height: 40, backgroundColor: '#f1f8ff' },
-  wrapper: { flexDirection: 'row' },
-  title: { flex: 1, backgroundColor: '#f6f8fa' },
-  row: { height: 28 },
-  text: { textAlign: 'center' },
-});
 
 export default Notice;
