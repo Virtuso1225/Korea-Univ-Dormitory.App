@@ -36,18 +36,6 @@ const Notice = ({ navigation }) => {
       }),
     []
   );
-  //  title: '', 제목
-  // content: '', 내용
-  // date: '', 날짜(2021.02.11) 문자열
-  // afterDue: '', 오늘 기준으로 due가 지났는지 숫자(지났으면 0, 안지났으면 1, 미설정이면 2==평생 안지남)
-  // due: '', 날짜(2021.02.11) 문자열 - afterDue를 사용하면 사용할 필요는 없을 듯.
-  // highlight: '', 강조 여부 숫자(0 강조, 1 강조x)
-
-  // const { notice, noticeAfterDue } = await getNoticeArray();
-  // notice: afterDue 안지난 것(afterDue == 1 or 2)
-  // noticeAfterDue: due 지난것(afterDue == 0)
-  // 각 배열에서 이미 orderBy로 hightlight desc(true가 먼저), date desc 처리 되었습니다!
-  // 그래서 notice(highlight == 0 인 것 색깔 강조 - 이미 순서 핀 처리는 되어있음.) => noticeAfterDue(희끄무리하게 표현?) 하면 될 것 같습니다!
 
   const [dataArr, setDataArr] = useState([]);
   const [dataArrAfterDue, setDataArrAfterDue] = useState([]);
@@ -133,6 +121,8 @@ const Notice = ({ navigation }) => {
           {notice.noticeBeforeDue.map((content) => (
             <View key={content.id} value={content}>
               <ContentWrapper
+                color="#F9F7F4"
+                opacity="1"
                 onPress={() => {
                   checkBeforeHandler(content.id, content.isChecked);
                 }}
@@ -171,6 +161,8 @@ const Notice = ({ navigation }) => {
           {notice.noticeAfterDue.map((content) => (
             <View key={content.id} value={content}>
               <ContentWrapper
+                color="#F0EDE9"
+                opacity="0.5"
                 onPress={() => {
                   checkAfterHandler(content.id, content.isChecked);
                 }}

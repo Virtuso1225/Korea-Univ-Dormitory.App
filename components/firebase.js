@@ -400,6 +400,7 @@ export const getMyStayOutTimestamp = async () => {
     });
   return stayOut;
 };
+
 export const getMyStayOut = async () => {
   const { uid } = Auth.currentUser;
 
@@ -554,37 +555,35 @@ export const getNotice = async () => {
         try {
           noticeObject = doc.data();
 
-          if (compareDate(noticeObject.date.seconds)) {
-            noticeObject.date = dateToString(noticeObject.date.seconds);
+          noticeObject.date = dateToString(noticeObject.date.seconds);
 
-            if (noticeObject.highlight) {
-              noticeObject.highlight = 0;
-            } else {
-              noticeObject.highlight = 1;
-            }
+          if (noticeObject.highlight) {
+            noticeObject.highlight = 0;
+          } else {
+            noticeObject.highlight = 1;
+          }
 
-            if (noticeObject.due) {
-              if (!compareDate(noticeObject.due.seconds)) {
-                noticeObject.afterDue = 1;
-              } else {
-                noticeObject.afterDue = 0;
-              }
-              noticeObject.due = dateToString(noticeObject.due.seconds);
+          if (noticeObject.due) {
+            if (!compareDate(noticeObject.due.seconds)) {
+              noticeObject.afterDue = 1;
             } else {
-              noticeObject.afterDue = 2;
-              noticeObject.due = '9999.99.99';
+              noticeObject.afterDue = 0;
             }
-            noticeObject.isChecked = false;
+            noticeObject.due = dateToString(noticeObject.due.seconds);
+          } else {
+            noticeObject.afterDue = 2;
+            noticeObject.due = '9999.99.99';
+          }
+          noticeObject.isChecked = false;
 
-            if (noticeObject.afterDue === 0) {
-              noticeObject.id = cntAfter;
-              cntAfter += 1;
-              noticeAfterDue.push(noticeObject);
-            } else {
-              noticeObject.id = cntBefore;
-              cntBefore += 1;
-              noticeBeforeDue.push(noticeObject);
-            }
+          if (noticeObject.afterDue === 0) {
+            noticeObject.id = cntAfter;
+            cntAfter += 1;
+            noticeAfterDue.push(noticeObject);
+          } else {
+            noticeObject.id = cntBefore;
+            cntBefore += 1;
+            noticeBeforeDue.push(noticeObject);
           }
         } catch (error) {
           console.log('실패');

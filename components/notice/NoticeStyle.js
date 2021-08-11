@@ -61,6 +61,8 @@ export const ContentWrapper = styled.Pressable`
   border-bottom-width: 0.4px;
   border-bottom-color: #cbccce;
   justify-content: center;
+  background-color: ${(props) => props.color};
+  opacity: ${(props) => props.opacity};
 `;
 
 export const TitleWrapper = styled.View`
