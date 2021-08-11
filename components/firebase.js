@@ -12,17 +12,11 @@ const fs = firebase.firestore();
 
 export const signin = async ({ email, password }) => {
   const { user } = await Auth.signInWithEmailAndPassword(email, password);
-  // 한번 로그인하고 지워야함.
-  // const { setUser } = useContext(UserContext);
-  // const DEFAULT_PHOTO =
-  //   'https://firebasestorage.googleapis.com/v0/b/anamdormiapp.appspot.com/o/profile%2FIcon_test1.png?alt=media';
-  // await Auth.currentUser.updateProfile({ photoURL: DEFAULT_PHOTO });
 
   if (!Auth.currentUser.emailVerified) {
     Alert.alert('Signin Error', '메일을 인증하세요.');
     return {};
   }
-  fs.collection('users').doc(Auth.currentUser.uid);
 
   return user;
 };
