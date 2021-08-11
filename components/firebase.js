@@ -27,24 +27,6 @@ export const signin = async ({ email, password }) => {
   return user;
 };
 
-const countImage = () => {
-  let cnt = 0;
-  const listRef = app.storage().ref(`/profile`);
-
-  // Find all the prefixes and items.
-  listRef
-    .listAll()
-    .then(function (res) {
-      res.items.forEach(function (itemRef) {
-        cnt += 1;
-      });
-    })
-    .catch(function (error) {
-      // Uh-oh, an error occurred!
-    });
-  return cnt;
-};
-
 export const signup = async ({
   name,
   sid,

@@ -63,8 +63,6 @@ const ProfileImageInfo = ({ navigation }) => {
     } finally {
       spinner.stop();
     }
-
-    console.log('성공');
   };
 
   const getPhotoUrl = (index) => {
@@ -125,9 +123,6 @@ const ProfileImageInfo = ({ navigation }) => {
                   source={{
                     uri: myPhoto,
                   }}
-                />
-                <PhotoButton
-                  onPress={() => navigation.navigate('ProfileImageInfo')}
                 />
               </ProfileSelectedImageContainer>
             </RowWrapper>
