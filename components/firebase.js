@@ -323,10 +323,14 @@ export const getNotice = async () => {
     afterDue: '',
     due: '',
     highlight: '',
+    id: 0,
+    isChecked: false,
   };
 
   const noticeBeforeDue = [];
   const noticeAfterDue = [];
+  let cntBefore = 0;
+  let cntAfter = 0;
 
   await fs
     .collection('notice')
@@ -358,10 +362,15 @@ export const getNotice = async () => {
               noticeObject.afterDue = 2;
               noticeObject.due = '9999.99.99';
             }
+            noticeObject.isChecked = false;
 
             if (noticeObject.afterDue === 0) {
+              noticeObject.id = cntAfter;
+              cntAfter += 1;
               noticeAfterDue.push(noticeObject);
             } else {
+              noticeObject.id = cntBefore;
+              cntBefore += 1;
               noticeBeforeDue.push(noticeObject);
             }
           }
