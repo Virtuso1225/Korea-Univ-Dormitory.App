@@ -17,6 +17,7 @@ import {
   getNotice,
   getMyPenalty,
   getMyTemperature,
+  getMyStayOut,
 } from '../firebase';
 
 import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
@@ -50,13 +51,16 @@ const Front = ({ navigation }) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [isSelected, setSelection] = useState(false);
-  const { setUser } = useContext(UserContext);
+
   const {
     setProfileInfo,
     setNotice,
     setMyPenalty,
     setOvernightDate,
     setTemperature,
+    notice,
+    overnightDate,
+    setUser,
   } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);
@@ -85,6 +89,7 @@ const Front = ({ navigation }) => {
       getNotice(),
       getMyPenalty(),
       getMyTemperature(),
+      getMyStayOut(),
     ]);
   };
 
@@ -94,10 +99,10 @@ const Front = ({ navigation }) => {
       const user = await signin({ email, password });
       setUser(user);
       const result = await setGlobalInfo().then((results) => {
-        console.log(results[3]);
         setNotice(results[1]);
         setMyPenalty(results[2]);
         setTemperature(results[3]);
+        setOvernightDate(results[4]);
         return [results[0], results[2]];
       });
 
@@ -107,9 +112,8 @@ const Front = ({ navigation }) => {
         sum.myPenaltySum += item.points;
       });
       setProfileInfo({ ...result[0], ...sum });
-      setOvernightDate({ startDate: '2021-08-10', endDate: '2021-08-12' });
     } catch (e) {
-      Alert.alert('Signin Error', e.message);
+      Alert.alert('로그인 에러', e.message);
     } finally {
       spinner.stop();
     }

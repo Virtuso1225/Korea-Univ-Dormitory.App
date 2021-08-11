@@ -74,7 +74,7 @@ const FindPassword = ({ navigation }) => {
       const idError = results;
 
       if (idError) {
-        Alert.alert('Password Reset Error', '메일 주소를 확인하세요.');
+        Alert.alert('비밀번호 재설정 에러', '메일 주소를 확인하세요.');
       } else {
         try {
           spinner.start();
@@ -93,7 +93,7 @@ const FindPassword = ({ navigation }) => {
               );
             } else if (result[1] === 'auth/user-not-found') {
               Alert.alert(
-                'Password Reset Error',
+                '비밀번호 재설정 에러',
                 '사용자 정보가 없습니다. 회원가입 해주세요.',
                 [
                   {
@@ -104,11 +104,11 @@ const FindPassword = ({ navigation }) => {
                 ]
               );
             } else {
-              Alert.alert('Password Reset Error', result[2]);
+              Alert.alert('비밀번호 재설정 에러', result[2]);
             }
           });
         } catch (e) {
-          Alert.alert('Password Reset Error', e.message);
+          Alert.alert('비밀번호 재설정 에러', e.message);
         } finally {
           spinner.stop();
         }

@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Modal, StyleSheet, View } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { Modal, StyleSheet, View, Alert } from 'react-native';
+import { UserContext, ProgressContext } from '../contexts';
 import {
   BlurBackground,
   CustomTextMargin,
@@ -17,11 +18,46 @@ import {
 import { CustomText } from '../mypage/ModalComponentStyle';
 import { OvernightIcon } from '../../assets/Svgs';
 import ModalCalendar from './ModalCalendar';
-import { UserContext } from '../contexts';
+import { setMyStayOut, getMyStayOut } from '../firebase';
 
 const ModalCalendarContainer = () => {
+  const { spinner } = useContext(ProgressContext);
+  const { overnightDate, setOvernightDate } = useContext(UserContext);
+
   const [modalVisible, setModalVisible] = useState(false);
   const [dateSelection, setDateSelection] = useState(true);
+
+  const _handleSetStayOutBtnPress = async () => {
+    try {
+      spinner.start();
+
+      const err = await setMyStayOut(
+        overnightDate.startDate,
+        overnightDate.endDate
+      );
+
+      const stayOutDB = await getMyStayOut();
+
+      if (err === 1) {
+        Alert.alert(
+          '외박 등록 에러',
+          '외박 등록 시작일은 오늘부터 가능합니다.'
+        );
+      } else if (err === 2) {
+        Alert.alert(
+          '외박 등록 에러',
+          '이미 진행 중인 외박 일정은 종료일만 변경 가능합니다.'
+        );
+      } else if (err === 3) {
+        Alert.alert('외박 등록 에러', '종료일은 시작일 이전이 될 수 없습니다.');
+      }
+      setOvernightDate(stayOutDB);
+    } catch (e) {
+      Alert.alert('외박 등록 에러', e.message);
+    } finally {
+      spinner.stop();
+    }
+  };
   return (
     <UserContext.Consumer>
       {({ setOvernightDate, overnightDate }) => (
@@ -123,9 +159,10 @@ const ModalCalendarContainer = () => {
                 <ModalCalendar isSelected={dateSelection} />
                 <SubmitWrapper>
                   <ButtonWrapper
-                    onPress={() => {
+                    onPress={async () => {
+                      const myStayOut = await getMyStayOut();
                       setModalVisible(false);
-                      setOvernightDate({ startDate: '', endDate: '' });
+                      setOvernightDate(myStayOut);
                       setDateSelection(true);
                     }}
                   >
@@ -135,6 +172,10 @@ const ModalCalendarContainer = () => {
                   </ButtonWrapper>
                   <ButtonWrapper
                     onPress={() => {
+                      _handleSetStayOutBtnPress(
+                        overnightDate.startDate,
+                        overnightDate.endDate
+                      );
                       setModalVisible(false);
                       setDateSelection(true);
                     }}

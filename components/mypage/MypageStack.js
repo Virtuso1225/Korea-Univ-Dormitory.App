@@ -8,6 +8,7 @@ import DormInfo from './DormInfo';
 import NicknameInfo from './NicknameInfo';
 import PasswordInfo from './PasswordInfo';
 import MyPenalty from './MyPenalty';
+import ProfileImageInfo from './ProfileImageInfo';
 
 const Stack = createStackNavigator();
 
@@ -73,6 +74,14 @@ const MypageStack = () => {
       <Stack.Screen
         name="MyPenalty"
         component={MyPenalty}
+        options={{
+          headerShown: false,
+          unmountOnBlur: true,
+        }}
+      />
+      <Stack.Screen
+        name="ProfileImageInfo"
+        component={ProfileImageInfo}
         options={{
           headerShown: false,
           unmountOnBlur: true,

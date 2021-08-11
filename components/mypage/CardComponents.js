@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
@@ -25,13 +25,22 @@ const CardComponents = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
   const { setUser, setProfileInfo, setMyPenalty, setNotice } =
     useContext(UserContext);
+  const now = new Date();
+  const todayNow = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const toTimestamp = (inputDate) => {
+    const arr = inputDate.split('-');
+    const timestamp = new Date(arr[0], arr[1] - 1, arr[2]);
+
+    return timestamp;
+  };
+
   const today = moment().format('YYYY-MM-DD');
   const Signout = async () => {
     try {
       spinner.start();
       signout();
     } catch (e) {
-      Alert.alert('signout error', '에러 발생');
+      Alert.alert('로그아웃 에러', '다시 시도하세요.');
     } finally {
       setUser({});
       setProfileInfo({});
@@ -44,7 +53,7 @@ const CardComponents = ({ navigation }) => {
 
   return (
     <UserContext.Consumer>
-      {({ profileInfo, temperature }) => (
+      {({ profileInfo, temperature, overnightDate }) => (
         <ColumnWrapper>
           <TopRowWrapper onPress={() => navigation.navigate('Calendar')}>
             <TemperatureIcon />
@@ -73,11 +82,28 @@ const CardComponents = ({ navigation }) => {
             >
               {temperature[today]}°C
             </DescriptionText>
-            <DescriptionText
-              font="Regular"
-              visible={temperature[today] !== undefined}
-            >
+            <DescriptionText font="Regular" visible={overnightDate}>
               #오늘의 외박여부:
+            </DescriptionText>
+            <DescriptionText
+              font="ExtraBold"
+              visible={
+                toTimestamp(overnightDate.endDate) >= todayNow &&
+                todayNow >= toTimestamp(overnightDate.startDate)
+              }
+            >
+              O
+            </DescriptionText>
+            <DescriptionText
+              font="ExtraBold"
+              visible={
+                !(
+                  toTimestamp(overnightDate.endDate) >= todayNow &&
+                  todayNow >= toTimestamp(overnightDate.startDate)
+                )
+              }
+            >
+              X
             </DescriptionText>
           </TopRowWrapper>
           <RowWrapper onPress={() => navigation.navigate('MyPenalty')}>

@@ -1,9 +1,7 @@
-import { useContext, useState } from 'react';
 import { Alert } from 'react-native';
 import firebase from 'firebase';
 import config from '../firebase.json';
 import 'firebase/firestore';
-import { UserContext } from './contexts';
 
 const app = !firebase.apps.length
   ? firebase.initializeApp(config)
@@ -14,7 +12,11 @@ const fs = firebase.firestore();
 
 export const signin = async ({ email, password }) => {
   const { user } = await Auth.signInWithEmailAndPassword(email, password);
+  // 한번 로그인하고 지워야함.
   // const { setUser } = useContext(UserContext);
+  // const DEFAULT_PHOTO =
+  //   'https://firebasestorage.googleapis.com/v0/b/anamdormiapp.appspot.com/o/profile%2FIcon_test1.png?alt=media';
+  // await Auth.currentUser.updateProfile({ photoURL: DEFAULT_PHOTO });
 
   if (!Auth.currentUser.emailVerified) {
     Alert.alert('Signin Error', '메일을 인증하세요.');
@@ -36,6 +38,7 @@ export const signup = async ({
   studentIndex,
 }) => {
   await Auth.createUserWithEmailAndPassword(email, password);
+
   const currentUser = {
     id: Auth.currentUser.uid,
     studentIndex,
@@ -64,7 +67,10 @@ export const signup = async ({
       console.error('firestore()DB 유저 추가 실패', error);
     });
 
+  const DEFAULT_PHOTO =
+    'https://firebasestorage.googleapis.com/v0/b/anamdormiapp.appspot.com/o/profile%2FIcon_test1.png?alt=media';
   const curUser = Auth.currentUser;
+  await curUser.updateProfile({ photoURL: DEFAULT_PHOTO });
 
   curUser
     .sendEmailVerification()
@@ -74,6 +80,21 @@ export const signup = async ({
     .catch('Email not sent!');
 
   return {};
+};
+
+export const photoUpdate = async (url) => {
+  const curUser = Auth.currentUser;
+  await curUser
+    .updateProfile({
+      photoURL: url,
+    })
+    .then(() => {
+      console.log('업데이트 성공');
+    })
+    .catch((e) => {
+      console.log('업데이트 실패', e.message);
+    });
+  return curUser;
 };
 
 export const findPassword = async (email) => {
@@ -189,7 +210,127 @@ export const setMyTemperature = async (myTemperature) => {
       console.error('Error writing document: ', error);
     });
 };
+export const setMyStayOut = async (startD, endD) => {
+  const { uid } = Auth.currentUser;
+  const onlyDate = (date) => {
+    const d = new Date(date);
 
+    let month = `${d.getMonth() + 1}`;
+    let day = `${d.getDate()}`;
+    const year = `${d.getFullYear()}`;
+
+    if (month < 10) month = `0${month}`;
+    if (day < 10) day = `0${day}`;
+
+    return [year, month, day].join('');
+  };
+
+  const dateToString = (inputDate) => {
+    const d = new Date(inputDate * 1000);
+    let month = `${d.getMonth() + 1}`;
+    let day = `${d.getDate()}`;
+    const year = `${d.getFullYear()}`;
+
+    if (month < 10) month = `0${month}`;
+    if (day < 10) day = `0${day}`;
+
+    return [year, month, day].join('-');
+  };
+
+  const dateToTimestamp = (inputDate) => {
+    const array = inputDate.split('-');
+    const month = array[1] * 1;
+    const day = array[2] * 1;
+    const year = array[0] * 1;
+
+    const timestamp = new Date(year, month - 1, day);
+
+    return timestamp;
+  };
+
+  const collectionStayOutPath = `users/${uid}/stayOutInfo`;
+  const docRef = fs.collection(collectionStayOutPath);
+  const now = new Date();
+
+  const addNewStayOut = async () => {
+    await docRef
+      .doc(onlyDate(startD))
+      .set({
+        startDate: dateToTimestamp(startD),
+        endDate: dateToTimestamp(endD),
+        submitDate: now,
+      })
+      .then(() => {
+        console.log('Document successfully written!');
+      })
+      .catch((error) => {
+        console.error('Error writing document: ', error);
+      });
+  };
+
+  const updateStayOut = async (myStayOut) => {
+    await docRef
+      .doc(onlyDate(myStayOut.startDate))
+      .update({
+        endDate: dateToTimestamp(endD),
+        submitDate: now,
+      })
+      .then(() => {
+        console.log('Document successfully updated!');
+      })
+      .catch((error) => {
+        // The document probably doesn't exist.
+        console.error('Error updating document: ', error);
+      });
+  };
+
+  let err = 0;
+  if (dateToTimestamp(startD) > dateToTimestamp(endD)) {
+    err = 3;
+  } else {
+    const myStayOut = await getMyStayOutTimestamp();
+
+    if (myStayOut.startDate === '') {
+      if (
+        dateToTimestamp(startD) <
+        new Date(now.getFullYear(), now.getMonth(), now.getDate())
+      ) {
+        err = 1;
+      } else {
+        await addNewStayOut();
+      }
+    } else if (
+      myStayOut.startDate <
+      new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    ) {
+      if (dateToTimestamp(startD).getTime() !== myStayOut.startDate.getTime()) {
+        err = 2;
+      } else {
+        await updateStayOut(myStayOut);
+      }
+    } else if (
+      dateToTimestamp(startD) <
+      new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    ) {
+      err = 1;
+    } else {
+      Promise.all([
+        docRef
+          .doc(onlyDate(myStayOut.startDate))
+          .delete()
+          .then(() => {
+            console.log('Document successfully deleted!');
+          })
+          .catch((error) => {
+            console.error('Error removing document: ', error);
+          }),
+        addNewStayOut(),
+      ]);
+    }
+  }
+
+  return err;
+};
 export const getMyTemperature = async () => {
   const { uid } = Auth.currentUser;
   const dateToString = (inputDate) => {
@@ -230,10 +371,87 @@ export const getMyTemperature = async () => {
   return temp;
 };
 
+export const getMyStayOutTimestamp = async () => {
+  const { uid } = Auth.currentUser;
+  const collectionStayOutPath = `users/${uid}/stayOutInfo`;
+  const toTimestamp = (inputDate) => {
+    const output = new Date(inputDate * 1000);
+    return output;
+  };
+  const stayOut = {
+    startDate: '',
+    endDate: '',
+  };
+
+  const now = new Date();
+  await fs
+    .collection(collectionStayOutPath)
+    .where(
+      'endDate',
+      '>=',
+      new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    )
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        try {
+          if (doc.data().length !== 0) {
+            stayOut.endDate = toTimestamp(doc.data().endDate.seconds);
+            stayOut.startDate = toTimestamp(doc.data().startDate.seconds);
+          }
+        } catch (error) {
+          console.log('외박 기록 불러오기 실패');
+        }
+      });
+    });
+  return stayOut;
+};
 export const getMyStayOut = async () => {
   const { uid } = Auth.currentUser;
 
+  const dateToString = (inputDate) => {
+    const d = new Date(inputDate * 1000);
+    let month = `${d.getMonth() + 1}`;
+    let day = `${d.getDate()}`;
+    const year = `${d.getFullYear()}`;
+
+    if (month < 10) month = `0${month}`;
+    if (day < 10) day = `0${day}`;
+
+    return [year, month, day].join('-');
+  };
+
   const collectionStayOutPath = `users/${uid}/stayOutInfo`;
+
+  const stayOut = {
+    startDate: '',
+    endDate: '',
+  };
+
+  const now = new Date();
+
+  await fs
+    .collection(collectionStayOutPath)
+    .where(
+      'endDate',
+      '>=',
+      new Date(now.getFullYear(), now.getMonth(), now.getDate())
+    )
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        try {
+          if (doc.data().length !== 0) {
+            stayOut.endDate = dateToString(doc.data().endDate.seconds);
+            stayOut.startDate = dateToString(doc.data().startDate.seconds);
+          }
+        } catch (error) {
+          console.log('외박 기록 불러오기 실패');
+        }
+      });
+    });
+
+  return stayOut;
 };
 
 export const getMyPenalty = async () => {
@@ -323,10 +541,14 @@ export const getNotice = async () => {
     afterDue: '',
     due: '',
     highlight: '',
+    id: 0,
+    isChecked: false,
   };
 
   const noticeBeforeDue = [];
   const noticeAfterDue = [];
+  let cntBefore = 0;
+  let cntAfter = 0;
 
   await fs
     .collection('notice')
@@ -358,10 +580,15 @@ export const getNotice = async () => {
               noticeObject.afterDue = 2;
               noticeObject.due = '9999.99.99';
             }
+            noticeObject.isChecked = false;
 
             if (noticeObject.afterDue === 0) {
+              noticeObject.id = cntAfter;
+              cntAfter += 1;
               noticeAfterDue.push(noticeObject);
             } else {
+              noticeObject.id = cntBefore;
+              cntBefore += 1;
               noticeBeforeDue.push(noticeObject);
             }
           }

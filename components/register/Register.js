@@ -323,22 +323,22 @@ const Register = ({ navigation }) => {
       const roomError = results[7];
 
       if (nameError) {
-        Alert.alert('Signup Error', '이름을 확인하세요.');
+        Alert.alert('회원가입 에러', '이름을 확인하세요.');
       } else if (sidError) {
-        Alert.alert('Signup Error', '학번을 확인하세요.');
+        Alert.alert('회원가입 에러', '학번을 확인하세요.');
       } else if (idError) {
-        Alert.alert('Signup Error', '메일 주소를 확인하세요.');
+        Alert.alert('회원가입 에러', '메일 주소를 확인하세요.');
       } else if (passwordError) {
-        Alert.alert('Signup Error', '비밀번호를 확인하세요.');
+        Alert.alert('회원가입 에러', '비밀번호를 확인하세요.');
       } else if (checkError) {
-        Alert.alert('Signup Error', '비밀번호 확인을 확인하세요.');
+        Alert.alert('회원가입 에러', '비밀번호 확인을 확인하세요.');
       } else if (roomError) {
-        Alert.alert('Signup Error', '호실 정보를 확인하세요.');
+        Alert.alert('회원가입 에러', '호실 정보를 확인하세요.');
       } else if (existNickname) {
-        Alert.alert('Signup Error', '닉네임을 확인하세요.');
+        Alert.alert('회원가입 에러', '닉네임을 확인하세요.');
       } else if (!compareStudentInfo) {
         Alert.alert(
-          'Signup Error',
+          '회원가입 에러',
           '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
         );
       } else {
@@ -364,7 +364,7 @@ const Register = ({ navigation }) => {
             },
           ]);
         } catch (e) {
-          Alert.alert('Signup Error', e.message);
+          Alert.alert('회원가입 에러', e.message);
         } finally {
           spinner.stop();
         }

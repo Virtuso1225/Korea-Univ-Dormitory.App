@@ -81,20 +81,19 @@ const NicknameInfo = ({ navigation }) => {
     await lastCheck().then((existNickname) => {
       if (!nickname || existNickname) {
         result = false;
-        Alert.alert('Update Error', '닉네임 정보를 확인하세요.');
+        Alert.alert('개인정보 변경하기 에러', '닉네임 정보를 확인하세요.');
       } else {
         try {
           spinner.start();
           updateNicknameInfo(nickname);
-          Alert.alert('Success', '정보 업데이트에 성공했습니다.', [
+          Alert.alert('Success!', '정보 업데이트에 성공했습니다.', [
             {
               text: 'OK',
-              // onPress: () => navigation.replace('PersonalInfo'),
               onPress: () => navigation.goBack(),
             },
           ]);
         } catch (e) {
-          Alert.alert('Update Error', e.message);
+          Alert.alert('개인정보 변경하기 에러', e.message);
         } finally {
           spinner.stop();
         }
