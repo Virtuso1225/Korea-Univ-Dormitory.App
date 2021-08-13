@@ -20,6 +20,7 @@ import {
   DescriptionText,
 } from './CardComponentsStyle';
 import ModalComponent from './ModalComponent';
+import PreparingFacilityModal from './PreparingFacilityModal';
 
 const CardComponents = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
@@ -35,6 +36,7 @@ const CardComponents = ({ navigation }) => {
   };
 
   const today = moment().format('YYYY-MM-DD');
+
   const Signout = async () => {
     try {
       spinner.start();
@@ -116,10 +118,7 @@ const CardComponents = ({ navigation }) => {
               {profileInfo.myPenaltySum}
             </DescriptionText>
           </RowWrapper>
-          <RowWrapper>
-            <FacilityIcon />
-            <ButtonText>최근 예약 내역</ButtonText>
-          </RowWrapper>
+          <PreparingFacilityModal />
           <RowWrapper onPress={() => navigation.navigate('PersonalInfo')}>
             <PersonalInfoIcon />
             <ButtonText>개인정보 변경하기</ButtonText>

@@ -29,13 +29,11 @@ export const signup = async ({
   dorm,
   room,
   nickname,
-  studentIndex,
 }) => {
   await Auth.createUserWithEmailAndPassword(email, password);
 
   const currentUser = {
     id: Auth.currentUser.uid,
-    studentIndex,
     sid,
     name,
     dorm,
@@ -52,7 +50,6 @@ export const signup = async ({
       dorm: currentUser.dorm,
       room: currentUser.room,
       nickname: currentUser.nickname,
-      index: currentUser.studentIndex,
       profileImage: 1,
     })
     .then(() => {
@@ -86,10 +83,7 @@ export const photoUpdate = async (index) => {
     .catch((error) => {
       console.error('Error updating document: ', error);
     });
-
-  const curUser = await getCurrentUser();
-  console.log('curUser', curUser);
-  return curUser;
+  return index;
 };
 
 export const findPassword = async (email) => {
@@ -130,7 +124,7 @@ export const comparePassword = async (password) => {
 };
 
 export const getCurrentUser = async () => {
-  let currentUserInfo = {
+  const currentUserInfo = {
     name: '',
     dorm: '',
     room: '',
@@ -141,19 +135,23 @@ export const getCurrentUser = async () => {
   const docRef = fs.collection('users').doc(Auth.currentUser.uid);
 
   await docRef.get().then((doc) => {
-    currentUserInfo = doc.data();
+    currentUserInfo.name = doc.data().name;
+    currentUserInfo.dorm = doc.data().dorm;
+    currentUserInfo.room = doc.data().room;
+    currentUserInfo.nickname = doc.data().nickname;
+    currentUserInfo.profileImage = doc.data().profileImage;
+    currentUserInfo.sid = doc.data().sid;
   });
 
   return currentUserInfo;
 };
 
 export const getStudentInfo = async (sid) => {
-  let studentInfo = {
+  const studentInfo = {
     dorm: '',
     room: '',
     sid: '',
     name: '',
-    index: '',
   };
   const docRef = fs.collection('studentList').where('sid', '==', sid);
 
@@ -164,7 +162,10 @@ export const getStudentInfo = async (sid) => {
         console.log('No documents found.');
       } else {
         querySnapshot.forEach((doc) => {
-          studentInfo = doc.data();
+          studentInfo.dorm = doc.data().dorm;
+          studentInfo.room = doc.data().room;
+          studentInfo.name = doc.data().name;
+          studentInfo.sid = doc.data().sid;
         });
       }
     })
@@ -450,13 +451,9 @@ export const getMyPenalty = async () => {
   const { uid } = Auth.currentUser;
 
   const collectionPenaltyPath = `users/${uid}/penaltyInfo`;
-  console.log('uid', uid);
 
-  let penaltyObject = {
-    points: 0,
-    reason: '',
-    date: '',
-  };
+  let penaltyObject = {};
+  let idx = 0;
 
   const penalty = [];
 
@@ -467,11 +464,14 @@ export const getMyPenalty = async () => {
     .then((querySnapshot) => {
       querySnapshot.forEach((doc) => {
         try {
-          penaltyObject = doc.data();
-
-          penaltyObject.date = dateToString(doc.data().timestamp);
-
+          penaltyObject = {
+            index: idx,
+            points: doc.data().points,
+            reason: doc.data().reason,
+            date: dateToString(doc.data().timestamp),
+          };
           penalty.push(penaltyObject);
+          idx += 1;
         } catch (error) {
           console.log('실패');
         }

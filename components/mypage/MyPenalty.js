@@ -1,9 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, Alert, ScrollView } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import { getMyPenalty } from '../firebase';
 import { Header, PageTitle } from './MypageStyle';
-import { UserContext, ProgressContext } from '../contexts';
+import { UserContext } from '../contexts';
 import { Background, Card, CustomText } from '../notice/NoticeStyle';
 
 import {
@@ -20,42 +19,15 @@ import {
 } from './MyPenaltyStyle';
 
 const MyPenalty = ({ navigation }) => {
-  const { spinner } = useContext(ProgressContext);
-  const { myPenalty } = useContext(UserContext);
-  const [dataArr, setDataArr] = useState([]);
   const tableHeader = [
     { id: 0, content: '날짜' },
     { id: 1, content: '벌점 부여 사유' },
     { id: 2, content: '벌점' },
   ];
-  useEffect(() => {
-    let dataObj = [];
-    const makeArray = async (obj) => {
-      const arr = [];
-      await obj.forEach((item, index) => {
-        dataObj = [];
-        dataObj.push(item.date);
-        dataObj.push(item.reason);
-        dataObj.push(item.points);
-        arr.push(dataObj);
-      });
-      return arr;
-    };
-    const unsubscribe = navigation.addListener('focus', async () => {
-      spinner.start();
-      const dataArr = await makeArray(myPenalty);
-
-      setDataArr(dataArr);
-
-      spinner.stop();
-    });
-
-    return unsubscribe;
-  }, [navigation, myPenalty, spinner]);
 
   return (
     <UserContext.Consumer>
-      {({ profileInfo }) => (
+      {({ profileInfo, myPenalty }) => (
         <Background>
           <Card value={1}>
             <Header>
@@ -84,7 +56,7 @@ const MyPenalty = ({ navigation }) => {
                     ))}
                   </TableWrapper>
                   {myPenalty.map((content) => (
-                    <TableWrapper key={content.id}>
+                    <TableWrapper key={content.index}>
                       <CustomText font="Medium" color="#707070" size="11">
                         {content.date}
                       </CustomText>
