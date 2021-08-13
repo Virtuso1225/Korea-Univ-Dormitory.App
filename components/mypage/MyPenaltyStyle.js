@@ -18,81 +18,84 @@ export const RowWrapper = styled.View`
   align-self: center;
 `;
 
-export const BackgroundWrapper = styled.View`
-  flex: 1;
-  background-color: #f9f7f4;
-`;
-
 export const Body = styled.View`
-  flex: 7.5;
+  flex: 6;
+  z-index: -1;
 `;
 
-export const GuidanceWrapper = styled.View`
-  width: ${responsiveScreenWidth(87)}px;
-  margin-top: ${responsiveScreenHeight(3.17)}px;
+export const TableContainer = styled.View`
+  margin-top: 40px;
+  width: ${responsiveScreenWidth(89.7)}px;
   align-self: center;
+  flex: 1.64;
 `;
 
-export const Guidance = styled.View`
-  width: ${responsiveScreenWidth(87)}px;
-  height: ${responsiveScreenHeight(17.2)}px;
-  margin-top: ${responsiveScreenHeight(2.13)}px;
-  border: 1px solid #cbccce;
-  border-radius: 10px;
-  padding: 9px;
-`;
-
-export const CheckWrapper = styled.View`
+export const TableWrapper = styled.View`
+  width: ${responsiveScreenWidth(89.7)}px;
+  align-self: center;
+  align-items: center;
   flex-direction: row;
-  margin-top: ${responsiveScreenHeight(1.42)}px;
-  align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  border-bottom-color: #cbccce;
+  border-bottom-width: 0.4px;
+  min-height: ${responsiveScreenHeight(5.68)}px;
+  padding-left: 30px;
+  padding-right: 30px;
 `;
 
-export const Check = styled.Pressable`
-  width: 21px;
-  height: 21px;
-  border: 1.5px solid #cbccce;
-  border-radius: 6px;
-  align-items: center;
-  justify-content: center;
-  margin-right: 6px;
+export const PenaltyWrapper = styled.View`
+  margin-top: ${responsiveScreenHeight(3.9)}px;
+  align-self: flex-end;
 `;
 
-export const PasswordCheck = styled.View`
-  margin-top: ${responsiveScreenHeight(7.2)}px;
-  width: ${responsiveScreenWidth(87)}px;
+export const BottomWrapper = styled.View`
+  flex: 1;
+  width: ${responsiveScreenWidth(89.7)}px;
   align-self: center;
+  margin-top: 20px;
 `;
 
-export const Password = styled.TextInput`
-  margin-top: ${responsiveScreenHeight(3.5)}px;
-  border-bottom-width: 1px;
-  border-bottom-color: ${(props) => (props.different ? '#850000' : '#cbccce')};
-  font-family: Regular;
-  font-size: ${responsiveScreenFontSize(1.6)}px;
-  padding-bottom: 2px;
-  margin-bottom: 8px;
-`;
-
-export const ButtonWrapper = styled.TouchableOpacity`
-  width: ${responsiveScreenWidth(87)}px;
-  height: ${responsiveScreenHeight(5.45)}px;
+export const SmallButton = styled.Pressable`
+  width: ${responsiveScreenWidth(43)}px;
+  height: ${responsiveScreenHeight(3.9)}px;
+  border: 1px solid #ffffff;
   background-color: #fffdf9;
+  border-radius: 10px;
   align-items: center;
   justify-content: center;
-  align-self: center;
-  border-radius: 10px;
-  margin-top: ${responsiveScreenHeight(22.9)}px;
+  margin-bottom: 12px;
 `;
 
-export const ErrorText = styled.Text`
+export const ButtonRow = styled.View`
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  align-self: center;
-  width: 100%;
-  margin-top: 3.5px;
-  color: rgba(133, 0, 0, 1);
-  font-size: 10px;
+`;
+
+export const TextWrapper = styled.Text`
   font-family: Regular;
-  display: ${(props) => (props.visible ? 'flex' : 'none')};
+  color: #707070;
+  font-size: 10px;
+`;
+
+export const PenatlyRow = styled.View`
+  width: ${responsiveScreenWidth(90)}px;
+  align-self: center;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom-color: #cbccce;
+  border-bottom-width: 0.4px;
+  min-height: ${responsiveScreenHeight(5.68)}px;
+  padding-left: 10px;
+  padding-right: 10px;
+`;
+
+export const PenaltyInfoWrapper = styled.View`
+  height: 100px;
+  align-items: center;
+  justify-content: center;
+  width: ${responsiveScreenWidth(68)}px;
+  margin-left: 10px;
+  margin-right: 10px;
 `;

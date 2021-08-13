@@ -14,9 +14,13 @@ export const Card = styled.View`
   width: 100%;
   flex: ${(props) => props.value};
   background-color: #f9f7f4;
-  box-shadow: 0px 10px 20px rgba(222, 215, 202, 0.37);
-  margin-bottom: 11px;
+  box-shadow: 0px 10px 20px rgba(222, 215, 202, 0.6);
   justify-content: center;
+`;
+
+export const Body = styled.View`
+  flex: 6;
+  z-index: -1;
 `;
 
 export const Header = styled.View`

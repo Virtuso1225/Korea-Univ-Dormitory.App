@@ -20,6 +20,7 @@ import {
   IconWrapper,
   DateWrapper,
   Content,
+  Body,
 } from './NoticeStyle';
 import { NoticeIcon } from '../../assets/Svgs';
 
@@ -116,90 +117,92 @@ const Notice = ({ navigation }) => {
           </RowWrapper>
         </Header>
       </Card>
-      <Card value={6}>
-        <ScrollView>
-          {notice.noticeBeforeDue.map((content) => (
-            <View key={content.id} value={content}>
-              <ContentWrapper
-                color="#F9F7F4"
-                opacity="1"
-                onPress={() => {
-                  checkBeforeHandler(content.id, content.isChecked);
-                }}
-              >
-                <TitleWrapper>
-                  <IconWrapper>
-                    <NoticeIcon />
-                  </IconWrapper>
-                  <CustomText
-                    font="Medium"
-                    size={responsiveScreenFontSize(1.61)}
-                    color="#1D1D1D"
-                  >
-                    {content.title}
-                  </CustomText>
-                </TitleWrapper>
-                <DateWrapper>
-                  <CustomText
-                    font="Medium"
-                    size={responsiveScreenFontSize(1.2)}
-                    color="#ADADAD"
-                  >
-                    {content.date}
-                  </CustomText>
-                </DateWrapper>
-              </ContentWrapper>
-              <ScrollView>
-                <Content visible={content.isChecked}>
-                  <CustomText font="Medium" size="12" color="#1D1D1D">
-                    {content.content}
-                  </CustomText>
-                </Content>
-              </ScrollView>
-            </View>
-          ))}
-          {notice.noticeAfterDue.map((content) => (
-            <View key={content.id} value={content}>
-              <ContentWrapper
-                color="#F0EDE9"
-                opacity="0.5"
-                onPress={() => {
-                  checkAfterHandler(content.id, content.isChecked);
-                }}
-              >
-                <TitleWrapper>
-                  <IconWrapper>
-                    <NoticeIcon />
-                  </IconWrapper>
-                  <CustomText
-                    font="Medium"
-                    size={responsiveScreenFontSize(1.61)}
-                    color="#1D1D1D"
-                  >
-                    {content.title}
-                  </CustomText>
-                </TitleWrapper>
-                <DateWrapper>
-                  <CustomText
-                    font="Medium"
-                    size={responsiveScreenFontSize(1.2)}
-                    color="#ADADAD"
-                  >
-                    {content.date}
-                  </CustomText>
-                </DateWrapper>
-              </ContentWrapper>
-              <ScrollView>
-                <Content visible={content.isChecked}>
-                  <CustomText font="Medium" size="12" color="#1D1D1D">
-                    {content.content}
-                  </CustomText>
-                </Content>
-              </ScrollView>
-            </View>
-          ))}
-        </ScrollView>
-      </Card>
+      <Body>
+        <Card value={1}>
+          <ScrollView>
+            {notice.noticeBeforeDue.map((content) => (
+              <View key={content.id} value={content}>
+                <ContentWrapper
+                  color="#F9F7F4"
+                  opacity="1"
+                  onPress={() => {
+                    checkBeforeHandler(content.id, content.isChecked);
+                  }}
+                >
+                  <TitleWrapper>
+                    <IconWrapper>
+                      <NoticeIcon />
+                    </IconWrapper>
+                    <CustomText
+                      font="Medium"
+                      size={responsiveScreenFontSize(1.61)}
+                      color="#1D1D1D"
+                    >
+                      {content.title}
+                    </CustomText>
+                  </TitleWrapper>
+                  <DateWrapper>
+                    <CustomText
+                      font="Medium"
+                      size={responsiveScreenFontSize(1.2)}
+                      color="#ADADAD"
+                    >
+                      {content.date}
+                    </CustomText>
+                  </DateWrapper>
+                </ContentWrapper>
+                <ScrollView>
+                  <Content visible={content.isChecked}>
+                    <CustomText font="Medium" size="12" color="#1D1D1D">
+                      {content.content}
+                    </CustomText>
+                  </Content>
+                </ScrollView>
+              </View>
+            ))}
+            {notice.noticeAfterDue.map((content) => (
+              <View key={content.id} value={content}>
+                <ContentWrapper
+                  color="#F0EDE9"
+                  opacity="0.5"
+                  onPress={() => {
+                    checkAfterHandler(content.id, content.isChecked);
+                  }}
+                >
+                  <TitleWrapper>
+                    <IconWrapper>
+                      <NoticeIcon />
+                    </IconWrapper>
+                    <CustomText
+                      font="Medium"
+                      size={responsiveScreenFontSize(1.61)}
+                      color="#1D1D1D"
+                    >
+                      {content.title}
+                    </CustomText>
+                  </TitleWrapper>
+                  <DateWrapper>
+                    <CustomText
+                      font="Medium"
+                      size={responsiveScreenFontSize(1.2)}
+                      color="#ADADAD"
+                    >
+                      {content.date}
+                    </CustomText>
+                  </DateWrapper>
+                </ContentWrapper>
+                <ScrollView>
+                  <Content visible={content.isChecked}>
+                    <CustomText font="Medium" size="12" color="#1D1D1D">
+                      {content.content}
+                    </CustomText>
+                  </Content>
+                </ScrollView>
+              </View>
+            ))}
+          </ScrollView>
+        </Card>
+      </Body>
     </Background>
   );
 };

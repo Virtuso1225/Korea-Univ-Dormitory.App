@@ -1,41 +1,22 @@
 import React, { useState, useContext, useEffect } from 'react';
-import {
-  TouchableWithoutFeedback,
-  Keyboard,
-  StyleSheet,
-  View,
-  Alert,
-  ScrollView,
-} from 'react-native';
-import {
-  Table,
-  TableWrapper,
-  Row,
-  Rows,
-  Col,
-  Cols,
-  Cell,
-} from 'react-native-table-component';
-import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
-import Icon from 'react-native-vector-icons/Entypo';
-import Close from 'react-native-vector-icons/EvilIcons';
+import { StyleSheet, View, Alert, ScrollView, Text } from 'react-native';
+import Icon from 'react-native-vector-icons/EvilIcons';
 import { getMyPenalty } from '../firebase';
 import { Header, PageTitle } from './MypageStyle';
 import { UserContext, ProgressContext } from '../contexts';
-import { Background, Card } from '../notice/NoticeStyle';
+import { Background, Card, CustomText } from '../notice/NoticeStyle';
 
 import {
   CloseWrapper,
-  BackgroundWrapper,
   Body,
-  Check,
-  CheckWrapper,
-  Guidance,
-  GuidanceWrapper,
   RowWrapper,
-  PasswordCheck,
-  Password,
-  ButtonWrapper,
+  TableWrapper,
+  TableContainer,
+  PenaltyWrapper,
+  BottomWrapper,
+  SmallButton,
+  TextWrapper,
+  ButtonRow,
 } from './MyPenaltyStyle';
 
 const MyPenalty = ({ navigation }) => {
@@ -43,7 +24,6 @@ const MyPenalty = ({ navigation }) => {
   const { myPenalty } = useContext(UserContext);
   const [dataArr, setDataArr] = useState([]);
   const tableHeader = ['날짜', '벌점 부여 사유', '벌점'];
-
   useEffect(() => {
     let dataObj = [];
     const makeArray = async (obj) => {
@@ -55,7 +35,6 @@ const MyPenalty = ({ navigation }) => {
         dataObj.push(item.points);
         arr.push(dataObj);
       });
-
       return arr;
     };
     const unsubscribe = navigation.addListener('focus', async () => {
@@ -73,43 +52,88 @@ const MyPenalty = ({ navigation }) => {
   return (
     <UserContext.Consumer>
       {({ profileInfo }) => (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <BackgroundWrapper>
+        <Background>
+          <Card value={1}>
             <Header>
               <RowWrapper>
-                <PageTitle marginTop={0} marginLeft={0}>
-                  벌점 내역
-                </PageTitle>
+                <PageTitle>벌점 내역</PageTitle>
                 <CloseWrapper onPress={() => navigation.navigate('Mypage')}>
-                  <Close name="close" size={20} color="#707070" />
+                  <Icon name="close" size={20} color="#707070" />
                 </CloseWrapper>
               </RowWrapper>
             </Header>
-            <Body>
-              <Card>
-                <View style={styles.container}>
-                  <ScrollView style={styles.dataWrapper}>
-                    <Table
-                      borderStyle={{ borderWidth: 2, borderColor: '#c8e1ff' }}
-                    >
-                      <Row
-                        data={tableHeader}
-                        style={styles.head}
-                        textStyle={styles.text}
-                      />
-                      <Rows data={dataArr} textStyle={styles.text} />
-                    </Table>
-                  </ScrollView>
-                  <RowWrapper>
-                    <PageTitle marginTop={0} marginLeft={0}>
+          </Card>
+          <Body>
+            <Card value={1}>
+              <ScrollView>
+                <TableContainer>
+                  <TableWrapper>
+                    {tableHeader.map((title) => (
+                      <CustomText
+                        key={title}
+                        font="Medium"
+                        color="#1D1D1D"
+                        size="11"
+                      >
+                        {title}
+                      </CustomText>
+                    ))}
+                  </TableWrapper>
+                  {myPenalty.map((content) => (
+                    <TableWrapper key={content.id}>
+                      <CustomText font="Medium" color="#707070" size="11">
+                        {content.date}
+                      </CustomText>
+                      <CustomText font="Medium" color="#707070" size="11">
+                        {content.reason}
+                      </CustomText>
+                      <CustomText font="Medium" color="#707070" size="11">
+                        {content.points}
+                      </CustomText>
+                    </TableWrapper>
+                  ))}
+                  <PenaltyWrapper>
+                    <CustomText font="Bold6" color="#1D1D1D" size="14">
                       누적 벌점 총 {profileInfo.myPenaltySum} 점
-                    </PageTitle>
-                  </RowWrapper>
-                </View>
-              </Card>
-            </Body>
-          </BackgroundWrapper>
-        </TouchableWithoutFeedback>
+                    </CustomText>
+                  </PenaltyWrapper>
+                </TableContainer>
+                <BottomWrapper>
+                  <View style={styles.topShadow}>
+                    <View style={styles.bottomShadow}>
+                      <SmallButton
+                        onPress={() => navigation.navigate('PenaltyInfo')}
+                      >
+                        <ButtonRow>
+                          <CustomText font="Medium" color="#707070" size="11">
+                            벌점 관련 수칙 전체 보기
+                          </CustomText>
+                          <Icon
+                            name="chevron-right"
+                            colro="#707070"
+                            size={20}
+                          />
+                        </ButtonRow>
+                      </SmallButton>
+                    </View>
+                  </View>
+                  <TextWrapper>
+                    ① 사감장은 벌점을 받은 사생에게 다음과 같은 처분을 할 수
+                    있다. {'\n'}다만, 벌점은 누진제(1, 2학기 포함)로 계산한다.
+                    {'\n'}
+                    {'\n'}1. 경고처분 : {'\n'}벌점이 5점인 경우 또는 1회
+                    범칙행위에 대해서도 그 정도가 무거울 경우 {'\n'}2. 퇴사처분
+                    :{'\n'}
+                    가. 안암학사규정 제17조에 열거한 퇴사처분에 해당되는
+                    범칙행위 {'\n'}나. 경고처분 후 벌점 2점 이상을 추가하였을
+                    경우{'\n'}
+                    다. 벌점이 7점 이상인 자
+                  </TextWrapper>
+                </BottomWrapper>
+              </ScrollView>
+            </Card>
+          </Body>
+        </Background>
       )}
     </UserContext.Consumer>
   );
@@ -133,11 +157,5 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
     shadowColor: '#d4d2cf',
   },
-  container: { flex: 1, padding: 16, paddingTop: 30, backgroundColor: '#fff' },
-  head: { height: 40, backgroundColor: '#f1f8ff' },
-  wrapper: { flexDirection: 'row' },
-  title: { flex: 1, backgroundColor: '#f6f8fa' },
-  row: { height: 28 },
-  text: { textAlign: 'center' },
 });
 export default MyPenalty;

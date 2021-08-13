@@ -465,8 +465,9 @@ export const getMyPenalty = async () => {
     points: 0,
     reason: '',
     date: '',
+    id: 0,
   };
-
+  let count = 0;
   const penalty = [];
 
   await fs
@@ -479,7 +480,8 @@ export const getMyPenalty = async () => {
           penaltyObject = doc.data();
 
           penaltyObject.date = dateToString(doc.data().timestamp);
-
+          penaltyObject.id = count;
+          count += 1;
           penalty.push(penaltyObject);
         } catch (error) {
           console.log('실패');
