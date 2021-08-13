@@ -36,8 +36,9 @@ const Mypage = ({ navigation }) => {
                 <ProfileImageContainer>
                   <ProfileImage
                     source={{
-                      uri: user.photoURL,
+                      uri: 'img',
                     }}
+                    alt="no Img"
                   />
                 </ProfileImageContainer>
                 <ProfileTextContainer>

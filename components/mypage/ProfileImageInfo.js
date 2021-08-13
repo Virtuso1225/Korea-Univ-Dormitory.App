@@ -44,14 +44,15 @@ const PhotoButton = ({ onPress }) => {
 };
 
 const ProfileImageInfo = ({ navigation }) => {
-  const { setUser, user } = useContext(UserContext);
+  const { profileInfo, setProfileInfo } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
 
   const _handlePhotoBtnPress = async () => {
     try {
       spinner.start();
       const curUser = await photoUpdate(myPhoto);
-      setUser(curUser);
+      setProfileInfo(curUser);
+      console.log(curUser);
       Alert.alert('Success!', '정보 업데이트에 성공했습니다.', [
         {
           text: 'OK',
@@ -65,25 +66,15 @@ const ProfileImageInfo = ({ navigation }) => {
     }
   };
 
-  const getPhotoUrl = (index) => {
-    const photoURL = `https://firebasestorage.googleapis.com/v0/b/anamdormiapp.appspot.com/o/profile%2FIcon_test${index}.png?alt=media`;
-    return photoURL;
-  };
+  const photoArr = [0, 1, 2, 3, 4];
 
-  const photoURLarr = [
-    getPhotoUrl(1),
-    getPhotoUrl(2),
-    getPhotoUrl(3),
-    getPhotoUrl(4),
-  ];
-
-  const [myPhoto, setMyPhoto] = useState(user.photoURL);
+  const [myPhoto, setMyPhoto] = useState(profileInfo.profileImage);
   const [gallery, setGallery] = useState(
-    photoURLarr.filter((element) => element !== user.photoURL)
+    photoArr.filter((element) => element !== profileInfo.profileImage)
   );
 
   useEffect(() => {
-    setGallery(photoURLarr.filter((element) => element !== myPhoto));
+    setGallery(photoArr.filter((element) => element !== myPhoto));
   }, [myPhoto]);
 
   return (
@@ -121,8 +112,9 @@ const ProfileImageInfo = ({ navigation }) => {
               <ProfileSelectedImageContainer>
                 <ProfileSelectedImage
                   source={{
-                    uri: myPhoto,
+                    uri: 'img',
                   }}
+                  alt="no IMG"
                 />
               </ProfileSelectedImageContainer>
             </RowWrapper>
@@ -131,24 +123,27 @@ const ProfileImageInfo = ({ navigation }) => {
               <ProfileImageContainer>
                 <ProfileImage
                   source={{
-                    uri: gallery[0],
+                    uri: 'img',
                   }}
+                  alt="no IMG"
                 />
                 <PhotoButton onPress={() => setMyPhoto(gallery[0])} />
               </ProfileImageContainer>
               <ProfileImageContainer>
                 <ProfileImage
                   source={{
-                    uri: gallery[1],
+                    uri: 'img',
                   }}
+                  alt="no IMG"
                 />
                 <PhotoButton onPress={() => setMyPhoto(gallery[1])} />
               </ProfileImageContainer>
               <ProfileImageContainer>
                 <ProfileImage
                   source={{
-                    uri: gallery[2],
+                    uri: 'img',
                   }}
+                  alt="no IMG"
                 />
                 <PhotoButton onPress={() => setMyPhoto(gallery[2])} />
               </ProfileImageContainer>
