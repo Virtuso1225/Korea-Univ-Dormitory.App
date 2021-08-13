@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { WithLocalSvg } from 'react-native-svg';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Close from 'react-native-vector-icons/EvilIcons';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -23,6 +23,7 @@ import {
   ButtonIcon,
   ProfileImage,
 } from './PersonalInfoStyle';
+import { SleepingIcon } from '../../assets/Svgs';
 
 const PhotoButton = ({ onPress }) => {
   return (
@@ -73,12 +74,7 @@ const PersonalInfo = ({ navigation }) => {
           <Body>
             <ProfileWrapper>
               <ProfileImageContainer>
-                <ProfileImage
-                  source={{
-                    uri: 'img',
-                  }}
-                  alt="no IMG"
-                />
+                <SleepingIcon />
                 <PhotoButton
                   onPress={() => navigation.navigate('ProfileImageInfo')}
                 />
@@ -88,28 +84,28 @@ const PersonalInfo = ({ navigation }) => {
                 <CustomText
                   font="ExtraBold"
                   size={responsiveScreenFontSize(1.93)}
-                  color="#1D1D1D"
+                  color="#404040"
                 >
                   {profileInfo.name}
                 </CustomText>
                 <CustomText
                   font="Regular"
                   size={responsiveScreenFontSize(1.93)}
-                  color="#1D1D1D"
+                  color="#404040"
                 >
                   님{' '}
                 </CustomText>
                 <CustomText
                   font="ExtraBold"
                   size={responsiveScreenFontSize(1.93)}
-                  color="#1D1D1D"
+                  color="#404040"
                 >
                   계정정보
                 </CustomText>
                 <CustomText
                   font="Regular"
                   size={responsiveScreenFontSize(1.93)}
-                  color="#1D1D1D"
+                  color="#404040"
                 >
                   입니다.
                 </CustomText>
@@ -165,5 +161,4 @@ const PersonalInfo = ({ navigation }) => {
     </UserContext.Consumer>
   );
 };
-
 export default PersonalInfo;

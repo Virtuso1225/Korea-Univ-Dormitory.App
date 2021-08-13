@@ -21,18 +21,13 @@ export const ProfileWrapper = styled.View`
 `;
 
 export const ProfileImageContainer = styled.View`
-  border-radius: ${responsiveScreenWidth(10)}px;
   width: ${responsiveScreenWidth(20)}px;
   height: ${responsiveScreenWidth(20)}px;
-  background-color: #fefcf9;
 `;
 
-export const ProfileImage = styled.Image`
-  width: ${responsiveScreenWidth(20)}px;
-  height: ${responsiveScreenWidth(20)}px;
-  border-radius: ${responsiveScreenWidth(10)}px;
-  border-color: #850000;
-  border-width: 3px;
+export const ProfileImage = styled.ImageBackground`
+  z-index: 0;
+  position: absolute;
 `;
 
 export const ProfileInfoWrapper = styled.View`
@@ -42,14 +37,14 @@ export const ProfileInfoWrapper = styled.View`
 `;
 
 export const ButtonContainer = styled.TouchableOpacity`
-  background-color: #fefcf9;
+  background-color: #ffffff;
   position: absolute;
   bottom: 0;
-  right: 0;
-  width: 30px;
-  height: 30px;
+  right: -8px;
+  width: ${responsiveScreenWidth(7.69)}px;
+  height: ${responsiveScreenWidth(7.69)}px;
   border-radius: 15px;
-  border: 1px #dadada solid;
+  border: 1px solid #dadada;
   justify-content: center;
   align-items: center;
 `;
