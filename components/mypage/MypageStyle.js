@@ -47,8 +47,8 @@ export const ProfileWrapper = styled.View`
 
 export const ProfileContainer = styled.View`
   width: ${responsiveScreenWidth(90.76)}px;
-
   flex-direction: row;
+  align-items: center;
 `;
 
 export const ProfileImageContainer = styled.View`

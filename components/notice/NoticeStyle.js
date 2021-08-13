@@ -72,6 +72,8 @@ export const ContentWrapper = styled.Pressable`
 export const TitleWrapper = styled.View`
   flex-direction: row;
   margin-left: 25px;
+  width: ${responsiveScreenWidth(63)}px;
+  flex-wrap: wrap;
 `;
 
 export const IconWrapper = styled.View`

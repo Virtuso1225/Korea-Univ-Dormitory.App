@@ -36,14 +36,14 @@ export const ProfileInfoWrapper = styled.View`
   margin-bottom: ${responsiveScreenHeight(6)}px;
 `;
 
-export const ButtonContainer = styled.TouchableOpacity`
+export const ButtonContainer = styled.Pressable`
   background-color: #ffffff;
   position: absolute;
-  bottom: 0;
-  right: -8px;
-  width: ${responsiveScreenWidth(7.69)}px;
-  height: ${responsiveScreenWidth(7.69)}px;
-  border-radius: 15px;
+  bottom: -10px;
+  right: 0px;
+  width: ${responsiveScreenWidth(7)}px;
+  height: ${responsiveScreenWidth(7)}px;
+  border-radius: 13px;
   border: 1px solid #dadada;
   justify-content: center;
   align-items: center;

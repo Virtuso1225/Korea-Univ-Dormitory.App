@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, Alert, ScrollView, Text } from 'react-native';
+import { StyleSheet, View, Alert, ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import { getMyPenalty } from '../firebase';
 import { Header, PageTitle } from './MypageStyle';
@@ -23,7 +23,11 @@ const MyPenalty = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
   const { myPenalty } = useContext(UserContext);
   const [dataArr, setDataArr] = useState([]);
-  const tableHeader = ['날짜', '벌점 부여 사유', '벌점'];
+  const tableHeader = [
+    { id: 0, content: '날짜' },
+    { id: 1, content: '벌점 부여 사유' },
+    { id: 2, content: '벌점' },
+  ];
   useEffect(() => {
     let dataObj = [];
     const makeArray = async (obj) => {
@@ -68,14 +72,14 @@ const MyPenalty = ({ navigation }) => {
               <ScrollView>
                 <TableContainer>
                   <TableWrapper>
-                    {tableHeader.map((title) => (
+                    {tableHeader.map((item) => (
                       <CustomText
-                        key={title}
+                        key={item.id}
                         font="Medium"
                         color="#1D1D1D"
                         size="11"
                       >
-                        {title}
+                        {item.content}
                       </CustomText>
                     ))}
                   </TableWrapper>

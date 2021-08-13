@@ -4,28 +4,21 @@ import {
   responsiveScreenHeight,
   responsiveScreenFontSize,
 } from 'react-native-responsive-dimensions';
-import Icon from 'react-native-vector-icons/AntDesign';
-
-export const LinkWrapper = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
-  width: ${responsiveScreenWidth(87)}px;
-  align-self: center;
-  justify-content: space-between;
-  margin-top: ${responsiveScreenHeight(3.4)}px;
-`;
 
 export const ProfileWrapper = styled.View`
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
-  padding-top: ${responsiveScreenHeight(3.4)}px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  width: ${responsiveScreenWidth(79.8)}px;
+  align-self: center;
+  margin-top: ${responsiveScreenHeight(5.92)}px;
+  margin-bottom: 30px;
 `;
 
 export const ProfileImageContainer = styled.View`
-  /* border-radius: ${responsiveScreenWidth(15)}px; */
-  width: ${responsiveScreenWidth(25)}px;
-  height: ${responsiveScreenWidth(25)}px;
-  background-color: #fefcf9;
+  justify-content: center;
+  align-items: center;
 `;
 
 export const ProfileImage = styled.Image`
@@ -34,42 +27,13 @@ export const ProfileImage = styled.Image`
   /* border-radius: ${responsiveScreenWidth(10)}px; */
 `;
 
-export const ProfileSelectedImageContainer = styled.View`
-  border-radius: ${responsiveScreenWidth(10)}px;
-  width: ${responsiveScreenWidth(25)}px;
-  height: ${responsiveScreenWidth(25)}px;
-  background-color: #fefcf9;
-`;
-
-export const ProfileSelectedImage = styled.Image`
-  width: ${responsiveScreenWidth(25)}px;
-  height: ${responsiveScreenWidth(25)}px;
-  border-radius: ${responsiveScreenWidth(10)}px;
-  border-color: #850000;
-  border-width: 3px;
-`;
-
-export const PhotoHeader = styled.View`
-  width: ${responsiveScreenWidth(87)}px;
-  align-self: center;
-  margin-top: ${responsiveScreenWidth(10)}px;
-`;
-
-export const ButtonContainer = styled.TouchableOpacity`
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  width: ${responsiveScreenWidth(5)}px;
-  height: ${responsiveScreenWidth(5)}px;
-  border-radius: ${responsiveScreenWidth(10)}px;
-  background-color: #fefcf9;
-  border: 1px #dadada solid;
+export const ButtonContainer = styled.Pressable`
+  width: ${responsiveScreenWidth(5.89)}px;
+  height: ${responsiveScreenWidth(5.89)}px;
+  border-radius: ${responsiveScreenWidth(2)}px;
+  border: 1px solid rgba(133, 0, 0, 0.17);
   justify-content: center;
   align-items: center;
+  margin-top: 11px;
+  margin-bottom: 30px;
 `;
-
-export const ButtonIcon = styled(Icon).attrs(() => ({
-  name: 'down',
-  size: 20,
-  color: '#850000',
-}))``;

@@ -169,7 +169,7 @@ const Front = ({ navigation }) => {
                 />
               </InputWrapper>
             </TextWrapper>
-            <CheckWrapper>
+            {/* <CheckWrapper>
               <TouchableOpacity onPress={() => setSelection(!isSelected)}>
                 <Check>
                   {isSelected && (
@@ -178,7 +178,7 @@ const Front = ({ navigation }) => {
                 </Check>
               </TouchableOpacity>
               <Description>Keep me logged in</Description>
-            </CheckWrapper>
+            </CheckWrapper> */}
             <ErrorText>{errorMessage}</ErrorText>
           </TextArea>
         </KeyboardAvoidingView>

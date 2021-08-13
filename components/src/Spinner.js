@@ -9,7 +9,7 @@ const Container = styled.View`
   width: 100%;
   height: 100%;
   justify-content: center;
-  background-color: wheat;
+  background-color: #f9f7f4;
 `;
 
 const Indicator = styled.ActivityIndicator.attrs(() => ({

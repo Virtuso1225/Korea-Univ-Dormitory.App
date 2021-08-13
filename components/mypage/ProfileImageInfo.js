@@ -1,20 +1,10 @@
-import React, { useState, useRef, useEffect, useContext } from 'react';
-import {
-  TouchableWithoutFeedback,
-  Keyboard,
-  StyleSheet,
-  View,
-  Alert,
-} from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { StyleSheet, View, Alert } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Close from 'react-native-vector-icons/EvilIcons';
+import Check from 'react-native-vector-icons/Entypo';
 import { UserContext, ProgressContext } from '../contexts';
-import {
-  SubHeader,
-  SelectionWrapper,
-  ButtonWrapper,
-  Input,
-} from './DormInfoStyle';
+import { SubHeader, SelectionWrapper, ButtonWrapper } from './DormInfoStyle';
 import {
   BackgroundWrapper,
   Body,
@@ -22,26 +12,15 @@ import {
   CloseWrapper,
 } from './DropOutStyle';
 import {
-  ProfileSelectedImage,
-  PhotoHeader,
-  ProfileSelectedImageContainer,
-  ProfileImage,
   ProfileImageContainer,
   ButtonContainer,
-  ButtonIcon,
+  ProfileWrapper,
 } from './ProfileImageInfoStyle';
 
 import { CustomText } from './ModalComponentStyle';
 import { Header, PageTitle } from './MypageStyle';
 import { photoUpdate } from '../firebase';
-
-const PhotoButton = ({ onPress }) => {
-  return (
-    <ButtonContainer onPress={onPress}>
-      <ButtonIcon />
-    </ButtonContainer>
-  );
-};
+import { ImageShow } from '../../assets/ProfileImage';
 
 const ProfileImageInfo = ({ navigation }) => {
   const { profileInfo, setProfileInfo } = useContext(UserContext);
@@ -66,106 +45,85 @@ const ProfileImageInfo = ({ navigation }) => {
     }
   };
 
-  const photoArr = [0, 1, 2, 3, 4];
-
+  const photoArr = [
+    { id: 0, isSelected: false },
+    { id: 1, isSelected: false },
+    { id: 2, isSelected: false },
+    { id: 3, isSelected: false },
+    { id: 4, isSelected: false },
+    { id: 5, isSelected: false },
+  ];
   const [myPhoto, setMyPhoto] = useState(profileInfo.profileImage);
   const [gallery, setGallery] = useState(
-    photoArr.filter((element) => element !== profileInfo.profileImage)
+    photoArr.map((element) =>
+      element.id === profileInfo.profileImage
+        ? { ...element, isSelected: true }
+        : { ...element, isSelected: false }
+    )
   );
-
   useEffect(() => {
-    setGallery(photoArr.filter((element) => element !== myPhoto));
+    setGallery(
+      photoArr.map((element) =>
+        element.id === myPhoto
+          ? { ...element, isSelected: true }
+          : { ...element, isSelected: false }
+      )
+    );
   }, [myPhoto]);
 
   return (
-    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <BackgroundWrapper>
-        <Header>
-          <RowWrapper>
-            <PageTitle>프로필 이미지 변경</PageTitle>
-            <CloseWrapper onPress={() => navigation.goBack()}>
-              <Close name="close" size={20} color="#707070" />
-            </CloseWrapper>
-          </RowWrapper>
-        </Header>
-        <Body>
-          <SelectionWrapper>
-            <SubHeader>
-              <CustomText
-                font="Regular"
-                size={responsiveScreenFontSize(1.5)}
-                color="#707070"
-              >
-                안암학사 어플 프로필을 설정해주세요.
-              </CustomText>
-            </SubHeader>
-            <PhotoHeader>
-              <CustomText
-                font="ExtraBold"
-                size={responsiveScreenFontSize(2)}
-                color="rgba(133, 0, 0, 1)"
-              >
-                현재 사진
-              </CustomText>
-            </PhotoHeader>
-            <RowWrapper>
-              <ProfileSelectedImageContainer>
-                <ProfileSelectedImage
-                  source={{
-                    uri: 'img',
+    <BackgroundWrapper>
+      <Header>
+        <RowWrapper>
+          <PageTitle>프로필 이미지 변경</PageTitle>
+          <CloseWrapper onPress={() => navigation.goBack()}>
+            <Close name="close" size={20} color="#707070" />
+          </CloseWrapper>
+        </RowWrapper>
+      </Header>
+      <Body>
+        <SelectionWrapper>
+          <SubHeader>
+            <CustomText
+              font="Regular"
+              size={responsiveScreenFontSize(1.5)}
+              color="#707070"
+            >
+              안암학사 어플 프로필을 설정해주세요.
+            </CustomText>
+          </SubHeader>
+          <ProfileWrapper>
+            {photoArr.map((item) => (
+              <ProfileImageContainer key={item.id} value={item}>
+                {ImageShow(item.id)}
+                <ButtonContainer
+                  onPress={() => {
+                    setMyPhoto(item.id);
                   }}
-                  alt="no IMG"
-                />
-              </ProfileSelectedImageContainer>
-            </RowWrapper>
-
-            <RowWrapper>
-              <ProfileImageContainer>
-                <ProfileImage
-                  source={{
-                    uri: 'img',
-                  }}
-                  alt="no IMG"
-                />
-                <PhotoButton onPress={() => setMyPhoto(gallery[0])} />
+                >
+                  {gallery[item.id].isSelected && (
+                    <Check name="check" color="#850000" size={20} />
+                  )}
+                </ButtonContainer>
               </ProfileImageContainer>
-              <ProfileImageContainer>
-                <ProfileImage
-                  source={{
-                    uri: 'img',
-                  }}
-                  alt="no IMG"
-                />
-                <PhotoButton onPress={() => setMyPhoto(gallery[1])} />
-              </ProfileImageContainer>
-              <ProfileImageContainer>
-                <ProfileImage
-                  source={{
-                    uri: 'img',
-                  }}
-                  alt="no IMG"
-                />
-                <PhotoButton onPress={() => setMyPhoto(gallery[2])} />
-              </ProfileImageContainer>
-            </RowWrapper>
-
-            <View style={styles.topShadow}>
-              <View style={styles.bottomShadow}>
-                <ButtonWrapper onPress={_handlePhotoBtnPress}>
-                  <CustomText
-                    font="Medium"
-                    size={responsiveScreenFontSize(1.8)}
-                    color="#1D1D1D"
-                  >
-                    완료
-                  </CustomText>
-                </ButtonWrapper>
-              </View>
+            ))}
+          </ProfileWrapper>
+          <View style={styles.topShadow}>
+            <View style={styles.bottomShadow}>
+              <ButtonWrapper onPress={_handlePhotoBtnPress}>
+                <CustomText
+                  font="Medium"
+                  size={responsiveScreenFontSize(1.8)}
+                  color="#1D1D1D"
+                >
+                  완료
+                </CustomText>
+              </ButtonWrapper>
             </View>
-          </SelectionWrapper>
-        </Body>
-      </BackgroundWrapper>
-    </TouchableWithoutFeedback>
+          </View>
+        </SelectionWrapper>
+      </Body>
+    </BackgroundWrapper>
   );
 };
 
@@ -187,32 +145,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 6,
     shadowColor: '#d4d2cf',
-  },
-  buttonStyle: {
-    width: 143,
-    height: 14,
-    borderBottomWidth: 1,
-    borderColor: 'rgba(133, 0, 0, 0.15)',
-    backgroundColor: '#f9f7f4',
-  },
-  buttonTextStyle: {
-    fontSize: responsiveScreenFontSize(1.5),
-    width: 143,
-    textAlign: 'left',
-    color: '#8E8E8E',
-    fontFamily: 'Medium',
-  },
-  dropdownStyle: {
-    backgroundColor: '#f9f7f4',
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-  },
-  rowStyle: {
-    backgroundColor: '#f9f7f4',
-  },
-  rowTextStyle: {
-    fontSize: 12,
-    color: '#8E8E8E',
   },
 });
 export default ProfileImageInfo;

@@ -19,6 +19,7 @@ import {
   RowWrapper,
   ProfileImage,
 } from './MypageStyle';
+import { ImageSelector } from '../../assets/ProfileImage';
 
 const Mypage = ({ navigation }) => {
   return (
@@ -34,12 +35,7 @@ const Mypage = ({ navigation }) => {
             <ProfileWrapper>
               <ProfileContainer>
                 <ProfileImageContainer>
-                  <ProfileImage
-                    source={{
-                      uri: 'img',
-                    }}
-                    alt="no Img"
-                  />
+                  {ImageSelector(profileInfo.profileImage)}
                 </ProfileImageContainer>
                 <ProfileTextContainer>
                   <CustomText

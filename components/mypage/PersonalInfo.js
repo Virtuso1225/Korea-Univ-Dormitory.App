@@ -24,6 +24,7 @@ import {
   ProfileImage,
 } from './PersonalInfoStyle';
 import { SleepingIcon } from '../../assets/Svgs';
+import { ImageSelector } from '../../assets/ProfileImage';
 
 const PhotoButton = ({ onPress }) => {
   return (
@@ -74,7 +75,7 @@ const PersonalInfo = ({ navigation }) => {
           <Body>
             <ProfileWrapper>
               <ProfileImageContainer>
-                <SleepingIcon />
+                {ImageSelector(profileInfo.profileImage)}
                 <PhotoButton
                   onPress={() => navigation.navigate('ProfileImageInfo')}
                 />
