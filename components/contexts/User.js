@@ -3,7 +3,6 @@ import React, { useState, createContext } from 'react';
 const UserContext = createContext({
   user: {
     uid: null,
-    photoURL: null,
   },
   profileInfo: {
     index: '',
@@ -12,6 +11,7 @@ const UserContext = createContext({
     room: '',
     sid: '',
     nickname: '',
+    profileImage: '',
   },
   overnightDate: [],
   temperature: [],
@@ -32,8 +32,8 @@ const UserProvider = ({ children }) => {
   const [temperature, setTemperature] = useState();
   const [myPenalty, setMyPenalty] = useState();
   const [notice, setNotice] = useState();
-  const setUser = ({ uid, photoURL }) => {
-    setUserInfo({ uid, photoURL });
+  const setUser = ({ uid }) => {
+    setUserInfo({ uid });
   };
   const value = {
     user,

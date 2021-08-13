@@ -75,8 +75,9 @@ const PersonalInfo = ({ navigation }) => {
               <ProfileImageContainer>
                 <ProfileImage
                   source={{
-                    uri: user.photoURL,
+                    uri: 'img',
                   }}
+                  alt="no IMG"
                 />
                 <PhotoButton
                   onPress={() => navigation.navigate('ProfileImageInfo')}

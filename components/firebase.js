@@ -53,6 +53,7 @@ export const signup = async ({
       room: currentUser.room,
       nickname: currentUser.nickname,
       index: currentUser.studentIndex,
+      profileImage: 1,
     })
     .then(() => {
       console.log('firestore()DB 유저 추가 성공');
@@ -61,10 +62,7 @@ export const signup = async ({
       console.error('firestore()DB 유저 추가 실패', error);
     });
 
-  const DEFAULT_PHOTO =
-    'https://firebasestorage.googleapis.com/v0/b/anamdormiapp.appspot.com/o/profile%2FIcon_test1.png?alt=media';
   const curUser = Auth.currentUser;
-  await curUser.updateProfile({ photoURL: DEFAULT_PHOTO });
 
   curUser
     .sendEmailVerification()
@@ -76,18 +74,21 @@ export const signup = async ({
   return {};
 };
 
-export const photoUpdate = async (url) => {
-  const curUser = Auth.currentUser;
-  await curUser
-    .updateProfile({
-      photoURL: url,
+export const photoUpdate = async (index) => {
+  const docRef = fs.collection('users').doc(Auth.currentUser.uid);
+  await docRef
+    .update({
+      profileImage: index,
     })
     .then(() => {
-      console.log('업데이트 성공');
+      console.log('Document successfully updated!');
     })
-    .catch((e) => {
-      console.log('업데이트 실패', e.message);
+    .catch((error) => {
+      console.error('Error updating document: ', error);
     });
+
+  const curUser = await getCurrentUser();
+  console.log('curUser', curUser);
   return curUser;
 };
 
@@ -135,6 +136,7 @@ export const getCurrentUser = async () => {
     room: '',
     sid: '',
     nickname: '',
+    profileImage: '',
   };
   const docRef = fs.collection('users').doc(Auth.currentUser.uid);
 
@@ -217,18 +219,6 @@ export const setMyStayOut = async (startD, endD) => {
     if (day < 10) day = `0${day}`;
 
     return [year, month, day].join('');
-  };
-
-  const dateToString = (inputDate) => {
-    const d = new Date(inputDate * 1000);
-    let month = `${d.getMonth() + 1}`;
-    let day = `${d.getDate()}`;
-    const year = `${d.getFullYear()}`;
-
-    if (month < 10) month = `0${month}`;
-    if (day < 10) day = `0${day}`;
-
-    return [year, month, day].join('-');
   };
 
   const dateToTimestamp = (inputDate) => {
@@ -460,14 +450,14 @@ export const getMyPenalty = async () => {
   const { uid } = Auth.currentUser;
 
   const collectionPenaltyPath = `users/${uid}/penaltyInfo`;
+  console.log('uid', uid);
 
   let penaltyObject = {
     points: 0,
     reason: '',
     date: '',
-    id: 0,
   };
-  let count = 0;
+
   const penalty = [];
 
   await fs
@@ -480,8 +470,7 @@ export const getMyPenalty = async () => {
           penaltyObject = doc.data();
 
           penaltyObject.date = dateToString(doc.data().timestamp);
-          penaltyObject.id = count;
-          count += 1;
+
           penalty.push(penaltyObject);
         } catch (error) {
           console.log('실패');
@@ -671,32 +660,6 @@ export const updatePasswordInfo = (password) => {
       console.log('Password updating error: ', error);
     });
 };
-
-// const uploadImage = async (uri) => {
-//   if (uri.startsWith('https')) {
-//     return uri;
-//   }
-
-//   const blob = await new Promise((resolve, reject) => {
-//     const xhr = new XMLHttpRequest();
-//     xhr.onload = function () {
-//       resolve(xhr.response);
-//     };
-//     xhr.onerror = function () {
-//       reject(new TypeError('Network request failed'));
-//     };
-//     xhr.responseType = 'blob';
-//     xhr.open('GET', uri, true);
-//     xhr.send(null);
-//   });
-
-//   const user = Auth.currentUser;
-//   const ref = app.storage().ref(`/profile/${user.uid}/photo.png`);
-//   const snapshot = await ref.put(blob, { contentType: 'image/png' });
-//   blob.close();
-
-//   return await snapshot.ref.getDownloadURL();
-// };
 
 export const signout = () => {
   Auth.signOut();
