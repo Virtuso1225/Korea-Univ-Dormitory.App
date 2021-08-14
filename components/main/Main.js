@@ -19,10 +19,11 @@ import {
   DateStyle,
   Temperature,
 } from './MainStyle';
-import { Megaphone, Facility, Board, MypageIcon } from '../../assets/Svgs';
+import { Megaphone, MypageIcon } from '../../assets/Svgs';
+import PreparingFacilityUseModal from './PreparingFacilityUseModal';
+import PreparingBoardModal from './PreparingBoardModal';
 
-const Main = ({ navigation, route }) => {
-  const { setUser } = useContext(UserContext);
+const Main = ({ navigation }) => {
   const date = new Date();
   const [month, day, index] = [
     date.getMonth() + 1,
@@ -81,28 +82,12 @@ const Main = ({ navigation, route }) => {
         </View>
         <View style={styles.topShadow}>
           <View style={styles.bottomShadow}>
-            <ButtonWrapper>
-              <ButtonRowWrapper>
-                <Separation>
-                  <Facility />
-                  <StyledButton>시설이용</StyledButton>
-                </Separation>
-                <Icon name="right" size={15} color="#484848" />
-              </ButtonRowWrapper>
-            </ButtonWrapper>
+            <PreparingFacilityUseModal />
           </View>
         </View>
         <View style={styles.topShadow}>
           <View style={styles.bottomShadow}>
-            <ButtonWrapper>
-              <ButtonRowWrapper>
-                <Separation>
-                  <Board />
-                  <StyledButton>게시판</StyledButton>
-                </Separation>
-                <Icon name="right" size={15} color="#484848" />
-              </ButtonRowWrapper>
-            </ButtonWrapper>
+            <PreparingBoardModal />
           </View>
         </View>
         <View style={styles.topShadow}>

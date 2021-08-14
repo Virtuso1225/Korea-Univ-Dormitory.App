@@ -61,6 +61,7 @@ const Front = ({ navigation }) => {
     notice,
     overnightDate,
     setUser,
+    profileInfo,
   } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);
@@ -107,7 +108,6 @@ const Front = ({ navigation }) => {
       });
 
       const sum = { myPenaltySum: 0 };
-
       result[1].forEach((item, index) => {
         sum.myPenaltySum += item.points;
       });

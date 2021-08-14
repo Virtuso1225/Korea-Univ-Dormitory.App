@@ -29,9 +29,11 @@ const ProfileImageInfo = ({ navigation }) => {
   const _handlePhotoBtnPress = async () => {
     try {
       spinner.start();
-      const curUser = await photoUpdate(myPhoto);
-      setProfileInfo(curUser);
-      console.log(curUser);
+
+      await photoUpdate(myPhoto);
+      const profileImage = myPhoto;
+      setProfileInfo({ ...profileInfo, profileImage });
+
       Alert.alert('Success!', '정보 업데이트에 성공했습니다.', [
         {
           text: 'OK',

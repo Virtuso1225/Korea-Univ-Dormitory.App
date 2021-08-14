@@ -5,7 +5,6 @@ const UserContext = createContext({
     uid: null,
   },
   profileInfo: {
-    index: '',
     name: '',
     dorm: '',
     room: '',
