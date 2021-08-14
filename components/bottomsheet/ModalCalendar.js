@@ -100,10 +100,8 @@ const ModalCalendar = ({ isSelected }) => {
       day.isBefore(value.clone().startOf('month'), 'day') ||
       day.isAfter(value.clone().endOf('month'), 'day')
     ) {
-      console.log('noThisMonth');
       return false;
     }
-    console.log('ThisMonth');
     return true;
   };
   return (

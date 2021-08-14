@@ -2,7 +2,6 @@ import styled from 'styled-components/native';
 import {
   responsiveScreenWidth,
   responsiveScreenHeight,
-  responsiveScreenFontSize,
 } from 'react-native-responsive-dimensions';
 
 export const ProfileWrapper = styled.View`
@@ -24,7 +23,6 @@ export const ProfileImageContainer = styled.View`
 export const ProfileImage = styled.Image`
   width: ${responsiveScreenWidth(25)}px;
   height: ${responsiveScreenWidth(25)}px;
-  /* border-radius: ${responsiveScreenWidth(10)}px; */
 `;
 
 export const ButtonContainer = styled.Pressable`

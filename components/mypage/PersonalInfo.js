@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { WithLocalSvg } from 'react-native-svg';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Close from 'react-native-vector-icons/EvilIcons';
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -21,9 +20,7 @@ import {
   ProfileImageContainer,
   ButtonContainer,
   ButtonIcon,
-  ProfileImage,
 } from './PersonalInfoStyle';
-import { SleepingIcon } from '../../assets/Svgs';
 import { ImageSelector } from '../../assets/ProfileImage';
 
 const PhotoButton = ({ onPress }) => {

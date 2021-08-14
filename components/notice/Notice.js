@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, ScrollView } from 'react-native';
 
-import {
-  responsiveScreenFontSize,
-  responsiveScreenHeight,
-} from 'react-native-responsive-dimensions';
+import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 
 import { UserContext, ProgressContext } from '../contexts';
 
