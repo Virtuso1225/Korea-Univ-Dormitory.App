@@ -549,9 +549,9 @@ export const getNotice = async () => {
           noticeObject.date = dateToString(noticeObject.date.seconds);
 
           if (noticeObject.highlight) {
-            noticeObject.highlight = 0;
-          } else {
             noticeObject.highlight = 1;
+          } else {
+            noticeObject.highlight = 0;
           }
 
           if (noticeObject.due) {
