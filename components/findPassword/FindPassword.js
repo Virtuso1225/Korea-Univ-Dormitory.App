@@ -11,7 +11,7 @@ import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { findPassword } from '../firebase';
 import { removeWhitespace } from '../utils';
-import { UserContext, ProgressContext } from '../contexts';
+import { ProgressContext } from '../contexts';
 
 import {
   Input,

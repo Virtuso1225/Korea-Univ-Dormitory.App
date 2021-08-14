@@ -59,7 +59,7 @@ const PersonalInfo = ({ navigation }) => {
 
   return (
     <UserContext.Consumer>
-      {({ profileInfo, user }) => (
+      {({ profileInfo }) => (
         <BackgroundWrapper>
           <Header>
             <RowWrapper>

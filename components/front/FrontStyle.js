@@ -126,7 +126,6 @@ export const ButtonWrapper = styled.TouchableOpacity`
   margin-left: 10px;
   justify-content: center;
   border: 1px solid #ffffff;
-  /* box-shadow: 5px 5px 8px rgba(15, 41, 107, 0.15); */
 `;
 
 export const StyledButton = styled.Text`

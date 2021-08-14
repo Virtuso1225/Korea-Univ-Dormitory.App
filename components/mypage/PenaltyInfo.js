@@ -1,9 +1,8 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, Alert, ScrollView, Text } from 'react-native';
+import React from 'react';
+import { ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import { getMyPenalty } from '../firebase';
 import { Header, PageTitle } from './MypageStyle';
-import { UserContext, ProgressContext } from '../contexts';
 import { Background, Card, CustomText } from '../notice/NoticeStyle';
 import PenaltyList from '../../assets/PenaltyList';
 import {
@@ -75,25 +74,5 @@ const PenatlyInfo = ({ navigation }) => {
     </Background>
   );
 };
-const styles = StyleSheet.create({
-  topShadow: {
-    shadowOffset: {
-      width: -6,
-      height: -6,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#ffffff',
-  },
-  bottomShadow: {
-    shadowOffset: {
-      width: 5,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#d4d2cf',
-  },
-});
 
 export default PenatlyInfo;

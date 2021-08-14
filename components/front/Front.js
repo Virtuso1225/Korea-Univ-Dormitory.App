@@ -2,7 +2,7 @@ import React, { useContext, useState, useRef } from 'react';
 import {
   View,
   StyleSheet,
-  TouchableOpacity,
+  // TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
@@ -10,7 +10,7 @@ import {
   Alert,
   Pressable,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Entypo';
+// import Icon from 'react-native-vector-icons/Entypo';
 import {
   signin,
   getCurrentUser,
@@ -31,9 +31,9 @@ import {
   ButtonWrapper,
   StyledButton,
   BottomWrapper,
-  CheckWrapper,
-  Check,
-  Description,
+  // CheckWrapper,
+  // Check,
+  // Description,
   TextArea,
   TextWrapper,
   Greeting,
@@ -58,10 +58,7 @@ const Front = ({ navigation }) => {
     setMyPenalty,
     setOvernightDate,
     setTemperature,
-    notice,
-    overnightDate,
     setUser,
-    profileInfo,
   } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
   const refPassword = useRef(null);

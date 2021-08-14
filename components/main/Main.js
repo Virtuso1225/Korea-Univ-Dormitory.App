@@ -1,8 +1,7 @@
 // 로그인 기능 구현 test용
-import React, { useContext } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { UserContext } from '../contexts';
 import {
   Container,
   HeadTitle,

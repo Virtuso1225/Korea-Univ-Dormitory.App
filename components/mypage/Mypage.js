@@ -17,14 +17,13 @@ import {
   ProfileTextContainer,
   CustomText,
   RowWrapper,
-  ProfileImage,
 } from './MypageStyle';
 import { ImageSelector } from '../../assets/ProfileImage';
 
 const Mypage = ({ navigation }) => {
   return (
     <UserContext.Consumer>
-      {({ profileInfo, user }) => (
+      {({ profileInfo }) => (
         <Background>
           <Card value={0.7}>
             <Header>
