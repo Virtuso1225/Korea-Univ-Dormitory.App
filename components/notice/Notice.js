@@ -133,7 +133,7 @@ const Notice = ({ navigation }) => {
                     <CustomText
                       font="Medium"
                       size={responsiveScreenFontSize(1.61)}
-                      color="#1D1D1D"
+                      color={content.highlight ? '#850000' : '#1D1D1D'}
                     >
                       {content.title}
                     </CustomText>
