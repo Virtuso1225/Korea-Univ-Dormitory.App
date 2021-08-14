@@ -94,6 +94,18 @@ const ModalCalendar = ({ isSelected }) => {
     }
     return styles.defaultWrapper;
   };
+
+  const isThisMonth = (day) => {
+    if (
+      day.isBefore(value.clone().startOf('month'), 'day') ||
+      day.isAfter(value.clone().endOf('month'), 'day')
+    ) {
+      console.log('noThisMonth');
+      return false;
+    }
+    console.log('ThisMonth');
+    return true;
+  };
   return (
     <UserContext.Consumer>
       {({ setOvernightDate, overnightDate }) => (
@@ -160,14 +172,14 @@ const ModalCalendar = ({ isSelected }) => {
                     paddingTop: 5,
                   }}
                   onPress={() => {
-                    if (isSelected) {
+                    if (isSelected && isThisMonth(day)) {
                       setOvernightDate({
                         ...overnightDate,
                         startDate: `${value.format('YYYY')}-${value.format(
                           'MM'
                         )}-${day.format('DD')}`,
                       });
-                    } else {
+                    } else if (!isSelected && isThisMonth(day)) {
                       setOvernightDate({
                         ...overnightDate,
                         endDate: `${value.format('YYYY')}-${value.format(
