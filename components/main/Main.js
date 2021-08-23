@@ -12,31 +12,14 @@ import {
   StyledButton,
   ButtonRowWrapper,
   Separation,
-  DateContainer,
-  DateStyle,
-  Temperature,
 } from './MainStyle';
 import { Megaphone, MypageIcon } from '../../assets/Svgs';
 import PreparingFacilityUseModal from './PreparingFacilityUseModal';
 import PreparingBoardModal from './PreparingBoardModal';
 import ShadowGenerator from '../theme/ShadowGenerator';
+import DateHeadr from './DateHeader';
 
 const Main = ({ navigation }) => {
-  const date = new Date();
-  const [month, day, index] = [
-    date.getMonth() + 1,
-    date.getDate(),
-    date.getDay() - 1,
-  ];
-  const week = [
-    '월요일',
-    '화요일',
-    '수요일',
-    '목요일',
-    '금요일',
-    '토요일',
-    '일요일',
-  ];
   return (
     <Container>
       <TitleWrapper>
@@ -51,12 +34,7 @@ const Main = ({ navigation }) => {
         </RowWrapper>
       </TitleWrapper>
       <ButtonsContainer>
-        <DateContainer>
-          <DateStyle>
-            {month}월{day}일{week[index]}
-          </DateStyle>
-          <Temperature>발열체크 하셨나요?</Temperature>
-        </DateContainer>
+        <DateHeadr />
         <ShadowGenerator>
           <ButtonWrapper
             onPress={() =>
@@ -82,7 +60,6 @@ const Main = ({ navigation }) => {
         <ShadowGenerator>
           <PreparingBoardModal />
         </ShadowGenerator>
-
         <ShadowGenerator>
           <ButtonWrapper
             onPress={() =>

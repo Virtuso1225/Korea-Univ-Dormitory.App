@@ -12,6 +12,8 @@ export const SubHeader = styled.View`
 
 export const SelectionWrapper = styled.View`
   margin-top: ${responsiveScreenHeight(2.66)}px;
+  width: ${responsiveScreenWidth(80)}px;
+  align-self: center;
 `;
 
 export const ButtonWrapper = styled.TouchableOpacity`

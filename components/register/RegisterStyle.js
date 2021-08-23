@@ -117,7 +117,7 @@ export const Option = styled.Text`
 
 export const ErrorText = styled.Text`
   align-items: center;
-  align-self: center;
+  align-self: flex-start;
   width: 100%;
   margin-top: 3.5px;
   color: rgba(133, 0, 0, 1);

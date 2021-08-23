@@ -136,7 +136,6 @@ const NicknameInfo = ({ navigation }) => {
                   <ButtonWrapper
                     onPress={async () => {
                       const result = await _handleUpdateBtnPress();
-
                       if (result) {
                         setProfileInfo({ ...profileInfo, nickname });
                       }

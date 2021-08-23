@@ -174,7 +174,6 @@ const DormInfo = ({ navigation }) => {
                       onFocus={() => setRoomFocused(true)}
                       onSubmitEditing={async () => {
                         const result = await _handleUpdateBtnPress();
-
                         if (result) {
                           setProfileInfo({ ...profileInfo, dorm, room });
                         }
@@ -187,7 +186,6 @@ const DormInfo = ({ navigation }) => {
                   <ButtonWrapper
                     onPress={async () => {
                       const result = await _handleUpdateBtnPress();
-
                       if (result) {
                         setProfileInfo({ ...profileInfo, dorm, room });
                       }

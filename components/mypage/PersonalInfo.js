@@ -8,7 +8,6 @@ import { getCurrentUser } from '../firebase';
 import { dorms } from '../utils';
 import {
   LinkWrapper,
-  ProfileInfoWrapper,
   ProfileWrapper,
   ProfileImageContainer,
   ButtonContainer,
@@ -16,6 +15,7 @@ import {
 } from './PersonalInfoStyle';
 import { ImageSelector } from '../../assets/ProfileImage';
 import MypageHeader from '../mypageheader/MypageHeader';
+import UserName from '../username/UserName';
 
 const PhotoButton = ({ onPress }) => {
   return (
@@ -67,37 +67,7 @@ const PersonalInfo = ({ navigation }) => {
                   onPress={() => navigation.navigate('ProfileImageInfo')}
                 />
               </ProfileImageContainer>
-
-              <ProfileInfoWrapper>
-                <CustomText
-                  font="ExtraBold"
-                  size={responsiveScreenFontSize(1.93)}
-                  color="#404040"
-                >
-                  {profileInfo.name}
-                </CustomText>
-                <CustomText
-                  font="Regular"
-                  size={responsiveScreenFontSize(1.93)}
-                  color="#404040"
-                >
-                  님{' '}
-                </CustomText>
-                <CustomText
-                  font="ExtraBold"
-                  size={responsiveScreenFontSize(1.93)}
-                  color="#404040"
-                >
-                  계정정보
-                </CustomText>
-                <CustomText
-                  font="Regular"
-                  size={responsiveScreenFontSize(1.93)}
-                  color="#404040"
-                >
-                  입니다.
-                </CustomText>
-              </ProfileInfoWrapper>
+              <UserName userName={profileInfo.name} />
             </ProfileWrapper>
             <LinkWrapper onPress={() => navigation.navigate('DormInfo')}>
               <CustomText
