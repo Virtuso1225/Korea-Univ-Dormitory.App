@@ -1,18 +1,10 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
-import {
-  Keyboard,
-  StyleSheet,
-  View,
-  TouchableWithoutFeedback,
-  Alert,
-} from 'react-native';
+import { Keyboard, TouchableWithoutFeedback, Alert } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
-
 import Icon from 'react-native-vector-icons/AntDesign';
 import { findPassword } from '../firebase';
 import { removeWhitespace } from '../utils';
 import { ProgressContext } from '../contexts';
-
 import {
   Input,
   SubWrapper,
@@ -25,6 +17,7 @@ import { BackgroundWrapper, Body, ButtonWrapper } from '../mypage/DropOutStyle';
 import { Header, PageTitle } from '../mypage/MypageStyle';
 import { CustomText } from '../mypage/ModalComponentStyle';
 import { SubHeader } from '../mypage/DormInfoStyle';
+import ShadwoGenerator from '../theme/ShadowGenerator';
 
 const FindPassword = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
@@ -163,73 +156,24 @@ const FindPassword = ({ navigation }) => {
             </RowWrapper>
             <ErrorText>{idError}</ErrorText>
           </SubWrapper>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper
-                title="FindPassword"
-                onPress={_handleFindPasswordBtnPress}
+          <ShadwoGenerator>
+            <ButtonWrapper
+              title="FindPassword"
+              onPress={_handleFindPasswordBtnPress}
+            >
+              <CustomText
+                font="Medium"
+                size={responsiveScreenFontSize(1.8)}
+                color="#1D1D1D"
               >
-                <CustomText
-                  font="Medium"
-                  size={responsiveScreenFontSize(1.8)}
-                  color="#1D1D1D"
-                >
-                  완료
-                </CustomText>
-              </ButtonWrapper>
-            </View>
-          </View>
+                완료
+              </CustomText>
+            </ButtonWrapper>
+          </ShadwoGenerator>
         </Body>
       </BackgroundWrapper>
     </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  topShadow: {
-    shadowOffset: {
-      width: -6,
-      height: -6,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#ffffff',
-  },
-  bottomShadow: {
-    shadowOffset: {
-      width: 5,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#d4d2cf',
-  },
-  buttonStyle: {
-    width: 143,
-    height: 14,
-    borderBottomWidth: 1,
-    borderColor: 'rgba(133, 0, 0, 0.15)',
-    backgroundColor: '#f9f7f4',
-  },
-  buttonTextStyle: {
-    fontSize: responsiveScreenFontSize(1.5),
-    width: 143,
-    textAlign: 'left',
-    color: '#8E8E8E',
-    fontFamily: 'Medium',
-  },
-  dropdownStyle: {
-    backgroundColor: '#f9f7f4',
-    borderBottomLeftRadius: 10,
-    borderBottomRightRadius: 10,
-  },
-  rowStyle: {
-    backgroundColor: '#f9f7f4',
-  },
-  rowTextStyle: {
-    fontSize: 12,
-    color: '#8E8E8E',
-  },
-});
 
 export default FindPassword;

@@ -549,12 +549,12 @@ const Register = ({ navigation }) => {
             <StyledButton>Sign up</StyledButton>
           </ButtonWrapper>
           <OptionWrapper>
-            <OptionDescription>Already have an account? </OptionDescription>
+            <OptionDescription>이미 계정이 있나요? </OptionDescription>
             <OptionButton
               title="Login"
               onPress={() => navigation.navigate('Login')}
             >
-              Login
+              로그인
             </OptionButton>
           </OptionWrapper>
         </BottomWrapper>

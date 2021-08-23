@@ -23,6 +23,7 @@ import { Header, PageTitle } from './MypageStyle';
 import { ColumnWrapper, ErrorText, Input2 } from '../register/RegisterStyle';
 import { removeWhitespace, validateRoom } from '../utils';
 import { getStudentInfo, updateDormInfo } from '../firebase';
+import ShadowGenerator from '../theme/ShadowGenerator';
 
 const DormInfo = ({ navigation }) => {
   const dorms = [
@@ -194,27 +195,25 @@ const DormInfo = ({ navigation }) => {
                     <ErrorText>{roomError}</ErrorText>
                   </ColumnWrapper>
                 </RowWrapper>
-                <View style={styles.topShadow}>
-                  <View style={styles.bottomShadow}>
-                    <ButtonWrapper
-                      onPress={async () => {
-                        const result = await _handleUpdateBtnPress();
+                <ShadowGenerator>
+                  <ButtonWrapper
+                    onPress={async () => {
+                      const result = await _handleUpdateBtnPress();
 
-                        if (result) {
-                          setProfileInfo({ ...profileInfo, dorm, room });
-                        }
-                      }}
+                      if (result) {
+                        setProfileInfo({ ...profileInfo, dorm, room });
+                      }
+                    }}
+                  >
+                    <CustomText
+                      font="Medium"
+                      size={responsiveScreenFontSize(1.8)}
+                      color="#1D1D1D"
                     >
-                      <CustomText
-                        font="Medium"
-                        size={responsiveScreenFontSize(1.8)}
-                        color="#1D1D1D"
-                      >
-                        완료
-                      </CustomText>
-                    </ButtonWrapper>
-                  </View>
-                </View>
+                      완료
+                    </CustomText>
+                  </ButtonWrapper>
+                </ShadowGenerator>
               </SelectionWrapper>
             </Body>
           </BackgroundWrapper>
@@ -225,24 +224,6 @@ const DormInfo = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  topShadow: {
-    shadowOffset: {
-      width: -6,
-      height: -6,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#ffffff',
-  },
-  bottomShadow: {
-    shadowOffset: {
-      width: 5,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#d4d2cf',
-  },
   buttonStyle: {
     width: 143,
     height: 14,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import { Header, PageTitle } from './MypageStyle';
 import { UserContext } from '../contexts';
@@ -17,6 +17,7 @@ import {
   TextWrapper,
   ButtonRow,
 } from './MyPenaltyStyle';
+import ShadowGenerator from '../theme/ShadowGenerator';
 
 const MyPenalty = ({ navigation }) => {
   const tableHeader = [
@@ -75,24 +76,18 @@ const MyPenalty = ({ navigation }) => {
                   </PenaltyWrapper>
                 </TableContainer>
                 <BottomWrapper>
-                  <View style={styles.topShadow}>
-                    <View style={styles.bottomShadow}>
-                      <SmallButton
-                        onPress={() => navigation.navigate('PenaltyInfo')}
-                      >
-                        <ButtonRow>
-                          <CustomText font="Medium" color="#707070" size="11">
-                            벌점 관련 수칙 전체 보기
-                          </CustomText>
-                          <Icon
-                            name="chevron-right"
-                            colro="#707070"
-                            size={20}
-                          />
-                        </ButtonRow>
-                      </SmallButton>
-                    </View>
-                  </View>
+                  <ShadowGenerator>
+                    <SmallButton
+                      onPress={() => navigation.navigate('PenaltyInfo')}
+                    >
+                      <ButtonRow>
+                        <CustomText font="Medium" color="#707070" size="11">
+                          벌점 관련 수칙 전체 보기
+                        </CustomText>
+                        <Icon name="chevron-right" colro="#707070" size={20} />
+                      </ButtonRow>
+                    </SmallButton>
+                  </ShadowGenerator>
                   <TextWrapper>
                     ① 사감장은 벌점을 받은 사생에게 다음과 같은 처분을 할 수
                     있다. {'\n'}다만, 벌점은 누진제(1, 2학기 포함)로 계산한다.
@@ -114,24 +109,5 @@ const MyPenalty = ({ navigation }) => {
     </UserContext.Consumer>
   );
 };
-const styles = StyleSheet.create({
-  topShadow: {
-    shadowOffset: {
-      width: -6,
-      height: -6,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#ffffff',
-  },
-  bottomShadow: {
-    shadowOffset: {
-      width: 5,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#d4d2cf',
-  },
-});
+
 export default MyPenalty;

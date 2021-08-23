@@ -2,7 +2,6 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import {
   TouchableWithoutFeedback,
   Keyboard,
-  StyleSheet,
   View,
   Alert,
   Modal,
@@ -34,6 +33,7 @@ import {
   ButtonWrapper,
 } from './DropOutStyle';
 import { ErrorText } from '../register/RegisterStyle';
+import ShadowGenerator from '../theme/ShadowGenerator';
 
 const DropOut = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
@@ -186,22 +186,17 @@ const DropOut = ({ navigation }) => {
             />
             <ErrorText>{passwordError}</ErrorText>
           </PasswordCheck>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper
-                title="Deactiviate"
-                onPress={_handleDropOutBtnPress}
+          <ShadowGenerator>
+            <ButtonWrapper title="Deactiviate" onPress={_handleDropOutBtnPress}>
+              <CustomText
+                font="Medium"
+                size={responsiveScreenFontSize(1.8)}
+                color="#1D1D1D"
               >
-                <CustomText
-                  font="Medium"
-                  size={responsiveScreenFontSize(1.8)}
-                  color="#1D1D1D"
-                >
-                  탈퇴하기
-                </CustomText>
-              </ButtonWrapper>
-            </View>
-          </View>
+                탈퇴하기
+              </CustomText>
+            </ButtonWrapper>
+          </ShadowGenerator>
           <View>
             <Modal
               animationType="fade"
@@ -255,24 +250,4 @@ const DropOut = ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
 };
-const styles = StyleSheet.create({
-  topShadow: {
-    shadowOffset: {
-      width: -6,
-      height: -6,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#ffffff',
-  },
-  bottomShadow: {
-    shadowOffset: {
-      width: 5,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#d4d2cf',
-  },
-});
 export default DropOut;

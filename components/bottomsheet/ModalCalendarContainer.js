@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Modal, StyleSheet, View, Alert } from 'react-native';
+import { Modal, View, Alert } from 'react-native';
 import { UserContext, ProgressContext } from '../contexts';
 import {
   BlurBackground,
@@ -19,6 +19,7 @@ import { CustomText } from '../mypage/ModalComponentStyle';
 import { OvernightIcon } from '../../assets/Svgs';
 import ModalCalendar from './ModalCalendar';
 import { setMyStayOut, getMyStayOut } from '../firebase';
+import ShadowGenerator from '../theme/ShadowGenerator';
 
 const ModalCalendarContainer = () => {
   const { spinner } = useContext(ProgressContext);
@@ -71,90 +72,86 @@ const ModalCalendarContainer = () => {
             <BlurBackground>
               <CalendarModalWrapper>
                 <OptionHeader>
-                  <View style={styles.topShadow}>
-                    <View style={styles.bottomShadow}>
-                      <OptionButton
-                        onPress={() => setDateSelection(!dateSelection)}
+                  <ShadowGenerator>
+                    <OptionButton
+                      onPress={() => setDateSelection(!dateSelection)}
+                    >
+                      <CustomText
+                        font="Regular"
+                        size="12"
+                        color={dateSelection ? '#9B1818' : '#CFCFCF'}
                       >
+                        시작
+                      </CustomText>
+                      <RowWrapper>
                         <CustomText
-                          font="Regular"
-                          size="12"
+                          font="Bold6"
+                          size="20"
                           color={dateSelection ? '#9B1818' : '#CFCFCF'}
                         >
-                          시작
+                          {overnightDate.startDate.split('-')[2]}
                         </CustomText>
-                        <RowWrapper>
-                          <CustomText
-                            font="Bold6"
-                            size="20"
-                            color={dateSelection ? '#9B1818' : '#CFCFCF'}
-                          >
-                            {overnightDate.startDate.split('-')[2]}
-                          </CustomText>
-                          <ColumnWrapper>
-                            <RowWrapper>
-                              <CustomText
-                                font="Regular"
-                                size="12"
-                                color={dateSelection ? '#9B1818' : '#CFCFCF'}
-                              >
-                                {overnightDate.startDate.split('-')[0]}년{' '}
-                              </CustomText>
-                              <CustomText
-                                font="Regular"
-                                size="12"
-                                color={dateSelection ? '#9B1818' : '#CFCFCF'}
-                              >
-                                {overnightDate.startDate.split('-')[1]}월
-                              </CustomText>
-                            </RowWrapper>
-                          </ColumnWrapper>
-                        </RowWrapper>
-                      </OptionButton>
-                    </View>
-                  </View>
-                  <View style={styles.topShadow}>
-                    <View style={styles.bottomShadow}>
-                      <OptionButton
-                        onPress={() => setDateSelection(!dateSelection)}
+                        <ColumnWrapper>
+                          <RowWrapper>
+                            <CustomText
+                              font="Regular"
+                              size="12"
+                              color={dateSelection ? '#9B1818' : '#CFCFCF'}
+                            >
+                              {overnightDate.startDate.split('-')[0]}년{' '}
+                            </CustomText>
+                            <CustomText
+                              font="Regular"
+                              size="12"
+                              color={dateSelection ? '#9B1818' : '#CFCFCF'}
+                            >
+                              {overnightDate.startDate.split('-')[1]}월
+                            </CustomText>
+                          </RowWrapper>
+                        </ColumnWrapper>
+                      </RowWrapper>
+                    </OptionButton>
+                  </ShadowGenerator>
+                  <ShadowGenerator>
+                    <OptionButton
+                      onPress={() => setDateSelection(!dateSelection)}
+                    >
+                      <CustomText
+                        font="Regular"
+                        size="12"
+                        color={!dateSelection ? '#9B1818' : '#CFCFCF'}
                       >
+                        종료
+                      </CustomText>
+                      <RowWrapper>
                         <CustomText
-                          font="Regular"
-                          size="12"
+                          font="Bold6"
+                          size="20"
                           color={!dateSelection ? '#9B1818' : '#CFCFCF'}
                         >
-                          종료
+                          {overnightDate.endDate.split('-')[2]}
                         </CustomText>
-                        <RowWrapper>
-                          <CustomText
-                            font="Bold6"
-                            size="20"
-                            color={!dateSelection ? '#9B1818' : '#CFCFCF'}
-                          >
-                            {overnightDate.endDate.split('-')[2]}
-                          </CustomText>
-                          <ColumnWrapper>
-                            <RowWrapper>
-                              <CustomText
-                                font="Regular"
-                                size="12"
-                                color={!dateSelection ? '#9B1818' : '#CFCFCF'}
-                              >
-                                {overnightDate.endDate.split('-')[0]}년{' '}
-                              </CustomText>
-                              <CustomText
-                                font="Regular"
-                                size="12"
-                                color={!dateSelection ? '#9B1818' : '#CFCFCF'}
-                              >
-                                {overnightDate.endDate.split('-')[1]}월
-                              </CustomText>
-                            </RowWrapper>
-                          </ColumnWrapper>
-                        </RowWrapper>
-                      </OptionButton>
-                    </View>
-                  </View>
+                        <ColumnWrapper>
+                          <RowWrapper>
+                            <CustomText
+                              font="Regular"
+                              size="12"
+                              color={!dateSelection ? '#9B1818' : '#CFCFCF'}
+                            >
+                              {overnightDate.endDate.split('-')[0]}년{' '}
+                            </CustomText>
+                            <CustomText
+                              font="Regular"
+                              size="12"
+                              color={!dateSelection ? '#9B1818' : '#CFCFCF'}
+                            >
+                              {overnightDate.endDate.split('-')[1]}월
+                            </CustomText>
+                          </RowWrapper>
+                        </ColumnWrapper>
+                      </RowWrapper>
+                    </OptionButton>
+                  </ShadowGenerator>
                 </OptionHeader>
                 <ModalCalendar isSelected={dateSelection} />
                 <SubmitWrapper>
@@ -205,25 +202,4 @@ const ModalCalendarContainer = () => {
     </UserContext.Consumer>
   );
 };
-
-const styles = StyleSheet.create({
-  topShadow: {
-    shadowOffset: {
-      width: -6,
-      height: -6,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#ffffff',
-  },
-  bottomShadow: {
-    shadowOffset: {
-      width: 5,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#DED7CA',
-  },
-});
 export default ModalCalendarContainer;

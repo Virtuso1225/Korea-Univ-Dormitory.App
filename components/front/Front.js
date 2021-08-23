@@ -1,8 +1,6 @@
 import React, { useContext, useState, useRef } from 'react';
 import {
   View,
-  StyleSheet,
-  // TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
@@ -45,6 +43,7 @@ import {
 } from './FrontStyle';
 import { CrimsonLogo, UnderLine, VerticalLince } from '../../assets/Svgs';
 import { CustomText } from '../mypage/ModalComponentStyle';
+import ShadowGenerator from '../theme/ShadowGenerator';
 
 const Front = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -180,13 +179,11 @@ const Front = ({ navigation }) => {
           </TextArea>
         </KeyboardAvoidingView>
         <BottomWrapper>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper title="Sign in" onPress={_handleSigninBtnPress}>
-                <StyledButton>로그인</StyledButton>
-              </ButtonWrapper>
-            </View>
-          </View>
+          <ShadowGenerator>
+            <ButtonWrapper title="Sign in" onPress={_handleSigninBtnPress}>
+              <StyledButton>로그인</StyledButton>
+            </ButtonWrapper>
+          </ShadowGenerator>
           <RowWrapper>
             <Pressable onPress={() => navigation.navigate('FindPassword')}>
               <CustomText font="Regular" size={12.5} color="#707070">
@@ -206,24 +203,4 @@ const Front = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  topShadow: {
-    shadowOffset: {
-      width: -6,
-      height: -6,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#ffffff',
-  },
-  bottomShadow: {
-    shadowOffset: {
-      width: 5,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#d4d2cf',
-  },
-});
 export default Front;

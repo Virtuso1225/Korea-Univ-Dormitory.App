@@ -76,6 +76,7 @@ export const TextWrapper = styled.Text`
   font-family: Regular;
   color: #707070;
   font-size: 10px;
+  margin-bottom: 20px;
 `;
 
 export const PenatlyRow = styled.View`

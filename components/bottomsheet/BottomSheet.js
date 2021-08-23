@@ -4,7 +4,6 @@ import {
   KeyboardAvoidingView,
   Modal,
   Platform,
-  StyleSheet,
   TouchableWithoutFeedback,
   View,
   Alert,
@@ -27,6 +26,7 @@ import {
 import { setMyTemperature } from '../firebase';
 import { TemperatureIcon } from '../../assets/Svgs';
 import ModalCalendarContainer from './ModalCalendarContainer';
+import ShadowGenerator from '../theme/ShadowGenerator';
 
 const BottomSheet = () => {
   const { spinner } = useContext(ProgressContext);
@@ -35,14 +35,16 @@ const BottomSheet = () => {
   const [value, setValue] = useState('');
   const today = moment().format('YYYY-MM-DD');
   const _handleSetTempBtnPress = async () => {
-    try {
-      spinner.start();
-      await setMyTemperature(value);
-      setTemperature({ ...temperature, [today]: value });
-    } catch (e) {
-      Alert.alert('체온기록 에러', e.message);
-    } finally {
-      spinner.stop();
+    if (value !== '') {
+      try {
+        spinner.start();
+        await setMyTemperature(value);
+        setTemperature({ ...temperature, [today]: value });
+      } catch (e) {
+        Alert.alert('체온기록 에러', e.message);
+      } finally {
+        spinner.stop();
+      }
     }
   };
 
@@ -85,7 +87,7 @@ const BottomSheet = () => {
                           체온 기록
                         </CustomTextMargin>
                         <TemperatureInput
-                          keyboardType="number-pad"
+                          keyboardType="decimal-pad"
                           defaultValue={
                             temperature[today]
                               ? temperature[today].toString()
@@ -101,19 +103,17 @@ const BottomSheet = () => {
                         >
                           °C
                         </CustomTextMargin>
-                        <View style={styles.topShadow}>
-                          <View style={styles.bottomShadow}>
-                            <SubmitButton onPress={_handleSetTempBtnPress}>
-                              <CustomTextMargin
-                                font="Medium"
-                                size="14"
-                                color="#404040"
-                              >
-                                완료
-                              </CustomTextMargin>
-                            </SubmitButton>
-                          </View>
-                        </View>
+                        <ShadowGenerator>
+                          <SubmitButton onPress={_handleSetTempBtnPress}>
+                            <CustomTextMargin
+                              font="Medium"
+                              size="14"
+                              color="#404040"
+                            >
+                              완료
+                            </CustomTextMargin>
+                          </SubmitButton>
+                        </ShadowGenerator>
                       </RowWrapper>
                     </OptionContainer>
                     <OptionContainer>
@@ -133,24 +133,4 @@ const BottomSheet = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  topShadow: {
-    shadowOffset: {
-      width: -6,
-      height: -6,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#ffffff',
-  },
-  bottomShadow: {
-    shadowOffset: {
-      width: 5,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#DED7CA',
-  },
-});
 export default BottomSheet;

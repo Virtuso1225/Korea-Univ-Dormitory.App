@@ -10,6 +10,7 @@ import {
 } from 'react-native-responsive-dimensions';
 import { CloseWrapper } from '../mypage/DropOutStyle';
 import { UserContext } from '../contexts';
+import ShadowGenerator from '../theme/ShadowGenerator';
 
 const Calendar = ({ navigation }) => {
   const [calendar, setCalendar] = useState([]);
@@ -98,57 +99,55 @@ const Calendar = ({ navigation }) => {
               <Close name="close" size={20} color="#707070" />
             </CloseWrapper>
           </View>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <View style={styles.tempInfo}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View
-                    style={{
-                      backgroundColor: 'rgba(155, 24, 24, 0.2)',
-                      width: 31,
-                      height: 23,
-                      borderRadius: 8,
-                    }}
-                  />
-                  <Text
-                    style={{
-                      fontFamily: 'Medium',
-                      color: '#707070',
-                      fontSize: 11,
-                    }}
-                  >
-                    {' '}
-                    : 외박 기록
-                  </Text>
-                </View>
+          <ShadowGenerator>
+            <View style={styles.tempInfo}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View
                   style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
+                    backgroundColor: 'rgba(155, 24, 24, 0.2)',
+                    width: 31,
+                    height: 23,
+                    borderRadius: 8,
+                  }}
+                />
+                <Text
+                  style={{
+                    fontFamily: 'Medium',
+                    color: '#707070',
+                    fontSize: 11,
                   }}
                 >
-                  <View
-                    style={{
-                      backgroundColor: '#850000',
-                      width: 11,
-                      height: 11,
-                      borderRadius: 5.5,
-                    }}
-                  />
-                  <Text
-                    style={{
-                      fontFamily: 'Medium',
-                      color: '#707070',
-                      fontSize: 11,
-                    }}
-                  >
-                    {' '}
-                    : 체온 기록 완료
-                  </Text>
-                </View>
+                  {' '}
+                  : 외박 기록
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    backgroundColor: '#850000',
+                    width: 11,
+                    height: 11,
+                    borderRadius: 5.5,
+                  }}
+                />
+                <Text
+                  style={{
+                    fontFamily: 'Medium',
+                    color: '#707070',
+                    fontSize: 11,
+                  }}
+                >
+                  {' '}
+                  : 체온 기록 완료
+                </Text>
               </View>
             </View>
-          </View>
+          </ShadowGenerator>
           <View style={{ flexDirection: 'row' }}>
             {['일', '월', '화', '수', '목', '금', '토'].map((day) => (
               <View
@@ -281,24 +280,6 @@ const styles = StyleSheet.create({
     height: '100%',
     alignItems: 'center',
     paddingTop: 5,
-  },
-  topShadow: {
-    shadowOffset: {
-      width: -6,
-      height: -6,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#ffffff',
-  },
-  bottomShadow: {
-    shadowOffset: {
-      width: 5,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#DED7CA',
   },
   headerText: {
     fontFamily: 'Heavy',
