@@ -175,5 +175,4 @@ const FindPassword = ({ navigation }) => {
     </TouchableWithoutFeedback>
   );
 };
-
 export default FindPassword;
