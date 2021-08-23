@@ -1,26 +1,20 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
-import Close from 'react-native-vector-icons/EvilIcons';
 import Check from 'react-native-vector-icons/Entypo';
 import { UserContext, ProgressContext } from '../contexts';
 import { SubHeader, SelectionWrapper, ButtonWrapper } from './DormInfoStyle';
-import {
-  BackgroundWrapper,
-  Body,
-  RowWrapper,
-  CloseWrapper,
-} from './DropOutStyle';
+import { BackgroundWrapper, Body } from './DropOutStyle';
 import {
   ProfileImageContainer,
   ButtonContainer,
   ProfileWrapper,
 } from './ProfileImageInfoStyle';
-
 import { CustomText } from './ModalComponentStyle';
-import { Header, PageTitle } from './MypageStyle';
 import { photoUpdate } from '../firebase';
 import { ImageShow } from '../../assets/ProfileImage';
+import ShadowGenerator from '../theme/ShadowGenerator';
+import MypageHeader from '../mypageheader/MypageHeader';
 
 const ProfileImageInfo = ({ navigation }) => {
   const { profileInfo, setProfileInfo } = useContext(UserContext);
@@ -73,16 +67,13 @@ const ProfileImageInfo = ({ navigation }) => {
     );
   }, [myPhoto]);
 
+  const closeHandler = () => {
+    navigation.goBack();
+  };
+
   return (
     <BackgroundWrapper>
-      <Header>
-        <RowWrapper>
-          <PageTitle>프로필 이미지 변경</PageTitle>
-          <CloseWrapper onPress={() => navigation.goBack()}>
-            <Close name="close" size={20} color="#707070" />
-          </CloseWrapper>
-        </RowWrapper>
-      </Header>
+      <MypageHeader pageInfo="프로필 이미지 변경" handler={closeHandler} />
       <Body>
         <SelectionWrapper>
           <SubHeader>
@@ -110,43 +101,21 @@ const ProfileImageInfo = ({ navigation }) => {
               </ProfileImageContainer>
             ))}
           </ProfileWrapper>
-          <View style={styles.topShadow}>
-            <View style={styles.bottomShadow}>
-              <ButtonWrapper onPress={_handlePhotoBtnPress}>
-                <CustomText
-                  font="Medium"
-                  size={responsiveScreenFontSize(1.8)}
-                  color="#1D1D1D"
-                >
-                  완료
-                </CustomText>
-              </ButtonWrapper>
-            </View>
-          </View>
+          <ShadowGenerator>
+            <ButtonWrapper onPress={_handlePhotoBtnPress}>
+              <CustomText
+                font="Medium"
+                size={responsiveScreenFontSize(1.8)}
+                color="#1D1D1D"
+              >
+                완료
+              </CustomText>
+            </ButtonWrapper>
+          </ShadowGenerator>
         </SelectionWrapper>
       </Body>
     </BackgroundWrapper>
   );
 };
 
-const styles = StyleSheet.create({
-  topShadow: {
-    shadowOffset: {
-      width: -6,
-      height: -6,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#ffffff',
-  },
-  bottomShadow: {
-    shadowOffset: {
-      width: 5,
-      height: 5,
-    },
-    shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#d4d2cf',
-  },
-});
 export default ProfileImageInfo;

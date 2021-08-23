@@ -1,16 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
-import Close from 'react-native-vector-icons/EvilIcons';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { UserContext, ProgressContext } from '../contexts';
-import {
-  BackgroundWrapper,
-  Body,
-  CloseWrapper,
-  RowWrapper,
-} from './DropOutStyle';
+import { BackgroundWrapper, Body } from './DropOutStyle';
 import { CustomText } from './ModalComponentStyle';
-import { Header, PageTitle } from './MypageStyle';
 import { getCurrentUser } from '../firebase';
 import { dorms } from '../utils';
 import {
@@ -22,6 +15,7 @@ import {
   ButtonIcon,
 } from './PersonalInfoStyle';
 import { ImageSelector } from '../../assets/ProfileImage';
+import MypageHeader from '../mypageheader/MypageHeader';
 
 const PhotoButton = ({ onPress }) => {
   return (
@@ -57,18 +51,14 @@ const PersonalInfo = ({ navigation }) => {
     return unsubscribe;
   }, [navigation]);
 
+  const closeHandler = () => {
+    navigation.goBack();
+  };
   return (
     <UserContext.Consumer>
       {({ profileInfo }) => (
         <BackgroundWrapper>
-          <Header>
-            <RowWrapper>
-              <PageTitle>개인정보 변경하기</PageTitle>
-              <CloseWrapper onPress={() => navigation.goBack()}>
-                <Close name="close" size={20} color="#707070" />
-              </CloseWrapper>
-            </RowWrapper>
-          </Header>
+          <MypageHeader pageInfo="개인정보 변경하기" handler={closeHandler} />
           <Body>
             <ProfileWrapper>
               <ProfileImageContainer>

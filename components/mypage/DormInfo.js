@@ -3,27 +3,20 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   StyleSheet,
-  View,
   Alert,
 } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
-import Close from 'react-native-vector-icons/EvilIcons';
 import Icon from 'react-native-vector-icons/AntDesign';
 import SelectDropdown from 'react-native-select-dropdown';
 import { SubHeader, SelectionWrapper, ButtonWrapper } from './DormInfoStyle';
-import {
-  BackgroundWrapper,
-  Body,
-  RowWrapper,
-  CloseWrapper,
-} from './DropOutStyle';
+import { BackgroundWrapper, Body, RowWrapper } from './DropOutStyle';
 import { UserContext, ProgressContext } from '../contexts';
 import { CustomText } from './ModalComponentStyle';
-import { Header, PageTitle } from './MypageStyle';
 import { ColumnWrapper, ErrorText, Input2 } from '../register/RegisterStyle';
 import { removeWhitespace, validateRoom } from '../utils';
 import { getStudentInfo, updateDormInfo } from '../firebase';
 import ShadowGenerator from '../theme/ShadowGenerator';
+import MypageHeader from '../mypageheader/MypageHeader';
 
 const DormInfo = ({ navigation }) => {
   const dorms = [
@@ -124,20 +117,15 @@ const DormInfo = ({ navigation }) => {
 
     return result;
   };
-
+  const closeHandler = () => {
+    navigation.goBack();
+  };
   return (
     <UserContext.Consumer>
       {({ setProfileInfo, profileInfo }) => (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <BackgroundWrapper>
-            <Header>
-              <RowWrapper>
-                <PageTitle>소속 동/호실 변경</PageTitle>
-                <CloseWrapper onPress={() => navigation.goBack()}>
-                  <Close name="close" size={20} color="#707070" />
-                </CloseWrapper>
-              </RowWrapper>
-            </Header>
+            <MypageHeader pageInfo="소속 동/호실 변경" handler={closeHandler} />
             <Body>
               <SelectionWrapper>
                 <SubHeader>

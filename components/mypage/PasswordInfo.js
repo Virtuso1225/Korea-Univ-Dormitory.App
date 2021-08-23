@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useContext } from 'react';
 import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
-import Close from 'react-native-vector-icons/EvilIcons';
 import { UserContext, ProgressContext } from '../contexts';
 import {
   SubHeader,
@@ -9,18 +8,13 @@ import {
   ButtonWrapper,
   Input,
 } from './DormInfoStyle';
-import {
-  BackgroundWrapper,
-  Body,
-  RowWrapper,
-  CloseWrapper,
-} from './DropOutStyle';
+import { BackgroundWrapper, Body, RowWrapper } from './DropOutStyle';
 import { removeWhitespace, validatePassword } from '../utils';
 import { comparePassword, updatePasswordInfo, signout } from '../firebase';
 import { CustomText } from './ModalComponentStyle';
-import { Header, PageTitle } from './MypageStyle';
 import { ErrorText } from '../register/RegisterStyle';
 import ShadowGenerator from '../theme/ShadowGenerator';
+import MypageHeader from '../mypageheader/MypageHeader';
 
 const PasswordInfo = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
@@ -173,17 +167,14 @@ const PasswordInfo = ({ navigation }) => {
     });
   };
 
+  const closeHandler = () => {
+    navigation.goBack();
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <BackgroundWrapper>
-        <Header>
-          <RowWrapper>
-            <PageTitle>비밀번호 변경</PageTitle>
-            <CloseWrapper onPress={() => navigation.goBack()}>
-              <Close name="close" size={20} color="#707070" />
-            </CloseWrapper>
-          </RowWrapper>
-        </Header>
+        <MypageHeader pageInfo="비밀번호 변경" handler={closeHandler} />
         <Body>
           <SelectionWrapper>
             <SubHeader>

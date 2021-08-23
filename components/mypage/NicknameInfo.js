@@ -1,8 +1,6 @@
 import React, { useState, useContext, useEffect, useRef } from 'react';
 import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
-
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
-import Close from 'react-native-vector-icons/EvilIcons';
 import { ProgressContext, UserContext } from '../contexts';
 import { isExistNickname, updateNicknameInfo } from '../firebase';
 import {
@@ -11,17 +9,12 @@ import {
   ButtonWrapper,
   Input,
 } from './DormInfoStyle';
-import {
-  BackgroundWrapper,
-  Body,
-  RowWrapper,
-  CloseWrapper,
-} from './DropOutStyle';
+import { BackgroundWrapper, Body, RowWrapper } from './DropOutStyle';
 import { CustomText } from './ModalComponentStyle';
-import { Header, PageTitle } from './MypageStyle';
 import { ErrorText } from '../register/RegisterStyle';
 import { removeWhitespace } from '../utils';
 import ShadowGenerator from '../theme/ShadowGenerator';
+import MypageHeader from '../mypageheader/MypageHeader';
 
 const NicknameInfo = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
@@ -98,19 +91,16 @@ const NicknameInfo = ({ navigation }) => {
     return result;
   };
 
+  const closeHandler = () => {
+    navigation.goBack();
+  };
+
   return (
     <UserContext.Consumer>
       {({ setProfileInfo, profileInfo }) => (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <BackgroundWrapper>
-            <Header>
-              <RowWrapper>
-                <PageTitle>닉네임 변경</PageTitle>
-                <CloseWrapper onPress={() => navigation.goBack()}>
-                  <Close name="close" size={20} color="#707070" />
-                </CloseWrapper>
-              </RowWrapper>
-            </Header>
+            <MypageHeader pageInfo="닉네임 변경" handler={closeHandler} />
             <Body>
               <SelectionWrapper>
                 <SubHeader>
