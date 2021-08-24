@@ -1,4 +1,4 @@
-import React, { useContext, useState, useRef } from 'react';
+import React, { useContext, useState, useRef, useEffect } from 'react';
 import {
   View,
   KeyboardAvoidingView,
@@ -49,7 +49,10 @@ const Front = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const [isSelected, setSelection] = useState(false);
+  const refPassword = useRef(null);
+  const refEmailDidMount = useRef(null);
+  const [emailFocused, setEmailFocused] = useState(false);
+  // const [isSelected, setSelection] = useState(false);
 
   const {
     setProfileInfo,
@@ -60,25 +63,35 @@ const Front = ({ navigation }) => {
     setUser,
   } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
-  const refPassword = useRef(null);
 
-  const _handleEmailChange = (email) => {
-    const changedEmail = removeWhitespace(email);
-    setEmail(changedEmail);
-    if (validateEmail(changedEmail)) {
-      setErrorMessage(
-        validateEmailDomain(changedEmail)
-          ? ''
-          : '학교 도메인 이메일을 사용해주세요'
-      );
-    } else {
-      setErrorMessage('이메일 형식을 확인하세요');
+  const emailCheck = async () => {
+    let errorMsg = '';
+    if (!email) {
+      errorMsg = '이메일은 필수 항목입니다.';
+    } else if (!validateEmail(email)) {
+      errorMsg = '이메일 형식을 확인하세요';
+    } else if (!validateEmailDomain(email)) {
+      errorMsg = '학교 도메인 이메일을 사용해주세요';
     }
+
+    setErrorMessage(errorMsg);
+
+    return errorMsg;
   };
 
-  const _handlePasswordChange = (password) => {
+  useEffect(() => {
+    if (refEmailDidMount.current) {
+      if (emailFocused === false) {
+        emailCheck();
+      }
+    } else {
+      refEmailDidMount.current = true;
+    }
+  }, [emailFocused]);
+
+  useEffect(() => {
     setPassword(removeWhitespace(password));
-  };
+  }, [password]);
 
   const setGlobalInfo = () => {
     return Promise.all([
@@ -91,27 +104,36 @@ const Front = ({ navigation }) => {
   };
 
   const _handleSigninBtnPress = async () => {
-    try {
-      spinner.start();
-      const user = await signin({ email, password });
-      setUser(user);
-      const result = await setGlobalInfo().then((results) => {
-        setNotice(results[1]);
-        setMyPenalty(results[2]);
-        setTemperature(results[3]);
-        setOvernightDate(results[4]);
-        return [results[0], results[2]];
-      });
+    const emailError = await emailCheck();
+    if (!email) {
+      Alert.alert('로그인 에러', '이메일은 필수 항목 입니다.');
+    } else if (emailError) {
+      Alert.alert('로그인 에러', '이메일을 확인하세요.');
+    } else if (!password) {
+      Alert.alert('로그인 에러', '비밀번호는 필수 항목 입니다.');
+    } else {
+      try {
+        spinner.start();
+        const user = await signin({ email, password });
+        setUser(user);
+        const result = await setGlobalInfo().then((results) => {
+          setNotice(results[1]);
+          setMyPenalty(results[2]);
+          setTemperature(results[3]);
+          setOvernightDate(results[4]);
+          return [results[0], results[2]];
+        });
 
-      const sum = { myPenaltySum: 0 };
-      result[1].forEach((item, index) => {
-        sum.myPenaltySum += item.points;
-      });
-      setProfileInfo({ ...result[0], ...sum });
-    } catch (e) {
-      Alert.alert('로그인 에러', e.message);
-    } finally {
-      spinner.stop();
+        const sum = { myPenaltySum: 0 };
+        result[1].forEach((item, index) => {
+          sum.myPenaltySum += item.points;
+        });
+        setProfileInfo({ ...result[0], ...sum });
+      } catch (e) {
+        Alert.alert('로그인 에러', e.message);
+      } finally {
+        spinner.stop();
+      }
     }
   };
 
@@ -144,8 +166,13 @@ const Front = ({ navigation }) => {
                   placeholderTextColor="#707070"
                   returnKeyType="next"
                   value={email}
-                  onChangeText={_handleEmailChange}
+                  onChangeText={setEmail}
                   onSubmitEditing={() => refPassword.current.focus()}
+                  onBlur={() => [
+                    setEmail(removeWhitespace(email)),
+                    setEmailFocused(false),
+                  ]}
+                  onFocus={() => setEmailFocused(true)}
                 />
               </InputWrapper>
             </TextWrapper>
@@ -158,8 +185,7 @@ const Front = ({ navigation }) => {
                   placeholderTextColor="#707070"
                   returnKeyType="done"
                   value={password}
-                  onChangeText={_handlePasswordChange}
-                  isPassword
+                  onChangeText={setPassword}
                   onSubmitEditing={_handleSigninBtnPress}
                   secureTextEntry
                 />

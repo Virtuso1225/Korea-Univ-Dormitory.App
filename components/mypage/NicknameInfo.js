@@ -18,6 +18,7 @@ import MypageHeader from '../mypageheader/MypageHeader';
 
 const NicknameInfo = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
+  const { profileInfo, setProfileInfo } = useContext(UserContext);
 
   const [nickname, setNickname] = useState('');
   const [nicknameError, setNicknameError] = useState('');
@@ -65,15 +66,14 @@ const NicknameInfo = ({ navigation }) => {
   }, [nicknameFocused]);
 
   const _handleUpdateBtnPress = async () => {
-    let result = true;
     await lastCheck().then((existNickname) => {
       if (!nickname || existNickname) {
-        result = false;
         Alert.alert('개인정보 변경하기 에러', '닉네임 정보를 확인하세요.');
       } else {
         try {
           spinner.start();
           updateNicknameInfo(nickname);
+          setProfileInfo({ ...profileInfo, nickname });
           Alert.alert('Success!', '정보 업데이트에 성공했습니다.', [
             {
               text: 'OK',
@@ -87,8 +87,6 @@ const NicknameInfo = ({ navigation }) => {
         }
       }
     });
-
-    return result;
   };
 
   const closeHandler = () => {
@@ -97,7 +95,7 @@ const NicknameInfo = ({ navigation }) => {
 
   return (
     <UserContext.Consumer>
-      {({ setProfileInfo, profileInfo }) => (
+      {({ profileInfo }) => (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <BackgroundWrapper>
             <MypageHeader pageInfo="닉네임 변경" handler={closeHandler} />
@@ -123,24 +121,12 @@ const NicknameInfo = ({ navigation }) => {
                       setNicknameFocused(false),
                     ]}
                     onFocus={() => setNicknameFocused(true)}
-                    onSubmitEditing={async () => {
-                      const result = await _handleUpdateBtnPress();
-                      if (result) {
-                        setProfileInfo({ ...profileInfo, nickname });
-                      }
-                    }}
+                    onSubmitEditing={_handleUpdateBtnPress}
                   />
                 </RowWrapper>
                 <ErrorText>{nicknameError}</ErrorText>
                 <ShadowGenerator>
-                  <ButtonWrapper
-                    onPress={async () => {
-                      const result = await _handleUpdateBtnPress();
-                      if (result) {
-                        setProfileInfo({ ...profileInfo, nickname });
-                      }
-                    }}
-                  >
+                  <ButtonWrapper onPress={_handleUpdateBtnPress}>
                     <CustomText
                       font="Medium"
                       size={responsiveScreenFontSize(1.8)}

@@ -26,7 +26,7 @@ const DormInfo = ({ navigation }) => {
     '프런티어관(신관-여자동)',
   ];
   const { spinner } = useContext(ProgressContext);
-  const { profileInfo } = useContext(UserContext);
+  const { profileInfo, setProfileInfo } = useContext(UserContext);
 
   const [dorm, setDorm] = useState(profileInfo.dorm);
   const [room, setRoom] = useState(profileInfo.room);
@@ -82,17 +82,13 @@ const DormInfo = ({ navigation }) => {
   };
 
   const _handleUpdateBtnPress = async () => {
-    let result = true;
-
     await lastCheck().then((results) => {
       const roomError = results[0];
       const compareStudentInfo = results[1];
 
       if (roomError) {
-        result = false;
         Alert.alert('개인정보 변경하기 에러', '호실 정보를 확인하세요.');
       } else if (!compareStudentInfo) {
-        result = false;
         Alert.alert(
           '개인정보 변경하기 에러',
           '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
@@ -101,6 +97,7 @@ const DormInfo = ({ navigation }) => {
         try {
           spinner.start();
           updateDormInfo(dorm, room);
+          setProfileInfo({ ...profileInfo, dorm, room });
           Alert.alert('Success!', '정보 업데이트에 성공했습니다.', [
             {
               text: 'OK',
@@ -114,15 +111,13 @@ const DormInfo = ({ navigation }) => {
         }
       }
     });
-
-    return result;
   };
   const closeHandler = () => {
     navigation.goBack();
   };
   return (
     <UserContext.Consumer>
-      {({ setProfileInfo, profileInfo }) => (
+      {({ profileInfo }) => (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <BackgroundWrapper>
             <MypageHeader pageInfo="소속 동/호실 변경" handler={closeHandler} />
@@ -172,25 +167,13 @@ const DormInfo = ({ navigation }) => {
                         setRoomFocused(false),
                       ]}
                       onFocus={() => setRoomFocused(true)}
-                      onSubmitEditing={async () => {
-                        const result = await _handleUpdateBtnPress();
-                        if (result) {
-                          setProfileInfo({ ...profileInfo, dorm, room });
-                        }
-                      }}
+                      onSubmitEditing={_handleUpdateBtnPress}
                     />
                     <ErrorText>{roomError}</ErrorText>
                   </ColumnWrapper>
                 </RowWrapper>
                 <ShadowGenerator>
-                  <ButtonWrapper
-                    onPress={async () => {
-                      const result = await _handleUpdateBtnPress();
-                      if (result) {
-                        setProfileInfo({ ...profileInfo, dorm, room });
-                      }
-                    }}
-                  >
+                  <ButtonWrapper onPress={_handleUpdateBtnPress}>
                     <CustomText
                       font="Medium"
                       size={responsiveScreenFontSize(1.8)}
