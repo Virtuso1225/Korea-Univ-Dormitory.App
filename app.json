@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "dormitory-app",
-    "slug": "dormitory-app",
+    "name": "안암학사",
+    "slug": "AnamDormitory",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
