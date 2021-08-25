@@ -1,6 +1,6 @@
 # Korea University Dormitory App
 
-<img src="./assets/icon.png" width=516 height=516/>
+<img src="./assets/icon.png" width=256 height=256/>
 
 [![License](https://img.shields.io/badge/Licence-MIT-blue.svg)](https://github.com/Virtuso1225/Korea-Univ-Dormitory.App/blob/main/LICENSE)
 
