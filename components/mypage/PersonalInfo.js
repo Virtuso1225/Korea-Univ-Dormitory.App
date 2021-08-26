@@ -3,7 +3,6 @@ import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { UserContext, ProgressContext } from '../contexts';
 import { BackgroundWrapper, Body } from './DropOutStyle';
-import { CustomText } from './ModalComponentStyle';
 import { getCurrentUser } from '../firebase';
 import { dorms } from '../utils';
 import {
@@ -16,6 +15,7 @@ import {
 import { ImageSelector } from '../../assets/ProfileImage';
 import MypageHeader from '../mypageheader/MypageHeader';
 import UserName from '../username/UserName';
+import CustomText from '../theme/CustomTextStyle';
 
 const PhotoButton = ({ onPress }) => {
   return (

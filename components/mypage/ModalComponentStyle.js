@@ -21,12 +21,6 @@ export const ModalWrapper = styled.View`
   background-color: #fefcf9;
 `;
 
-export const CustomText = styled.Text`
-  font-size: ${(props) => props.size}px;
-  font-family: ${(props) => props.font};
-  color: ${(props) => props.color};
-`;
-
 export const ButtonText = styled.Text`
   margin-left: ${responsiveScreenWidth(4.89)}px;
   font-size: ${responsiveScreenFontSize(1.614)}px;

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import {
   TouchableWithoutFeedback,
   Keyboard,
@@ -12,12 +12,7 @@ import Close from 'react-native-vector-icons/EvilIcons';
 import { comparePassword, deactivate } from '../firebase';
 import { Header, PageTitle } from './MypageStyle';
 import { UserContext, ProgressContext } from '../contexts';
-import {
-  CenterView,
-  ModalWrapper,
-  CustomText,
-  Button,
-} from './ModalComponentStyle';
+import { CenterView, ModalWrapper, Button } from './ModalComponentStyle';
 import { removeWhitespace } from '../utils';
 import {
   CloseWrapper,
@@ -34,6 +29,7 @@ import {
 import { ErrorText } from '../register/RegisterStyle';
 import ShadowGenerator from '../theme/ShadowGenerator';
 import WithdrawalTerms from '../../assets/WithdrawalTerms';
+import CustomText from '../theme/CustomTextStyle';
 
 const DropOut = ({ navigation }) => {
   const { setUser } = useContext(UserContext);

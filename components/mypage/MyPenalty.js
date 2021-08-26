@@ -3,8 +3,7 @@ import { ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import { Header, PageTitle } from './MypageStyle';
 import { UserContext } from '../contexts';
-import { Background, Card, CustomText } from '../notice/NoticeStyle';
-
+import { Background, Card } from '../notice/NoticeStyle';
 import {
   CloseWrapper,
   Body,
@@ -18,6 +17,7 @@ import {
   ButtonRow,
 } from './MyPenaltyStyle';
 import ShadowGenerator from '../theme/ShadowGenerator';
+import CustomText from '../theme/CustomTextStyle';
 
 const MyPenalty = ({ navigation }) => {
   const tableHeader = [

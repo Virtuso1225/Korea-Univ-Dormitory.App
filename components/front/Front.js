@@ -17,10 +17,8 @@ import {
   getMyTemperature,
   getMyStayOut,
 } from '../firebase';
-
 import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
 import { UserContext, ProgressContext } from '../contexts';
-
 import {
   HeadTitle,
   SubTitle,
@@ -42,8 +40,8 @@ import {
   RowWrapper,
 } from './FrontStyle';
 import { CrimsonLogo, UnderLine, VerticalLince } from '../../assets/Svgs';
-import { CustomText } from '../mypage/ModalComponentStyle';
 import ShadowGenerator from '../theme/ShadowGenerator';
+import CustomText from '../theme/CustomTextStyle';
 
 const Front = ({ navigation }) => {
   const [email, setEmail] = useState('');

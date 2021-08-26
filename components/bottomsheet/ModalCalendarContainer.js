@@ -15,11 +15,11 @@ import {
   RowWrapper,
   ColumnWrapper,
 } from './ModalCalendarContainerStyle';
-import { CustomText } from '../mypage/ModalComponentStyle';
 import { OvernightIcon } from '../../assets/Svgs';
 import ModalCalendar from './ModalCalendar';
 import { setMyStayOut, getMyStayOut } from '../firebase';
 import ShadowGenerator from '../theme/ShadowGenerator';
+import CustomText from '../theme/CustomTextStyle';
 
 const ModalCalendarContainer = () => {
   const { spinner } = useContext(ProgressContext);

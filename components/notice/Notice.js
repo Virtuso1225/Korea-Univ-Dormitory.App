@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { View, ScrollView } from 'react-native';
-
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
-
 import { UserContext, ProgressContext } from '../contexts';
-
 import {
   Background,
   Card,
@@ -12,7 +9,6 @@ import {
   PageTitle,
   ContentWrapper,
   RowWrapper,
-  CustomText,
   TitleWrapper,
   IconWrapper,
   DateWrapper,
@@ -20,6 +16,7 @@ import {
   Body,
 } from './NoticeStyle';
 import { NoticeIcon } from '../../assets/Svgs';
+import CustomText from '../theme/CustomTextStyle';
 
 const Notice = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);

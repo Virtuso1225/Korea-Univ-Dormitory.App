@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Modal, View } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import { FacilityIcon } from '../../assets/Svgs';
+import CustomText from '../theme/CustomTextStyle';
 import {
   CenterView,
   RowWrapper,
   ButtonText,
   ModalWrapper,
-  CustomText,
   Button,
 } from './ModalComponentStyle';
 

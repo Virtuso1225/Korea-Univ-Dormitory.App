@@ -546,7 +546,7 @@ const Register = ({ navigation }) => {
         </KeyboardAvoidingView>
         <BottomWrapper>
           <ButtonWrapper title="Sign up" onPress={_handleSignupBtnPress}>
-            <StyledButton>Sign up</StyledButton>
+            <StyledButton>회원가입</StyledButton>
           </ButtonWrapper>
           <OptionWrapper>
             <OptionDescription>이미 계정이 있나요? </OptionDescription>

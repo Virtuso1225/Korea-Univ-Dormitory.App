@@ -15,9 +15,9 @@ import {
 } from './FindPasswordStyle';
 import { BackgroundWrapper, Body, ButtonWrapper } from '../mypage/DropOutStyle';
 import { Header, PageTitle } from '../mypage/MypageStyle';
-import { CustomText } from '../mypage/ModalComponentStyle';
 import { SubHeader } from '../mypage/DormInfoStyle';
 import ShadwoGenerator from '../theme/ShadowGenerator';
+import CustomText from '../theme/CustomTextStyle';
 
 const FindPassword = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);

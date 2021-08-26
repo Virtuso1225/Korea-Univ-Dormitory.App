@@ -3,13 +3,12 @@ import { Modal, View } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { Facility } from '../../assets/Svgs';
-
 import {
   CenterView,
   ModalWrapper,
-  CustomText,
   Button,
 } from '../mypage/ModalComponentStyle';
+import CustomText from '../theme/CustomTextStyle';
 import {
   ButtonWrapper,
   StyledButton,

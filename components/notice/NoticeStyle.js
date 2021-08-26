@@ -43,12 +43,6 @@ export const PageTitle = styled.Text`
   color: black;
 `;
 
-export const CustomText = styled.Text`
-  font-size: ${(props) => props.size}px;
-  font-family: ${(props) => props.font};
-  color: ${(props) => props.color};
-`;
-
 export const ButtonWrapper = styled.TouchableOpacity`
   width: ${responsiveScreenWidth(90.76)}px;
   height: ${responsiveScreenHeight(4.8)}px;
