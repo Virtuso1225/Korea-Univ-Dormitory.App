@@ -6,6 +6,10 @@
 
 Korea University Dormitory App is an Application for Korea University students who reside in the Anam Dormitory.
 
+## Version
+
+Latest version of Anam Dormitory is 1.0.2
+
 ## Contact
 
 Contact is available via e-mail either (dominico1225@gmail.com) or (dominico1225@korea.ac.kr)
