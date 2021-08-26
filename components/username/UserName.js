@@ -1,7 +1,7 @@
 import React from 'react';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
-import { CustomText } from '../mypage/ModalComponentStyle';
 import { ProfileInfoWrapper } from '../mypage/PersonalInfoStyle';
+import CustomText from '../theme/CustomTextStyle';
 
 const UserName = ({ userName }) => {
   return (
