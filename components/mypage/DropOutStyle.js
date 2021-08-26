@@ -33,15 +33,6 @@ export const GuidanceWrapper = styled.View`
   align-self: center;
 `;
 
-export const Guidance = styled.View`
-  width: ${responsiveScreenWidth(87)}px;
-  height: ${responsiveScreenHeight(17.2)}px;
-  margin-top: ${responsiveScreenHeight(2.13)}px;
-  border: 1px solid #cbccce;
-  border-radius: 10px;
-  padding: 9px;
-`;
-
 export const CheckWrapper = styled.View`
   flex-direction: row;
   margin-top: ${responsiveScreenHeight(1.42)}px;

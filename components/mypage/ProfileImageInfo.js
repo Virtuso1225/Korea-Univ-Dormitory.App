@@ -3,18 +3,18 @@ import { Alert } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Check from 'react-native-vector-icons/Entypo';
 import { UserContext, ProgressContext } from '../contexts';
-import { SubHeader, SelectionWrapper, ButtonWrapper } from './DormInfoStyle';
+import { SubHeader, SelectionWrapper } from './DormInfoStyle';
 import { BackgroundWrapper, Body } from './DropOutStyle';
 import {
   ProfileImageContainer,
   ButtonContainer,
   ProfileWrapper,
 } from './ProfileImageInfoStyle';
-import { CustomText } from './ModalComponentStyle';
 import { photoUpdate } from '../firebase';
 import { ImageShow } from '../../assets/ProfileImage';
-import ShadowGenerator from '../theme/ShadowGenerator';
 import MypageHeader from '../mypageheader/MypageHeader';
+import SubmitButton from '../button/SubmitButton';
+import CustomText from '../theme/CustomTextStyle';
 
 const ProfileImageInfo = ({ navigation }) => {
   const { profileInfo, setProfileInfo } = useContext(UserContext);
@@ -101,17 +101,7 @@ const ProfileImageInfo = ({ navigation }) => {
               </ProfileImageContainer>
             ))}
           </ProfileWrapper>
-          <ShadowGenerator>
-            <ButtonWrapper onPress={_handlePhotoBtnPress}>
-              <CustomText
-                font="Medium"
-                size={responsiveScreenFontSize(1.8)}
-                color="#1D1D1D"
-              >
-                완료
-              </CustomText>
-            </ButtonWrapper>
-          </ShadowGenerator>
+          <SubmitButton handler={_handlePhotoBtnPress} />
         </SelectionWrapper>
       </Body>
     </BackgroundWrapper>

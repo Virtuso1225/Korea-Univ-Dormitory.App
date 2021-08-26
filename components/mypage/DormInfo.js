@@ -8,15 +8,15 @@ import {
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/AntDesign';
 import SelectDropdown from 'react-native-select-dropdown';
-import { SubHeader, SelectionWrapper, ButtonWrapper } from './DormInfoStyle';
+import { SubHeader, SelectionWrapper } from './DormInfoStyle';
 import { BackgroundWrapper, Body, RowWrapper } from './DropOutStyle';
 import { UserContext, ProgressContext } from '../contexts';
-import { CustomText } from './ModalComponentStyle';
 import { ColumnWrapper, ErrorText, Input2 } from '../register/RegisterStyle';
 import { removeWhitespace, validateRoom } from '../utils';
 import { getStudentInfo, updateDormInfo } from '../firebase';
-import ShadowGenerator from '../theme/ShadowGenerator';
 import MypageHeader from '../mypageheader/MypageHeader';
+import SubmitButton from '../button/SubmitButton';
+import CustomText from '../theme/CustomTextStyle';
 
 const DormInfo = ({ navigation }) => {
   const dorms = [
@@ -101,7 +101,7 @@ const DormInfo = ({ navigation }) => {
           Alert.alert('Success!', '정보 업데이트에 성공했습니다.', [
             {
               text: 'OK',
-              onPress: () => navigation.replace('PersonalInfo'),
+              onPress: () => navigation.goBack(),
             },
           ]);
         } catch (e) {
@@ -172,17 +172,7 @@ const DormInfo = ({ navigation }) => {
                     <ErrorText>{roomError}</ErrorText>
                   </ColumnWrapper>
                 </RowWrapper>
-                <ShadowGenerator>
-                  <ButtonWrapper onPress={_handleUpdateBtnPress}>
-                    <CustomText
-                      font="Medium"
-                      size={responsiveScreenFontSize(1.8)}
-                      color="#1D1D1D"
-                    >
-                      완료
-                    </CustomText>
-                  </ButtonWrapper>
-                </ShadowGenerator>
+                <SubmitButton handler={_handleUpdateBtnPress} />
               </SelectionWrapper>
             </Body>
           </BackgroundWrapper>

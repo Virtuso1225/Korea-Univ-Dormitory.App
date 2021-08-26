@@ -16,17 +16,6 @@ export const SelectionWrapper = styled.View`
   align-self: center;
 `;
 
-export const ButtonWrapper = styled.TouchableOpacity`
-  width: ${responsiveScreenWidth(87)}px;
-  height: ${responsiveScreenHeight(5.45)}px;
-  background-color: #fffdf9;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  border-radius: 10px;
-  margin-top: ${responsiveScreenHeight(7.7)}px;
-`;
-
 export const Input = styled.TextInput`
   font-size: ${responsiveScreenFontSize(1.5)}px;
   padding-left: 10px;

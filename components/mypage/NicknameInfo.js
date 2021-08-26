@@ -3,18 +3,13 @@ import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import { ProgressContext, UserContext } from '../contexts';
 import { isExistNickname, updateNicknameInfo } from '../firebase';
-import {
-  SubHeader,
-  SelectionWrapper,
-  ButtonWrapper,
-  Input,
-} from './DormInfoStyle';
+import { SubHeader, SelectionWrapper, Input } from './DormInfoStyle';
 import { BackgroundWrapper, Body, RowWrapper } from './DropOutStyle';
-import { CustomText } from './ModalComponentStyle';
 import { ErrorText } from '../register/RegisterStyle';
 import { removeWhitespace } from '../utils';
-import ShadowGenerator from '../theme/ShadowGenerator';
 import MypageHeader from '../mypageheader/MypageHeader';
+import SubmitButton from '../button/SubmitButton';
+import CustomText from '../theme/CustomTextStyle';
 
 const NicknameInfo = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
@@ -125,17 +120,7 @@ const NicknameInfo = ({ navigation }) => {
                   />
                 </RowWrapper>
                 <ErrorText>{nicknameError}</ErrorText>
-                <ShadowGenerator>
-                  <ButtonWrapper onPress={_handleUpdateBtnPress}>
-                    <CustomText
-                      font="Medium"
-                      size={responsiveScreenFontSize(1.8)}
-                      color="#1D1D1D"
-                    >
-                      완료
-                    </CustomText>
-                  </ButtonWrapper>
-                </ShadowGenerator>
+                <SubmitButton handler={_handleUpdateBtnPress} />
               </SelectionWrapper>
             </Body>
           </BackgroundWrapper>

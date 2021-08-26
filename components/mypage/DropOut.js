@@ -25,7 +25,6 @@ import {
   Body,
   Check,
   CheckWrapper,
-  Guidance,
   GuidanceWrapper,
   RowWrapper,
   PasswordCheck,
@@ -34,6 +33,7 @@ import {
 } from './DropOutStyle';
 import { ErrorText } from '../register/RegisterStyle';
 import ShadowGenerator from '../theme/ShadowGenerator';
+import WithdrawalTerms from '../../assets/WithdrawalTerms';
 
 const DropOut = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
@@ -109,7 +109,6 @@ const DropOut = ({ navigation }) => {
             </CloseWrapper>
           </RowWrapper>
         </Header>
-
         <Body>
           <GuidanceWrapper>
             <CustomText
@@ -119,38 +118,7 @@ const DropOut = ({ navigation }) => {
             >
               회원 탈퇴 안내
             </CustomText>
-            <Guidance>
-              <CustomText
-                font="Regular"
-                size={responsiveScreenFontSize(1.5)}
-                color="#707070"
-              >
-                [회원 탈퇴 약관]{'\n'}
-              </CustomText>
-              <CustomText
-                font="Regular"
-                size={responsiveScreenFontSize(1.5)}
-                color="#707070"
-              >
-                회원탈퇴 신청 전 안내 사항을 확인 해 주세요.
-              </CustomText>
-              <CustomText
-                font="Regular"
-                size={responsiveScreenFontSize(1.5)}
-                color="#707070"
-              >
-                회원탈퇴를 신청하시면 현재 로그인 된 아이디는 사용하실 수
-                없습니다.
-              </CustomText>
-              <CustomText
-                font="Regular"
-                size={responsiveScreenFontSize(1.5)}
-                color="#707070"
-              >
-                회원탈퇴를 하더라도, 서비스 약관 및 개인정보 취급방침 동의하에
-                따라 일정 기간동안 회원 개인정보를 보관합니다.
-              </CustomText>
-            </Guidance>
+            <WithdrawalTerms />
             <CheckWrapper>
               <Check onPress={() => setIsChecked(!isChecked)}>
                 {isChecked && <Icon name="check" size={18} color="#1D1D1D" />}

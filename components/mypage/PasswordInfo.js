@@ -2,19 +2,14 @@ import React, { useState, useRef, useEffect, useContext } from 'react';
 import { TouchableWithoutFeedback, Keyboard, Alert } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import { UserContext, ProgressContext } from '../contexts';
-import {
-  SubHeader,
-  SelectionWrapper,
-  ButtonWrapper,
-  Input,
-} from './DormInfoStyle';
+import { SubHeader, SelectionWrapper, Input } from './DormInfoStyle';
 import { BackgroundWrapper, Body, RowWrapper } from './DropOutStyle';
 import { removeWhitespace, validatePassword } from '../utils';
 import { comparePassword, updatePasswordInfo, signout } from '../firebase';
-import { CustomText } from './ModalComponentStyle';
 import { ErrorText } from '../register/RegisterStyle';
-import ShadowGenerator from '../theme/ShadowGenerator';
 import MypageHeader from '../mypageheader/MypageHeader';
+import SubmitButton from '../button/SubmitButton';
+import CustomText from '../theme/CustomTextStyle';
 
 const PasswordInfo = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
@@ -245,17 +240,7 @@ const PasswordInfo = ({ navigation }) => {
               />
             </RowWrapper>
             <ErrorText>{checkError}</ErrorText>
-            <ShadowGenerator>
-              <ButtonWrapper onPress={_handleUpdateBtnPress}>
-                <CustomText
-                  font="Medium"
-                  size={responsiveScreenFontSize(1.8)}
-                  color="#1D1D1D"
-                >
-                  완료
-                </CustomText>
-              </ButtonWrapper>
-            </ShadowGenerator>
+            <SubmitButton handler={_handleUpdateBtnPress} />
           </SelectionWrapper>
         </Body>
       </BackgroundWrapper>
