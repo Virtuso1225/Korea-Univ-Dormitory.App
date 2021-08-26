@@ -7,9 +7,9 @@ import { Board } from '../../assets/Svgs';
 import {
   CenterView,
   ModalWrapper,
-  CustomText,
   Button,
 } from '../mypage/ModalComponentStyle';
+import CustomText from '../theme/CustomTextStyle';
 import {
   ButtonWrapper,
   StyledButton,
