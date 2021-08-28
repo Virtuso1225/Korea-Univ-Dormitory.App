@@ -6,7 +6,6 @@ import { UserContext, ProgressContext } from '../contexts';
 import { signout } from '../firebase';
 import {
   DeleteIcon,
-  FacilityIcon,
   PenaltyIcon,
   PersonalInfoIcon,
   TemperatureIcon,
@@ -14,7 +13,6 @@ import {
 import {
   ButtonText,
   ColumnWrapper,
-  TopRowWrapper,
   RowWrapper,
   ErrorText,
   DescriptionText,
@@ -57,7 +55,7 @@ const CardComponents = ({ navigation }) => {
     <UserContext.Consumer>
       {({ profileInfo, temperature, overnightDate }) => (
         <ColumnWrapper>
-          <TopRowWrapper onPress={() => navigation.navigate('Calendar')}>
+          <RowWrapper onPress={() => navigation.navigate('Calendar')}>
             <TemperatureIcon />
             <ButtonText>체온기록</ButtonText>
             <Icon
@@ -111,7 +109,7 @@ const CardComponents = ({ navigation }) => {
             >
               X
             </DescriptionText>
-          </TopRowWrapper>
+          </RowWrapper>
           <RowWrapper onPress={() => navigation.navigate('MyPenalty')}>
             <PenaltyIcon />
             <ButtonText>벌점 내역</ButtonText>
@@ -119,7 +117,7 @@ const CardComponents = ({ navigation }) => {
               #현재 나의 벌점 내역:
             </DescriptionText>
             <DescriptionText font="ExtraBold" visible={profileInfo}>
-              {profileInfo.myPenaltySum}
+              {profileInfo.myPenaltySum}점
             </DescriptionText>
           </RowWrapper>
           <PreparingFacilityModal />

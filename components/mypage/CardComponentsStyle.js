@@ -7,13 +7,9 @@ import {
 
 export const ColumnWrapper = styled.View`
   width: ${responsiveScreenWidth(90)}px;
+  height: 100%;
   align-self: center;
   /* border: 1px solid black; */
-`;
-
-export const TopRowWrapper = styled.TouchableOpacity`
-  flex-direction: row;
-  align-items: center;
 `;
 
 export const RowWrapper = styled.TouchableOpacity`
