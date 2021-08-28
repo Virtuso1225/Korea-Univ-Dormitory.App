@@ -1,4 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   Keyboard,
   StyleSheet,
@@ -7,8 +8,13 @@ import {
   KeyboardAvoidingView,
   Platform,
   Alert,
+  Pressable,
+  ScrollView,
 } from 'react-native';
-import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
+import {
+  responsiveScreenFontSize,
+  responsiveScreenWidth,
+} from 'react-native-responsive-dimensions';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/AntDesign';
 import { signup, getStudentInfo, isExistNickname } from '../firebase';
@@ -25,8 +31,6 @@ import {
   InputWrapper,
   SubWrapper,
   BottomWrapper,
-  ButtonWrapper,
-  StyledButton,
   Title,
   OptionWrapper,
   OptionDescription,
@@ -37,7 +41,9 @@ import {
   Input2,
   EmailDescription,
   ColumnWrapper,
+  RoomWrapper,
 } from './RegisterStyle';
+import LoginRegisterButton from '../button/LoginRegisterButton';
 
 const Register = ({ navigation }) => {
   const dorms = [
@@ -374,27 +380,26 @@ const Register = ({ navigation }) => {
       <View
         style={{ flex: 1, backgroundColor: '#f9f7f4', alignItems: 'center' }}
       >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 4 }}
-        >
-          <Header>
-            <Icon
-              name="left"
-              size={25}
-              color="#707070"
-              title="Login"
-              onPress={() => navigation.navigate('Login')}
-            />
+        <Header>
+          <Icon
+            name="left"
+            size={20}
+            color="#707070"
+            title="Login"
+            onPress={() => navigation.navigate('Login')}
+          />
+          <Pressable onPress={() => navigation.navigate('Login')}>
             <Title>회원가입</Title>
-          </Header>
+          </Pressable>
+        </Header>
+        <KeyboardAwareScrollView>
           <SubWrapper>
             <InputWrapper>
               <Input
                 ref={refName}
                 label="Name"
                 placeholder="이름"
-                placeholderTextColor="#8E8E8E"
+                placeholderTextColor="#515151"
                 returnKeyType="next"
                 value={name}
                 onChangeText={setName}
@@ -410,7 +415,7 @@ const Register = ({ navigation }) => {
                 ref={refSid}
                 label="Sid"
                 placeholder="학번"
-                placeholderTextColor="#8E8E8E"
+                placeholderTextColor="#515151"
                 returnKeyType="next"
                 value={sid}
                 onChangeText={setSid}
@@ -427,7 +432,7 @@ const Register = ({ navigation }) => {
                   ref={refId}
                   label="Id"
                   placeholder="아이디 (KUPID 계정과 동일)"
-                  placeholderTextColor="#8E8E8E"
+                  placeholderTextColor="#515151"
                   returnKeyType="next"
                   value={id}
                   onChangeText={setId}
@@ -447,7 +452,7 @@ const Register = ({ navigation }) => {
                 ref={refPassword}
                 label="Password"
                 placeholder="비밀번호"
-                placeholderTextColor="#8E8E8E"
+                placeholderTextColor="#515151"
                 returnKeyType="next"
                 value={password}
                 onChangeText={setPassword}
@@ -467,7 +472,7 @@ const Register = ({ navigation }) => {
                 ref={refCheck}
                 label="PasswordCheck"
                 placeholder="비밀번호 확인"
-                placeholderTextColor="#8E8E8E"
+                placeholderTextColor="#515151"
                 returnKeyType="next"
                 value={check}
                 onChangeText={setCheck}
@@ -505,12 +510,12 @@ const Register = ({ navigation }) => {
                 />
                 <ErrorText>{dormError}</ErrorText>
               </ColumnWrapper>
-              <ColumnWrapper>
+              <RoomWrapper>
                 <Input2
                   ref={refRoom}
                   label="Room"
                   placeholder="소속 호실 ex) 245 - 1"
-                  placeholderTextColor="#8E8E8E"
+                  placeholderTextColor="#515151"
                   returnKeyType="next"
                   value={room}
                   onChangeText={setRoom}
@@ -522,14 +527,14 @@ const Register = ({ navigation }) => {
                   onFocus={() => setRoomFocused(true)}
                 />
                 <ErrorText>{roomError}</ErrorText>
-              </ColumnWrapper>
+              </RoomWrapper>
             </RowWrapper>
             <InputWrapper>
               <Input
                 ref={refNickname}
                 label="Nickname"
                 placeholder="닉네임"
-                placeholderTextColor="#8E8E8E"
+                placeholderTextColor="#515151"
                 returnKeyType="done"
                 value={nickname}
                 onChangeText={setNickname}
@@ -543,13 +548,14 @@ const Register = ({ navigation }) => {
               <ErrorText>{nicknameError}</ErrorText>
             </InputWrapper>
           </SubWrapper>
-        </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
         <BottomWrapper>
-          <ButtonWrapper title="Sign up" onPress={_handleSignupBtnPress}>
-            <StyledButton>회원가입</StyledButton>
-          </ButtonWrapper>
+          <LoginRegisterButton
+            text="가입하기"
+            handler={_handleSignupBtnPress}
+          />
           <OptionWrapper>
-            <OptionDescription>이미 계정이 있나요? </OptionDescription>
+            <OptionDescription>이미 계정이 있습니까? </OptionDescription>
             <OptionButton
               title="Login"
               onPress={() => navigation.navigate('Login')}
@@ -565,17 +571,18 @@ const Register = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   buttonStyle: {
-    width: 143,
-    height: 14,
+    width: responsiveScreenWidth(41.7),
+    height: 24,
     borderBottomWidth: 1,
-    borderColor: 'rgba(133, 0, 0, 0.15)',
+    borderColor: 'rgba(133, 0, 0, 0.1)',
     backgroundColor: '#f9f7f4',
+    paddingBottom: 8,
   },
   buttonTextStyle: {
     fontSize: responsiveScreenFontSize(1.5),
-    width: 143,
+    width: responsiveScreenWidth(41.7),
     textAlign: 'left',
-    color: '#8E8E8E',
+    color: '#515151',
     fontFamily: 'Medium',
   },
   dropdownStyle: {
@@ -588,7 +595,7 @@ const styles = StyleSheet.create({
   },
   rowTextStyle: {
     fontSize: 12,
-    color: '#8E8E8E',
+    color: '#515151',
   },
 });
 

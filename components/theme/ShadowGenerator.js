@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
       height: 5,
     },
     shadowOpacity: 1,
-    shadowRadius: 6,
-    shadowColor: '#d4d2cf',
+    shadowRadius: 10,
+    shadowColor: '#DED7CA',
   },
 });
 

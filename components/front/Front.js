@@ -24,24 +24,22 @@ import {
   SubTitle,
   TitleWrapper,
   Input,
-  ButtonWrapper,
-  StyledButton,
   BottomWrapper,
   // CheckWrapper,
   // Check,
   // Description,
   TextArea,
-  TextWrapper,
   Greeting,
   Separate,
   Titles,
-  InputWrapper,
   ErrorText,
   RowWrapper,
+  BackgroundWrapper,
 } from './FrontStyle';
 import { CrimsonLogo, UnderLine, VerticalLince } from '../../assets/Svgs';
 import ShadowGenerator from '../theme/ShadowGenerator';
 import CustomText from '../theme/CustomTextStyle';
+import LoginRegisterButton from '../button/LoginRegisterButton';
 
 const Front = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -51,7 +49,6 @@ const Front = ({ navigation }) => {
   const refEmailDidMount = useRef(null);
   const [emailFocused, setEmailFocused] = useState(false);
   // const [isSelected, setSelection] = useState(false);
-
   const {
     setProfileInfo,
     setNotice,
@@ -65,11 +62,11 @@ const Front = ({ navigation }) => {
   const emailCheck = async () => {
     let errorMsg = '';
     if (!email) {
-      errorMsg = '이메일은 필수 항목입니다.';
+      errorMsg = '* 이메일은 필수 항목입니다.';
     } else if (!validateEmail(email)) {
-      errorMsg = '이메일 형식을 확인하세요';
+      errorMsg = '* 이메일 형식을 확인하세요';
     } else if (!validateEmailDomain(email)) {
-      errorMsg = '학교 도메인 이메일을 사용해주세요';
+      errorMsg = '* 학교 도메인 이메일을 사용해주세요';
     }
 
     setErrorMessage(errorMsg);
@@ -137,9 +134,7 @@ const Front = ({ navigation }) => {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-      <View
-        style={{ flex: 1, backgroundColor: '#F9F7F4', alignItems: 'center' }}
-      >
+      <BackgroundWrapper>
         <TitleWrapper>
           <Separate>
             <CrimsonLogo />
@@ -153,42 +148,34 @@ const Front = ({ navigation }) => {
         </TitleWrapper>
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1.6 }}
+          style={{ flex: 1 }}
         >
           <TextArea>
-            <TextWrapper>
-              <InputWrapper>
-                <Input
-                  label="Email"
-                  placeholder="user ID(KUPID 계정)"
-                  placeholderTextColor="#707070"
-                  returnKeyType="next"
-                  value={email}
-                  onChangeText={setEmail}
-                  onSubmitEditing={() => refPassword.current.focus()}
-                  onBlur={() => [
-                    setEmail(removeWhitespace(email)),
-                    setEmailFocused(false),
-                  ]}
-                  onFocus={() => setEmailFocused(true)}
-                />
-              </InputWrapper>
-            </TextWrapper>
-            <TextWrapper>
-              <InputWrapper>
-                <Input
-                  ref={refPassword}
-                  label="Password"
-                  placeholder="Password"
-                  placeholderTextColor="#707070"
-                  returnKeyType="done"
-                  value={password}
-                  onChangeText={setPassword}
-                  onSubmitEditing={_handleSigninBtnPress}
-                  secureTextEntry
-                />
-              </InputWrapper>
-            </TextWrapper>
+            <Input
+              label="Email"
+              placeholder="아이디 (KUPID 계정)"
+              placeholderTextColor="#515151"
+              returnKeyType="next"
+              value={email}
+              onChangeText={setEmail}
+              onSubmitEditing={() => refPassword.current.focus()}
+              onBlur={() => [
+                setEmail(removeWhitespace(email)),
+                setEmailFocused(false),
+              ]}
+              onFocus={() => setEmailFocused(true)}
+            />
+            <Input
+              ref={refPassword}
+              label="Password"
+              placeholder="비밀번호"
+              placeholderTextColor="#515151"
+              returnKeyType="done"
+              value={password}
+              onChangeText={setPassword}
+              onSubmitEditing={_handleSigninBtnPress}
+              secureTextEntry
+            />
             {/* <CheckWrapper>
               <TouchableOpacity onPress={() => setSelection(!isSelected)}>
                 <Check>
@@ -203,26 +190,22 @@ const Front = ({ navigation }) => {
           </TextArea>
         </KeyboardAvoidingView>
         <BottomWrapper>
-          <ShadowGenerator>
-            <ButtonWrapper title="Sign in" onPress={_handleSigninBtnPress}>
-              <StyledButton>로그인</StyledButton>
-            </ButtonWrapper>
-          </ShadowGenerator>
+          <LoginRegisterButton text="로그인" handler={_handleSigninBtnPress} />
           <RowWrapper>
             <Pressable onPress={() => navigation.navigate('FindPassword')}>
-              <CustomText font="Regular" size={12.5} color="#707070">
+              <CustomText font="Regular" size={12.5} color="#828282">
                 비밀번호 찾기
               </CustomText>
             </Pressable>
             <VerticalLince />
             <Pressable onPress={() => navigation.navigate('Register')}>
-              <CustomText font="Regular" size={12.5} color="#707070">
+              <CustomText font="Regular" size={12.5} color="#828282">
                 회원가입
               </CustomText>
             </Pressable>
           </RowWrapper>
         </BottomWrapper>
-      </View>
+      </BackgroundWrapper>
     </TouchableWithoutFeedback>
   );
 };
