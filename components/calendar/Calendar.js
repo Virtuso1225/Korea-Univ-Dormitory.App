@@ -83,7 +83,7 @@ const Calendar = ({ navigation }) => {
                 setValue(value.clone().subtract(1, 'month'));
               }}
             >
-              <Icon name="left" size={20} color="black" />
+              <Icon name="left" size={16} color="black" />
             </TouchableOpacity>
             <View>
               <Text style={styles.headerText}>
@@ -93,10 +93,10 @@ const Calendar = ({ navigation }) => {
             <TouchableOpacity
               onPress={() => setValue(value.clone().add(1, 'month'))}
             >
-              <Icon name="right" size={20} color="black" />
+              <Icon name="right" size={16} color="black" />
             </TouchableOpacity>
             <CloseWrapper onPress={() => navigation.goBack()}>
-              <Close name="close" size={20} color="#707070" />
+              <Close name="close" size={23} color="#707070" />
             </CloseWrapper>
           </View>
           <ShadowGenerator>
@@ -300,8 +300,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 30,
     marginTop: 12,
-    borderWidth: 1,
-    borderColor: '#FFFFFF',
     justifyContent: 'space-around',
     flexDirection: 'row',
   },
