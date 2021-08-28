@@ -25,8 +25,6 @@ export const Body = styled.View`
 
 export const Header = styled.View`
   flex: 1;
-  border-bottom-width: 1px;
-  border-bottom-color: #dedede;
 `;
 
 export const RowWrapper = styled.View`

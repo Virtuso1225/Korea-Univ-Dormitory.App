@@ -1,13 +1,10 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
-import { Header, PageTitle } from './MypageStyle';
 import { UserContext } from '../contexts';
 import { Background, Card } from '../notice/NoticeStyle';
 import {
-  CloseWrapper,
   Body,
-  RowWrapper,
   TableWrapper,
   TableContainer,
   PenaltyWrapper,
@@ -18,6 +15,7 @@ import {
 } from './MyPenaltyStyle';
 import ShadowGenerator from '../theme/ShadowGenerator';
 import CustomText from '../theme/CustomTextStyle';
+import MypageHeader from '../mypageheader/MypageHeader';
 
 const MyPenalty = ({ navigation }) => {
   const tableHeader = [
@@ -26,19 +24,16 @@ const MyPenalty = ({ navigation }) => {
     { id: 2, content: '벌점' },
   ];
 
+  const closeHandler = () => {
+    navigation.goBack();
+  };
+
   return (
     <UserContext.Consumer>
       {({ profileInfo, myPenalty }) => (
         <Background>
           <Card value={1}>
-            <Header>
-              <RowWrapper>
-                <PageTitle>벌점 내역</PageTitle>
-                <CloseWrapper onPress={() => navigation.navigate('Mypage')}>
-                  <Icon name="close" size={20} color="#707070" />
-                </CloseWrapper>
-              </RowWrapper>
-            </Header>
+            <MypageHeader pageInfo="내 벌점 내역" handler={closeHandler} />
           </Card>
           <Body>
             <Card value={1}>

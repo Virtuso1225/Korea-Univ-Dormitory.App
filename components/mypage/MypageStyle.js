@@ -21,8 +21,6 @@ export const Card = styled.View`
 
 export const Header = styled.View`
   flex: 1;
-  border-bottom-width: 1px;
-  border-bottom-color: #dedede;
 `;
 
 export const RowWrapper = styled.View`
@@ -34,13 +32,13 @@ export const RowWrapper = styled.View`
 `;
 
 export const PageTitle = styled.Text`
-  font-size: ${responsiveScreenFontSize(2.15)}px;
+  font-size: ${responsiveScreenFontSize(2.79)}px;
   font-family: Bold6;
   color: black;
 `;
 
 export const ProfileWrapper = styled.View`
-  flex: 2.4;
+  flex: 2;
   align-items: center;
   justify-content: center;
 `;
@@ -52,18 +50,10 @@ export const ProfileContainer = styled.View`
 `;
 
 export const ProfileImageContainer = styled.View`
-  width: ${responsiveScreenHeight(7.9)}px;
-  height: ${responsiveScreenHeight(7.9)}px;
   border-radius: ${responsiveScreenHeight(3.95)}px;
   background-color: #fefcf9;
 `;
-export const ProfileImage = styled.Image`
-  border-radius: ${responsiveScreenHeight(3.95)}px;
-  width: ${responsiveScreenHeight(7.9)}px;
-  height: ${responsiveScreenHeight(7.9)}px;
-  border-color: #850000;
-  border-width: 3px;
-`;
+
 export const ProfileTextContainer = styled.View`
   margin-left: ${responsiveScreenWidth(3.84)}px;
   justify-content: center;

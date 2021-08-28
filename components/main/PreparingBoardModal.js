@@ -59,15 +59,17 @@ const PreparingBoardModal = () => {
           </CenterView>
         </Modal>
       </View>
-      <ButtonWrapper onPress={() => setModalVisible(true)}>
-        <ButtonRowWrapper>
-          <Separation>
-            <Board />
-            <StyledButton>게시판</StyledButton>
-          </Separation>
-          <Icon name="right" size={15} color="#484848" />
-        </ButtonRowWrapper>
-      </ButtonWrapper>
+      <View style={{ opacity: 0.5 }}>
+        <ButtonWrapper onPress={() => setModalVisible(true)}>
+          <ButtonRowWrapper>
+            <Separation>
+              <Board />
+              <StyledButton>게시판</StyledButton>
+            </Separation>
+            <Icon name="right" size={15} color="#484848" />
+          </ButtonRowWrapper>
+        </ButtonWrapper>
+      </View>
     </>
   );
 };

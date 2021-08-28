@@ -44,8 +44,8 @@ const Main = ({ navigation }) => {
             <ButtonRowWrapper>
               <Separation>
                 <Megaphone
-                  widthProp={27.365}
-                  heightProp={27.103}
+                  widthProp={23.04}
+                  heightProp={22.8}
                   colorProp="#9B1818"
                 />
                 <StyledButton>공지사항</StyledButton>
@@ -53,12 +53,6 @@ const Main = ({ navigation }) => {
               <Icon name="right" size={15} color="#484848" />
             </ButtonRowWrapper>
           </ButtonWrapper>
-        </ShadowGenerator>
-        <ShadowGenerator>
-          <PreparingFacilityUseModal />
-        </ShadowGenerator>
-        <ShadowGenerator>
-          <PreparingBoardModal />
         </ShadowGenerator>
         <ShadowGenerator>
           <ButtonWrapper
@@ -69,8 +63,8 @@ const Main = ({ navigation }) => {
             <ButtonRowWrapper>
               <Separation>
                 <MypageIcon
-                  widthProp={24.165}
-                  heightProp={26.725}
+                  widthProp={20.21}
+                  heightProp={22.48}
                   colorProp="#9B1818"
                   fillProp="none"
                 />
@@ -79,6 +73,12 @@ const Main = ({ navigation }) => {
               <Icon name="right" size={15} color="#484848" />
             </ButtonRowWrapper>
           </ButtonWrapper>
+        </ShadowGenerator>
+        <ShadowGenerator>
+          <PreparingBoardModal />
+        </ShadowGenerator>
+        <ShadowGenerator>
+          <PreparingFacilityUseModal />
         </ShadowGenerator>
       </ButtonsContainer>
     </Container>

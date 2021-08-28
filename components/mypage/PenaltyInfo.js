@@ -1,33 +1,27 @@
 import React from 'react';
 import { ScrollView } from 'react-native';
-import Icon from 'react-native-vector-icons/EvilIcons';
-import { getMyPenalty } from '../firebase';
-import { Header, PageTitle } from './MypageStyle';
-import { Background, Card, CustomText } from '../notice/NoticeStyle';
+import { Background, Card } from '../notice/NoticeStyle';
 import PenaltyList from '../../assets/PenaltyList';
 import {
-  CloseWrapper,
   Body,
-  RowWrapper,
   PenatlyRow,
   TableContainer,
   BottomWrapper,
   TextWrapper,
   PenaltyInfoWrapper,
 } from './MyPenaltyStyle';
+import CustomText from '../theme/CustomTextStyle';
+import MypageHeader from '../mypageheader/MypageHeader';
 
 const PenatlyInfo = ({ navigation }) => {
+  const closeHandler = () => {
+    navigation.goBack();
+  };
+
   return (
     <Background>
       <Card value={1}>
-        <Header>
-          <RowWrapper>
-            <PageTitle>벌점 관련 수칙</PageTitle>
-            <CloseWrapper onPress={() => navigation.goBack()}>
-              <Icon name="close" size={20} color="#707070" />
-            </CloseWrapper>
-          </RowWrapper>
-        </Header>
+        <MypageHeader pageInfo="벌점 관련 수칙" handler={closeHandler} />
       </Card>
       <Body>
         <Card value={1}>

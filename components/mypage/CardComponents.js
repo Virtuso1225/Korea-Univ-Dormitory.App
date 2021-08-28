@@ -63,7 +63,7 @@ const CardComponents = ({ navigation }) => {
             <Icon
               name="exclamationcircle"
               size={15}
-              color="#FF0000"
+              color="#850000"
               style={{
                 marginLeft: 10,
                 display: temperature[today] === undefined ? 'flex' : 'none',
@@ -84,14 +84,18 @@ const CardComponents = ({ navigation }) => {
             >
               {temperature[today]}°C
             </DescriptionText>
-            <DescriptionText font="Regular" visible={overnightDate}>
+            <DescriptionText
+              font="Regular"
+              visible={overnightDate && temperature[today] !== undefined}
+            >
               #오늘의 외박여부:
             </DescriptionText>
             <DescriptionText
               font="ExtraBold"
               visible={
                 toTimestamp(overnightDate.endDate) >= todayNow &&
-                todayNow >= toTimestamp(overnightDate.startDate)
+                todayNow >= toTimestamp(overnightDate.startDate) &&
+                temperature[today] !== undefined
               }
             >
               O

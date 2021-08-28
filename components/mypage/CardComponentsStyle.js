@@ -32,7 +32,7 @@ export const ButtonText = styled.Text`
 export const ErrorText = styled.Text`
   font-size: ${responsiveScreenFontSize(1.29)}px;
   font-family: Bold6;
-  color: #ff0000;
+  color: #850000;
   margin-left: 5px;
   display: ${(props) => (props.visible ? 'flex' : 'none')};
 `;

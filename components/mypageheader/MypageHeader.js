@@ -1,7 +1,15 @@
 import React from 'react';
 import Close from 'react-native-vector-icons/EvilIcons';
-import { Header, PageTitle } from '../mypage/MypageStyle';
+import styled from 'styled-components/native';
+import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
+import { Header } from '../mypage/MypageStyle';
 import { CloseWrapper, RowWrapper } from '../mypage/DropOutStyle';
+
+const PageTitle = styled.Text`
+  font-size: ${responsiveScreenFontSize(2.15)}px;
+  font-family: Bold6;
+  color: black;
+`;
 
 const MypageHeader = ({ pageInfo, handler }) => {
   return (

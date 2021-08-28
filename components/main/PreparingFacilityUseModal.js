@@ -58,15 +58,17 @@ const PreparingFacilityUseModal = () => {
           </CenterView>
         </Modal>
       </View>
-      <ButtonWrapper onPress={() => setModalVisible(true)}>
-        <ButtonRowWrapper>
-          <Separation>
-            <Facility />
-            <StyledButton>시설이용</StyledButton>
-          </Separation>
-          <Icon name="right" size={15} color="#484848" />
-        </ButtonRowWrapper>
-      </ButtonWrapper>
+      <View style={{ opacity: 0.5 }}>
+        <ButtonWrapper onPress={() => setModalVisible(true)}>
+          <ButtonRowWrapper>
+            <Separation>
+              <Facility />
+              <StyledButton>시설이용</StyledButton>
+            </Separation>
+            <Icon name="right" size={15} color="#484848" />
+          </ButtonRowWrapper>
+        </ButtonWrapper>
+      </View>
     </>
   );
 };

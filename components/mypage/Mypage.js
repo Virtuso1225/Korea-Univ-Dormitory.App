@@ -25,7 +25,7 @@ const Mypage = ({ navigation }) => {
     <UserContext.Consumer>
       {({ profileInfo }) => (
         <Background>
-          <Card value={0.7}>
+          <Card value={1}>
             <Header>
               <RowWrapper>
                 <PageTitle>마이페이지</PageTitle>
@@ -62,7 +62,7 @@ const Mypage = ({ navigation }) => {
               </ProfileContainer>
             </ProfileWrapper>
           </Card>
-          <Card value={1}>
+          <Card value={2.05}>
             <CardComponents navigation={navigation} />
           </Card>
         </Background>
