@@ -48,7 +48,7 @@ const Front = ({ navigation }) => {
   const refPassword = useRef(null);
   const refEmailDidMount = useRef(null);
   const [emailFocused, setEmailFocused] = useState(false);
-  // const [isSelected, setSelection] = useState(false);
+
   const {
     setProfileInfo,
     setNotice,
@@ -61,6 +61,7 @@ const Front = ({ navigation }) => {
 
   const emailCheck = async () => {
     let errorMsg = '';
+
     if (!email) {
       errorMsg = '* 이메일은 필수 항목입니다.';
     } else if (!validateEmail(email)) {
@@ -176,29 +177,19 @@ const Front = ({ navigation }) => {
               onSubmitEditing={_handleSigninBtnPress}
               secureTextEntry
             />
-            {/* <CheckWrapper>
-              <TouchableOpacity onPress={() => setSelection(!isSelected)}>
-                <Check>
-                  {isSelected && (
-                    <Icon name="check" size={25} color="#850000" />
-                  )}
-                </Check>
-              </TouchableOpacity>
-              <Description>Keep me logged in</Description>
-            </CheckWrapper> */}
             <ErrorText>{errorMessage}</ErrorText>
           </TextArea>
         </KeyboardAvoidingView>
         <BottomWrapper>
           <LoginRegisterButton text="로그인" handler={_handleSigninBtnPress} />
           <RowWrapper>
-            <Pressable onPress={() => navigation.navigate('FindPassword')}>
+            <Pressable onPress={() => navigation.push('FindPassword')}>
               <CustomText font="Regular" size={12.5} color="#828282">
                 비밀번호 찾기
               </CustomText>
             </Pressable>
             <VerticalLince />
-            <Pressable onPress={() => navigation.navigate('Register')}>
+            <Pressable onPress={() => navigation.push('Register')}>
               <CustomText font="Regular" size={12.5} color="#828282">
                 회원가입
               </CustomText>

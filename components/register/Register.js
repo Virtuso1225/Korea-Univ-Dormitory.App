@@ -362,7 +362,7 @@ const Register = ({ navigation }) => {
           Alert.alert('이메일 인증 요청', '메일을 확인해주세요.', [
             {
               onPress: () => {
-                navigation.navigate('Login');
+                navigation.push('Login');
               },
             },
           ]);
@@ -386,9 +386,9 @@ const Register = ({ navigation }) => {
             size={20}
             color="#707070"
             title="Login"
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => navigation.push('Login')}
           />
-          <Pressable onPress={() => navigation.navigate('Login')}>
+          <Pressable onPress={() => navigation.push('Login')}>
             <Title>회원가입</Title>
           </Pressable>
         </Header>
@@ -558,7 +558,7 @@ const Register = ({ navigation }) => {
             <OptionDescription>이미 계정이 있습니까? </OptionDescription>
             <OptionButton
               title="Login"
-              onPress={() => navigation.navigate('Login')}
+              onPress={() => navigation.push('Login')}
             >
               로그인
             </OptionButton>
