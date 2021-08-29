@@ -17,7 +17,12 @@ import {
 } from 'react-native-responsive-dimensions';
 import SelectDropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { signup, getStudentInfo, isExistNickname } from '../firebase';
+import {
+  signup,
+  getStudentInfo,
+  isExistNickname,
+  isExistStudent,
+} from '../firebase';
 import {
   removeWhitespace,
   validateSid,
@@ -239,6 +244,22 @@ const Register = ({ navigation }) => {
     }
   }, [roomFocused]);
 
+  const isExistStudentFunc = async () => {
+    let existStudent = true;
+
+    spinner.start();
+    existStudent = isExistStudent(sid);
+    spinner.stop();
+
+    return existStudent;
+  };
+
+  const isExistStudentCheck = async () => {
+    const existStudent = await isExistStudentFunc();
+
+    return existStudent;
+  };
+
   const isExistNicknameFunc = async () => {
     let existNickname = true;
 
@@ -312,6 +333,7 @@ const Register = ({ navigation }) => {
       passwordCheck(),
       checkCheck(),
       roomCheck(),
+      isExistStudentCheck(),
     ]);
   };
 
@@ -326,6 +348,7 @@ const Register = ({ navigation }) => {
       const passwordError = results[5];
       const checkError = results[6];
       const roomError = results[7];
+      const existStudent = results[8];
 
       if (nameError) {
         Alert.alert('회원가입 에러', '이름을 확인하세요.');
@@ -341,10 +364,22 @@ const Register = ({ navigation }) => {
         Alert.alert('회원가입 에러', '호실 정보를 확인하세요.');
       } else if (existNickname) {
         Alert.alert('회원가입 에러', '닉네임을 확인하세요.');
+      } else if (existStudent) {
+        Alert.alert(
+          '회원가입 에러',
+          '이미 가입된 사용자입니다.\n로그인 또는 비밀번호 찾기를 이용해주세요.',
+          [
+            {
+              onPress: () => {
+                navigation.push('Login');
+              },
+            },
+          ]
+        );
       } else if (!compareStudentInfo) {
         Alert.alert(
           '회원가입 에러',
-          '학생정보를 확인하세요. 정보가 올바르다면 관리자에게 문의하세요.'
+          '학생정보를 확인하세요. \n정보가 올바르다면 관리자에게 문의하세요.'
         );
       } else {
         try {

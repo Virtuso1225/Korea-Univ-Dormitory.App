@@ -590,6 +590,27 @@ export const getNotice = async () => {
   return { noticeBeforeDue, noticeAfterDue };
 };
 
+export const isExistStudent = async (sid) => {
+  let isExist = false;
+  const docRef = fs.collection('users').where('sid', '==', sid);
+
+  await docRef
+    .get()
+    .then((querySnapshot) => {
+      if (querySnapshot.empty) {
+        isExist = false;
+        console.log('No same student found.');
+      } else {
+        isExist = true;
+      }
+    })
+    .catch((error) => {
+      console.log('Error getting documents: ', error);
+    });
+
+  return isExist;
+};
+
 export const isExistNickname = async (nickname) => {
   let isExist = false;
   const docRef = fs.collection('users').where('nickname', '==', nickname);
