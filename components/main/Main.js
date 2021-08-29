@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
 import {
   Container,
@@ -18,8 +18,24 @@ import PreparingFacilityUseModal from './PreparingFacilityUseModal';
 import PreparingBoardModal from './PreparingBoardModal';
 import ShadowGenerator from '../theme/ShadowGenerator';
 import DateHeadr from './DateHeader';
+import { UserContext } from '../contexts';
+import { fs, getNotice } from '../firebase';
 
 const Main = ({ navigation }) => {
+  const { setNotice } = useContext(UserContext);
+  useEffect(() => {
+    const unsubscribe = fs.collection('notice').onSnapshot(
+      async () => {
+        const noticeList = await getNotice();
+        setNotice(noticeList);
+      },
+      (err) => {
+        console.log(`Encountered error: ${err}`);
+      }
+    );
+    return () => unsubscribe();
+  }, []);
+
   return (
     <Container>
       <TitleWrapper>

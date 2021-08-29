@@ -8,7 +8,9 @@ const app = !firebase.apps.length
   : firebase.app();
 
 const Auth = app.auth();
-const fs = firebase.firestore();
+// const fs = firebase.firestore();
+
+export const fs = firebase.firestore();
 
 export const signin = async ({ email, password }) => {
   const { user } = await Auth.signInWithEmailAndPassword(email, password);
