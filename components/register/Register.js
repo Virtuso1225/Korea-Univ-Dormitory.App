@@ -299,7 +299,7 @@ const Register = ({ navigation }) => {
       compareStudentInfo = false;
     }
 
-    return compareStudentInfo;
+    return [compareStudentInfo, studentInfoChart.index];
   };
 
   const lastCheck = () => {
@@ -318,7 +318,8 @@ const Register = ({ navigation }) => {
   const _handleSignupBtnPress = () => {
     lastCheck().then((results) => {
       const existNickname = results[0];
-      const compareStudentInfo = results[1];
+      const compareStudentInfo = results[1][0];
+      const index = results[1][1];
       const nameError = results[2];
       const sidError = results[3];
       const idError = results[4];
@@ -357,6 +358,7 @@ const Register = ({ navigation }) => {
             dorm,
             room,
             nickname,
+            index,
           });
 
           Alert.alert('이메일 인증 요청', '메일을 확인해주세요.', [

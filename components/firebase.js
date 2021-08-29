@@ -29,6 +29,7 @@ export const signup = async ({
   dorm,
   room,
   nickname,
+  index,
 }) => {
   await Auth.createUserWithEmailAndPassword(email, password);
 
@@ -39,6 +40,7 @@ export const signup = async ({
     dorm,
     room,
     nickname,
+    index,
     emailVerified: Auth.currentUser.emailVerified,
   };
 
@@ -50,6 +52,7 @@ export const signup = async ({
       dorm: currentUser.dorm,
       room: currentUser.room,
       nickname: currentUser.nickname,
+      index: currentUser.index,
       profileImage: 1,
     })
     .then(() => {
@@ -152,6 +155,7 @@ export const getStudentInfo = async (sid) => {
     room: '',
     sid: '',
     name: '',
+    index: '',
   };
   const docRef = fs.collection('studentList').where('sid', '==', sid);
 
@@ -166,6 +170,7 @@ export const getStudentInfo = async (sid) => {
           studentInfo.room = doc.data().room;
           studentInfo.name = doc.data().name;
           studentInfo.sid = doc.data().sid;
+          studentInfo.index = doc.data().index;
         });
       }
     })
