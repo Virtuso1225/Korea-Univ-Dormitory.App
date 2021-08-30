@@ -8,7 +8,9 @@ const app = !firebase.apps.length
   : firebase.app();
 
 const Auth = app.auth();
-const fs = firebase.firestore();
+// const fs = firebase.firestore();
+
+export const fs = firebase.firestore();
 
 export const signin = async ({ email, password }) => {
   const { user } = await Auth.signInWithEmailAndPassword(email, password);
@@ -29,6 +31,7 @@ export const signup = async ({
   dorm,
   room,
   nickname,
+  index,
 }) => {
   await Auth.createUserWithEmailAndPassword(email, password);
 
@@ -39,6 +42,7 @@ export const signup = async ({
     dorm,
     room,
     nickname,
+    index,
     emailVerified: Auth.currentUser.emailVerified,
   };
 
@@ -50,6 +54,7 @@ export const signup = async ({
       dorm: currentUser.dorm,
       room: currentUser.room,
       nickname: currentUser.nickname,
+      index: currentUser.index,
       profileImage: 1,
     })
     .then(() => {
@@ -152,6 +157,7 @@ export const getStudentInfo = async (sid) => {
     room: '',
     sid: '',
     name: '',
+    index: '',
   };
   const docRef = fs.collection('studentList').where('sid', '==', sid);
 
@@ -166,6 +172,7 @@ export const getStudentInfo = async (sid) => {
           studentInfo.room = doc.data().room;
           studentInfo.name = doc.data().name;
           studentInfo.sid = doc.data().sid;
+          studentInfo.index = doc.data().index;
         });
       }
     })
@@ -583,6 +590,27 @@ export const getNotice = async () => {
     });
 
   return { noticeBeforeDue, noticeAfterDue };
+};
+
+export const isExistStudent = async (sid) => {
+  let isExist = false;
+  const docRef = fs.collection('users').where('sid', '==', sid);
+
+  await docRef
+    .get()
+    .then((querySnapshot) => {
+      if (querySnapshot.empty) {
+        isExist = false;
+        console.log('No same student found.');
+      } else {
+        isExist = true;
+      }
+    })
+    .catch((error) => {
+      console.log('Error getting documents: ', error);
+    });
+
+  return isExist;
 };
 
 export const isExistNickname = async (nickname) => {

@@ -79,7 +79,7 @@ const FindPassword = ({ navigation }) => {
                 [
                   {
                     onPress: () => {
-                      navigation.navigate('Login');
+                      navigation.push('Login');
                     },
                   },
                 ]
@@ -91,7 +91,7 @@ const FindPassword = ({ navigation }) => {
                 [
                   {
                     onPress: () => {
-                      navigation.navigate('Register');
+                      navigation.push('Register');
                     },
                   },
                 ]
@@ -120,7 +120,7 @@ const FindPassword = ({ navigation }) => {
                 size={20}
                 color="#707070"
                 title="Login"
-                onPress={() => navigation.navigate('Login')}
+                onPress={() => navigation.push('Login')}
               />
             </IconWrapper>
             <PageTitle>비밀번호 찾기</PageTitle>
