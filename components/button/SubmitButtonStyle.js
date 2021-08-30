@@ -5,7 +5,7 @@ import {
 } from 'react-native-responsive-dimensions';
 
 const ButtonWrapper = styled.Pressable`
-  width: ${responsiveScreenWidth(87)}px;
+  width: ${responsiveScreenWidth(89.74)}px;
   height: ${responsiveScreenHeight(5.45)}px;
   background-color: #fffdf9;
   align-items: center;

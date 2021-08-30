@@ -197,6 +197,7 @@ const PasswordInfo = ({ navigation }) => {
                 ]}
                 onFocus={() => setOldPasswordFocused(true)}
                 secureTextEntry
+                error={oldPasswordError}
               />
             </RowWrapper>
             <ErrorText>{oldPasswordError}</ErrorText>
@@ -217,6 +218,7 @@ const PasswordInfo = ({ navigation }) => {
                 ]}
                 onFocus={() => setNewPasswordFocused(true)}
                 secureTextEntry
+                error={newPasswordError}
               />
             </RowWrapper>
             <ErrorText>{newPasswordError}</ErrorText>
@@ -237,6 +239,7 @@ const PasswordInfo = ({ navigation }) => {
                 onFocus={() => setCheckFocused(true)}
                 onSubmitEditing={_handleUpdateBtnPress}
                 secureTextEntry
+                error={checkError}
               />
             </RowWrapper>
             <ErrorText>{checkError}</ErrorText>

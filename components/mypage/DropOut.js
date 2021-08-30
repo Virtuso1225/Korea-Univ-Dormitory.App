@@ -8,29 +8,24 @@ import {
 } from 'react-native';
 import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/Entypo';
-import Close from 'react-native-vector-icons/EvilIcons';
 import { comparePassword, deactivate } from '../firebase';
-import { Header, PageTitle } from './MypageStyle';
 import { UserContext, ProgressContext } from '../contexts';
 import { CenterView, ModalWrapper, Button } from './ModalComponentStyle';
 import { removeWhitespace } from '../utils';
 import {
-  CloseWrapper,
   BackgroundWrapper,
   Body,
   Check,
   CheckWrapper,
   GuidanceWrapper,
-  RowWrapper,
   PasswordCheck,
   Password,
-  ButtonWrapper,
 } from './DropOutStyle';
 import { ErrorText } from '../register/RegisterStyle';
-import ShadowGenerator from '../theme/ShadowGenerator';
 import WithdrawalTerms from '../../assets/WithdrawalTerms';
 import CustomText from '../theme/CustomTextStyle';
 import MypageHeader from '../mypageheader/MypageHeader';
+import SubmitButton from '../button/SubmitButton';
 
 const DropOut = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
@@ -146,17 +141,7 @@ const DropOut = ({ navigation }) => {
             />
             <ErrorText>{passwordError}</ErrorText>
           </PasswordCheck>
-          <ShadowGenerator>
-            <ButtonWrapper title="Deactiviate" onPress={_handleDropOutBtnPress}>
-              <CustomText
-                font="Medium"
-                size={responsiveScreenFontSize(1.8)}
-                color="#1D1D1D"
-              >
-                탈퇴하기
-              </CustomText>
-            </ButtonWrapper>
-          </ShadowGenerator>
+          <SubmitButton handler={_handleDropOutBtnPress} />
           <View>
             <Modal
               animationType="fade"

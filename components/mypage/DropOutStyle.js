@@ -67,14 +67,14 @@ export const Password = styled.TextInput`
 `;
 
 export const ButtonWrapper = styled.TouchableOpacity`
-  width: ${responsiveScreenWidth(87)}px;
+  width: ${responsiveScreenWidth(89.74)}px;
   height: ${responsiveScreenHeight(5.45)}px;
   background-color: #fffdf9;
   align-items: center;
   justify-content: center;
   align-self: center;
   border-radius: 10px;
-  margin-top: ${responsiveScreenHeight(22.9)}px;
+  /* margin-top: ${responsiveScreenHeight(22.9)}px; */
 `;
 
 export const ErrorText = styled.Text`

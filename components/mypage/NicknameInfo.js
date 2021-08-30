@@ -117,6 +117,7 @@ const NicknameInfo = ({ navigation }) => {
                     ]}
                     onFocus={() => setNicknameFocused(true)}
                     onSubmitEditing={_handleUpdateBtnPress}
+                    error={nicknameError}
                   />
                 </RowWrapper>
                 <ErrorText>{nicknameError}</ErrorText>

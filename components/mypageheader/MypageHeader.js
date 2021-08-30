@@ -1,7 +1,10 @@
 import React from 'react';
 import Close from 'react-native-vector-icons/EvilIcons';
 import styled from 'styled-components/native';
-import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
+import {
+  responsiveScreenFontSize,
+  responsiveScreenHeight,
+} from 'react-native-responsive-dimensions';
 import { CloseWrapper, RowWrapper } from '../mypage/DropOutStyle';
 
 const PageTitle = styled.Text`
@@ -11,7 +14,7 @@ const PageTitle = styled.Text`
 `;
 
 const Header = styled.View`
-  flex: 1;
+  height: ${responsiveScreenHeight(11.84)}px;
   border-bottom-width: 1px;
   border-bottom-color: #dedede;
 `;

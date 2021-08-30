@@ -27,7 +27,7 @@ const Footer = () => {
           },
           shadowOpacity: 1,
           shadowRadius: 10,
-          shadowColor: 'rgba(222, 215, 202, 0.)',
+          shadowColor: 'rgba(222, 215, 202, 0.37)',
           border: 'none',
           height: responsiveScreenHeight(10.42),
         },

@@ -96,7 +96,7 @@ const Calendar = ({ navigation }) => {
               <Icon name="right" size={16} color="black" />
             </TouchableOpacity>
             <CloseWrapper onPress={() => navigation.goBack()}>
-              <Close name="close" size={23} color="#707070" />
+              <Close name="close" size={22} color="#707070" />
             </CloseWrapper>
           </View>
           <ShadowGenerator>

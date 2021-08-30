@@ -5,13 +5,16 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
-import { responsiveScreenFontSize } from 'react-native-responsive-dimensions';
+import {
+  responsiveScreenFontSize,
+  responsiveScreenWidth,
+} from 'react-native-responsive-dimensions';
 import Icon from 'react-native-vector-icons/AntDesign';
 import SelectDropdown from 'react-native-select-dropdown';
-import { SubHeader, SelectionWrapper } from './DormInfoStyle';
+import { SubHeader, SelectionWrapper, Input2 } from './DormInfoStyle';
 import { BackgroundWrapper, Body, RowWrapper } from './DropOutStyle';
 import { UserContext, ProgressContext } from '../contexts';
-import { ColumnWrapper, ErrorText, Input2 } from '../register/RegisterStyle';
+import { ColumnWrapper, ErrorText } from '../register/RegisterStyle';
 import { removeWhitespace, validateRoom } from '../utils';
 import { getStudentInfo, updateDormInfo } from '../firebase';
 import MypageHeader from '../mypageheader/MypageHeader';
@@ -159,7 +162,6 @@ const DormInfo = ({ navigation }) => {
                     <Input2
                       label="Room"
                       returnKeyType="done"
-                      // defaultValue={profileInfo.room}
                       value={room}
                       onChangeText={setRoom}
                       onBlur={() => [
@@ -168,6 +170,7 @@ const DormInfo = ({ navigation }) => {
                       ]}
                       onFocus={() => setRoomFocused(true)}
                       onSubmitEditing={_handleUpdateBtnPress}
+                      error={roomError}
                     />
                     <ErrorText>{roomError}</ErrorText>
                   </ColumnWrapper>
@@ -184,17 +187,18 @@ const DormInfo = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   buttonStyle: {
-    width: 143,
-    height: 14,
+    width: responsiveScreenWidth(41.7),
+    height: 24,
     borderBottomWidth: 1,
-    borderColor: 'rgba(133, 0, 0, 0.15)',
+    borderColor: '#CBCCCE',
     backgroundColor: '#f9f7f4',
+    paddingBottom: 8,
   },
   buttonTextStyle: {
     fontSize: responsiveScreenFontSize(1.5),
-    width: 143,
+    width: responsiveScreenWidth(41.7),
     textAlign: 'left',
-    color: '#8E8E8E',
+    color: '#515151',
     fontFamily: 'Medium',
   },
   dropdownStyle: {
@@ -207,7 +211,8 @@ const styles = StyleSheet.create({
   },
   rowTextStyle: {
     fontSize: 12,
-    color: '#8E8E8E',
+    color: '#515151',
   },
 });
+
 export default DormInfo;

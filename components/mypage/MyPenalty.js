@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView } from 'react-native';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import { UserContext } from '../contexts';
-import { Background, Card } from '../notice/NoticeStyle';
+import { Background, Card, Header, PageTitle } from '../notice/NoticeStyle';
 import {
   Body,
   TableWrapper,
@@ -15,7 +15,7 @@ import {
 } from './MyPenaltyStyle';
 import ShadowGenerator from '../theme/ShadowGenerator';
 import CustomText from '../theme/CustomTextStyle';
-import MypageHeader from '../mypageheader/MypageHeader';
+import { CloseWrapper, RowWrapper } from './DropOutStyle';
 
 const MyPenalty = ({ navigation }) => {
   const tableHeader = [
@@ -33,7 +33,14 @@ const MyPenalty = ({ navigation }) => {
       {({ profileInfo, myPenalty }) => (
         <Background>
           <Card value={1}>
-            <MypageHeader pageInfo="내 벌점 내역" handler={closeHandler} />
+            <Header>
+              <RowWrapper>
+                <PageTitle>내 벌점 내역</PageTitle>
+                <CloseWrapper onPress={closeHandler}>
+                  <Icon name="close" size={23} color="#707070" />
+                </CloseWrapper>
+              </RowWrapper>
+            </Header>
           </Card>
           <Body>
             <Card value={1}>
