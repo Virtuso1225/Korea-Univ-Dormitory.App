@@ -8,7 +8,7 @@ export const NavigationWrapper = styled.View`
 
 export const TextWrapper = styled.Text`
   color: ${(props) => (props.activated ? 'black' : '#404040')};
-  font-size: 12px;
+  font-size: 9px;
   font-family: Medium;
   margin-top: 5px;
 `;

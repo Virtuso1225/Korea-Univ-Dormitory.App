@@ -38,7 +38,7 @@ export const PageTitle = styled.Text`
 `;
 
 export const ProfileWrapper = styled.View`
-  flex: 2;
+  flex: 1.69;
   align-items: center;
   justify-content: center;
 `;

@@ -11,6 +11,7 @@ import {
   ProfileImageContainer,
   ButtonContainer,
   ButtonIcon,
+  AlignEnd,
 } from './PersonalInfoStyle';
 import { ImageSelector } from '../../assets/ProfileImage';
 import MypageHeader from '../mypageheader/MypageHeader';
@@ -77,13 +78,15 @@ const PersonalInfo = ({ navigation }) => {
               >
                 소속 동/호실
               </CustomText>
-              <CustomText
-                font="Medium"
-                size={responsiveScreenFontSize(1.72)}
-                color="#850000"
-              >
-                {dorms(profileInfo.dorm)} / {profileInfo.room}호
-              </CustomText>
+              <AlignEnd>
+                <CustomText
+                  font="Medium"
+                  size={responsiveScreenFontSize(1.72)}
+                  color="#850000"
+                >
+                  {dorms(profileInfo.dorm)} / {profileInfo.room}호
+                </CustomText>
+              </AlignEnd>
               <Icon name="right" size={14} color="#707070" />
             </LinkWrapper>
             <LinkWrapper onPress={() => navigation.navigate('NicknameInfo')}>
@@ -94,13 +97,15 @@ const PersonalInfo = ({ navigation }) => {
               >
                 닉네임
               </CustomText>
-              <CustomText
-                font="Medium"
-                size={responsiveScreenFontSize(1.72)}
-                color="#850000"
-              >
-                {profileInfo.nickname}
-              </CustomText>
+              <AlignEnd>
+                <CustomText
+                  font="Medium"
+                  size={responsiveScreenFontSize(1.72)}
+                  color="#850000"
+                >
+                  {profileInfo.nickname}
+                </CustomText>
+              </AlignEnd>
               <Icon name="right" size={14} color="#707070" />
             </LinkWrapper>
             <LinkWrapper onPress={() => navigation.navigate('PasswordInfo')}>

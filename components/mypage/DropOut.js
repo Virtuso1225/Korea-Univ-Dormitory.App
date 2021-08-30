@@ -30,6 +30,7 @@ import { ErrorText } from '../register/RegisterStyle';
 import ShadowGenerator from '../theme/ShadowGenerator';
 import WithdrawalTerms from '../../assets/WithdrawalTerms';
 import CustomText from '../theme/CustomTextStyle';
+import MypageHeader from '../mypageheader/MypageHeader';
 
 const DropOut = ({ navigation }) => {
   const { setUser } = useContext(UserContext);
@@ -92,19 +93,14 @@ const DropOut = ({ navigation }) => {
     setUser({});
   };
 
+  const closeHandler = () => {
+    navigation.goBack();
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <BackgroundWrapper>
-        <Header>
-          <RowWrapper>
-            <PageTitle marginTop={0} marginLeft={0}>
-              회원 탈퇴하기
-            </PageTitle>
-            <CloseWrapper onPress={() => navigation.navigate('Mypage')}>
-              <Close name="close" size={20} color="#707070" />
-            </CloseWrapper>
-          </RowWrapper>
-        </Header>
+        <MypageHeader pageInfo="회원 탈퇴하기" handler={closeHandler} />
         <Body>
           <GuidanceWrapper>
             <CustomText

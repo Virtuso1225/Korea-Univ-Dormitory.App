@@ -1,6 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { responsiveScreenHeight } from 'react-native-responsive-dimensions';
 import {
   Megaphone,
   ActivatedMegaphone,
@@ -25,8 +26,10 @@ const Footer = () => {
             height: -10,
           },
           shadowOpacity: 1,
-          shadowColor: 'rgba(222,215, 202, 0.37)',
+          shadowRadius: 10,
+          shadowColor: 'rgba(222, 215, 202, 0.)',
           border: 'none',
+          height: responsiveScreenHeight(10.42),
         },
       }}
     >

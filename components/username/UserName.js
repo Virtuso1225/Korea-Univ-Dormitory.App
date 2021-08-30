@@ -9,28 +9,28 @@ const UserName = ({ userName }) => {
       <CustomText
         font="ExtraBold"
         size={responsiveScreenFontSize(1.93)}
-        color="#404040"
+        color="#1D1D1D"
       >
         {userName}
       </CustomText>
       <CustomText
         font="Regular"
         size={responsiveScreenFontSize(1.93)}
-        color="#404040"
+        color="#1D1D1D"
       >
         님{' '}
       </CustomText>
       <CustomText
         font="ExtraBold"
         size={responsiveScreenFontSize(1.93)}
-        color="#404040"
+        color="#1D1D1D"
       >
         계정정보
       </CustomText>
       <CustomText
         font="Regular"
         size={responsiveScreenFontSize(1.93)}
-        color="#404040"
+        color="#1D1D1D"
       >
         입니다.
       </CustomText>

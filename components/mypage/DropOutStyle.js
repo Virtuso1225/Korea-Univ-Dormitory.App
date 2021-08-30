@@ -12,7 +12,7 @@ export const CloseWrapper = styled.Pressable`
 
 export const RowWrapper = styled.View`
   margin-top: ${responsiveScreenHeight(6.9)}px;
-  width: ${responsiveScreenWidth(87)}px;
+  width: ${responsiveScreenWidth(89.74)}px;
   flex-direction: row;
   justify-content: space-between;
   align-self: center;

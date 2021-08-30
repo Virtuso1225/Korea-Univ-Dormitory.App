@@ -82,18 +82,14 @@ const CardComponents = ({ navigation }) => {
             >
               {temperature[today]}°C
             </DescriptionText>
-            <DescriptionText
-              font="Regular"
-              visible={overnightDate && temperature[today] !== undefined}
-            >
+            <DescriptionText font="Regular" visible={overnightDate}>
               #오늘의 외박여부:
             </DescriptionText>
             <DescriptionText
               font="ExtraBold"
               visible={
                 toTimestamp(overnightDate.endDate) >= todayNow &&
-                todayNow >= toTimestamp(overnightDate.startDate) &&
-                temperature[today] !== undefined
+                todayNow >= toTimestamp(overnightDate.startDate)
               }
             >
               O
