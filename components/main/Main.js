@@ -19,15 +19,43 @@ import PreparingBoardModal from './PreparingBoardModal';
 import ShadowGenerator from '../theme/ShadowGenerator';
 import DateHeadr from './DateHeader';
 import { UserContext } from '../contexts';
-import { fs, getNotice } from '../firebase';
+import { fs, getNotice, getMyPenalty, getMyPenaltySum } from '../firebase';
 
 const Main = ({ navigation }) => {
-  const { setNotice } = useContext(UserContext);
+  const { setNotice, setMyPenalty, user, setProfileInfo, profileInfo } =
+    useContext(UserContext);
   useEffect(() => {
     const unsubscribe = fs.collection('notice').onSnapshot(
       async () => {
         const noticeList = await getNotice();
         setNotice(noticeList);
+      },
+      (err) => {
+        console.log(`Encountered error: ${err}`);
+      }
+    );
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    const collectionPenaltyPath = `users/${user.uid}/penaltyInfo`;
+    const unsubscribe = fs.collection(collectionPenaltyPath).onSnapshot(
+      async () => {
+        const setInfo = async () => {
+          const penaltyList = await getMyPenalty();
+          return penaltyList;
+        };
+        const myPenalty = await setInfo().then((result) => {
+          setMyPenalty(result);
+          return result;
+        });
+
+        const myPenaltySum = getMyPenaltySum(myPenalty);
+
+        setProfileInfo({
+          ...profileInfo,
+          myPenaltySum,
+        });
       },
       (err) => {
         console.log(`Encountered error: ${err}`);
@@ -100,5 +128,4 @@ const Main = ({ navigation }) => {
     </Container>
   );
 };
-
 export default Main;
