@@ -1,6 +1,5 @@
 import React, { useContext, useState, useRef, useEffect } from 'react';
 import {
-  View,
   KeyboardAvoidingView,
   Platform,
   TouchableWithoutFeedback,
@@ -8,7 +7,7 @@ import {
   Alert,
   Pressable,
 } from 'react-native';
-// import Icon from 'react-native-vector-icons/Entypo';
+
 import {
   signin,
   getCurrentUser,
@@ -16,6 +15,7 @@ import {
   getMyPenalty,
   getMyTemperature,
   getMyStayOut,
+  getMyPenaltySum,
 } from '../firebase';
 import { validateEmail, removeWhitespace, validateEmailDomain } from '../utils';
 import { UserContext, ProgressContext } from '../contexts';
@@ -25,9 +25,6 @@ import {
   TitleWrapper,
   Input,
   BottomWrapper,
-  // CheckWrapper,
-  // Check,
-  // Description,
   TextArea,
   Greeting,
   Separate,
@@ -37,7 +34,7 @@ import {
   BackgroundWrapper,
 } from './FrontStyle';
 import { CrimsonLogo, UnderLine, VerticalLince } from '../../assets/Svgs';
-import ShadowGenerator from '../theme/ShadowGenerator';
+
 import CustomText from '../theme/CustomTextStyle';
 import LoginRegisterButton from '../button/LoginRegisterButton';
 
@@ -56,6 +53,8 @@ const Front = ({ navigation }) => {
     setOvernightDate,
     setTemperature,
     setUser,
+    profileInfo,
+    myPenalty,
   } = useContext(UserContext);
   const { spinner } = useContext(ProgressContext);
 
@@ -111,7 +110,6 @@ const Front = ({ navigation }) => {
       try {
         spinner.start();
         const user = await signin({ email, password });
-        setUser(user);
         const result = await setGlobalInfo().then((results) => {
           setNotice(results[1]);
           setMyPenalty(results[2]);
@@ -119,12 +117,12 @@ const Front = ({ navigation }) => {
           setOvernightDate(results[4]);
           return [results[0], results[2]];
         });
-
-        const sum = { myPenaltySum: 0 };
-        result[1].forEach((item, index) => {
-          sum.myPenaltySum += item.points;
+        const myPenaltySum = getMyPenaltySum(result[1]);
+        setProfileInfo({
+          ...result[0],
+          myPenaltySum,
         });
-        setProfileInfo({ ...result[0], ...sum });
+        setUser(user);
       } catch (e) {
         Alert.alert('로그인 에러', e.message);
       } finally {

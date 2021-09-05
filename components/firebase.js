@@ -8,7 +8,6 @@ const app = !firebase.apps.length
   : firebase.app();
 
 const Auth = app.auth();
-// const fs = firebase.firestore();
 
 export const fs = firebase.firestore();
 
@@ -128,6 +127,15 @@ export const comparePassword = async (password) => {
   return isDifferent;
 };
 
+export const getMyPenaltySum = (myPenaltyList) => {
+  let myPenaltySum = 0;
+
+  myPenaltyList.forEach((item, index) => {
+    myPenaltySum += item.points;
+  });
+  return myPenaltySum;
+};
+
 export const getCurrentUser = async () => {
   const currentUserInfo = {
     name: '',
@@ -136,6 +144,7 @@ export const getCurrentUser = async () => {
     sid: '',
     nickname: '',
     profileImage: '',
+    myPenaltySum: 0,
   };
   const docRef = fs.collection('users').doc(Auth.currentUser.uid);
 
@@ -146,6 +155,7 @@ export const getCurrentUser = async () => {
     currentUserInfo.nickname = doc.data().nickname;
     currentUserInfo.profileImage = doc.data().profileImage;
     currentUserInfo.sid = doc.data().sid;
+    currentUserInfo.myPenaltySum = 0;
   });
 
   return currentUserInfo;

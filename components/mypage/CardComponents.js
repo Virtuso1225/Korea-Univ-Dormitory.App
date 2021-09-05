@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
 import moment from 'moment';
@@ -24,16 +24,27 @@ const CardComponents = ({ navigation }) => {
   const { spinner } = useContext(ProgressContext);
   const { setUser, setProfileInfo, setMyPenalty, setNotice } =
     useContext(UserContext);
-  const now = new Date();
-  const todayNow = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
   const toTimestamp = (inputDate) => {
     const arr = inputDate.split('-');
-    const timestamp = new Date(arr[0], arr[1] - 1, arr[2]);
+    const timestamp = arr[0] + arr[1] + arr[2];
 
     return timestamp;
   };
 
-  const today = moment().format('YYYY-MM-DD');
+  const [todayNow, setTodayNow] = useState(String(moment().format('YYYYMMDD')));
+
+  const [todayFormat, setTodayFormat] = useState(moment().format('YYYY-MM-DD'));
+
+  const getTime = () => {
+    setTodayNow(String(moment().format('YYYYMMDD')));
+    setTodayFormat(moment().format('YYYY-MM-DD'));
+  };
+
+  useEffect(() => {
+    getTime();
+    setInterval(getTime, 1000);
+  }, []);
 
   const Signout = async () => {
     try {
@@ -64,23 +75,24 @@ const CardComponents = ({ navigation }) => {
               color="#850000"
               style={{
                 marginLeft: 10,
-                display: temperature[today] === undefined ? 'flex' : 'none',
+                display:
+                  temperature[todayFormat] === undefined ? 'flex' : 'none',
               }}
             />
-            <ErrorText visible={temperature[today] === undefined}>
+            <ErrorText visible={temperature[todayFormat] === undefined}>
               오늘의 체온을 기록해주세요!
             </ErrorText>
             <DescriptionText
               font="Regular"
-              visible={temperature[today] !== undefined}
+              visible={temperature[todayFormat] !== undefined}
             >
               #오늘의 체온:
             </DescriptionText>
             <DescriptionText
               font="ExtraBold"
-              visible={temperature[today] !== undefined}
+              visible={temperature[todayFormat] !== undefined}
             >
-              {temperature[today]}°C
+              {temperature[todayFormat]}°C
             </DescriptionText>
             <DescriptionText font="Regular" visible={overnightDate}>
               #오늘의 외박여부:

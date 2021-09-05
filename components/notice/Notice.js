@@ -23,17 +23,15 @@ const Notice = ({ navigation }) => {
   const { notice } = useContext(UserContext);
   const { setNotice } = useContext(UserContext);
 
-  React.useEffect(
-    () =>
-      navigation.addListener('blur', () => {
-        notice.noticeBeforeDue.map((content) => exitHandler(content.id));
-        // notice.noticeAfterDue.map((content) => exitHandler(content.id));
-      }),
-    []
-  );
+  useEffect(() => {
+    navigation.addListener('blur', () => {
+      notice.noticeBeforeDue.map((content) => exitHandler(content.id));
+    });
+  }, []);
 
   const [dataArr, setDataArr] = useState([]);
   const [dataArrAfterDue, setDataArrAfterDue] = useState([]);
+
   useEffect(() => {
     let dataObj = [];
     const makeArray = async (obj) => {

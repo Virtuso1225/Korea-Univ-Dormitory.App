@@ -11,6 +11,7 @@ const UserContext = createContext({
     sid: '',
     nickname: '',
     profileImage: '',
+    myPenaltySum: 0,
   },
   overnightDate: [],
   temperature: [],

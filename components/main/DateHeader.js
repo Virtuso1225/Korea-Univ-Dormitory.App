@@ -1,27 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import moment from 'moment';
+import 'moment/locale/ko';
 import { DateContainer, DateStyle, Temperature } from './MainStyle';
 
 const DateHeader = () => {
-  const date = new Date();
-  const [month, day, index] = [
-    date.getMonth() + 1,
-    date.getDate(),
-    date.getDay() - 1,
-  ];
-  const week = [
-    '월요일',
-    '화요일',
-    '수요일',
-    '목요일',
-    '금요일',
-    '토요일',
-    '일요일',
-  ];
+  moment.locale('ko');
+  const [today, setToday] = useState(moment().format('M월 D일 dddd'));
+
+  const getTime = () => {
+    setToday(moment().locale('ko').format('M월 D일 dddd'));
+  };
+
+  useEffect(() => {
+    getTime();
+    setInterval(getTime, 1000);
+  }, []);
+
   return (
     <DateContainer>
-      <DateStyle>
-        {month}월{day}일{week[index]}
-      </DateStyle>
+      <DateStyle>{today}</DateStyle>
       <Temperature>발열체크 하셨나요?</Temperature>
     </DateContainer>
   );
